@@ -430,10 +430,12 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
-"@types/ramda@0.24.18":
-  version "0.24.18"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.24.18.tgz#2513efcccf47ca13d388d503f309df4b64ba52fc"
-  integrity sha512-37umDB+zS6tK+3j0YJxsl7O8T4aYHYO6s1UpADJ/nxMHFjmuSd5XRQryC4IXX3HQ4XzstqAqhk/D+cdxwvqtEQ==
+"@types/ramda@0.28.14":
+  version "0.28.14"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.28.14.tgz#66412478361cfce6a5f3e4a6da8a33e796fa3866"
+  integrity sha512-hLgAeKxS5MpIEROaIRHscFqWf+V04CB+A0Kq+OjnTs1fEGHXEs4aeOhXIRovAPe6PfWYKHEwEkVIYWf98OjxnA==
+  dependencies:
+    ts-toolbelt "^6.15.1"
 
 "@types/range-parser@*":
   version "1.2.4"
@@ -2831,10 +2833,10 @@ quick-lru@^4.0.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
-ramda@0.24.1:
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
-  integrity sha512-HEm619G8PaZMfkqCa23qiOe7r3R0brPu7ZgOsgKUsnvLhd0qhc/vTjkUovomgPWa5ECBa08fJZixth9LaoBo5w==
+ramda@0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
+  integrity sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==
 
 randombytes@^2.1.0:
   version "2.1.0"
@@ -3559,6 +3561,11 @@ ts-loader@9.3.0:
     enhanced-resolve "^5.0.0"
     micromatch "^4.0.0"
     semver "^7.3.4"
+
+ts-toolbelt@^6.15.1:
+  version "6.15.5"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
+  integrity sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
