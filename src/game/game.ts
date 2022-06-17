@@ -10,7 +10,7 @@ export class Game {
       .map(() => ({ speed: 1 } as Unit));
     this.battle = new Battle(units, { size: 1000 });
 
-    setInterval(() => this.battle!.tick(), 500);
+    setInterval(() => this.battle!.tick(), 10);
   }
 
   getBattle(): Battle | undefined {
