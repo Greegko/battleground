@@ -23,7 +23,7 @@ module.exports = {
       const aliasBase = aliasName.slice(0, -2);
       const pathBase = tsconfig.compilerOptions.paths[aliasName][0].slice(0, -2);
 
-      return { ...aliases, [aliasBase]: path.resolve(basePath, pathBase) };
+      return { ...aliases, [aliasBase]: path.resolve(basePath, tsconfig.compilerOptions.baseUrl, pathBase) };
     }, {}),
   },
 
