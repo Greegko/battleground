@@ -6,6 +6,10 @@ module.exports = Object.assign(webpackConfig, {
 
   stats: "minimal",
 
+  devServer: {
+    watchFiles: ["mods/**/*"],
+  },
+
   watchOptions: {
     ignored: /node_modules/,
   },
