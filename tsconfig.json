@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "target": "esnext",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -11,10 +11,9 @@
     "jsx": "react-jsx",
     "strict": true,
     "paths": {
-      "@mod/*": ["src/mod/*"],
-      "@utils/*": ["src/utils/*"],
-      "@game/*": ["src/game/*"],
-      "@interface/*": ["src/interface/*"]
+      "@mod/*": ["mod/*"],
+      "@utils/*": ["utils/*"],
+      "@game/*": ["game/*"]
     }
   }
 }

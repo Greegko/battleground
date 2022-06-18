@@ -1,5 +1,6 @@
-import { ModManager } from "@mod/mod-manager";
 import { useEffect, useState } from "react";
+
+import { ModManager } from "@mod/mod-manager";
 
 import { Game } from "../game/game";
 import { Renderer } from "../game/renderer";
@@ -17,7 +18,7 @@ export const Container = () => {
       game.setMod(mod);
       game.start();
 
-      setRenderer(new Renderer(game.getBattle()!));
+      setRenderer(new Renderer(game.getBattle()!, mod));
     });
   }, [modManager, game]);
 

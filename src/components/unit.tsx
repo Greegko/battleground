@@ -1,10 +1,31 @@
-import { Rect } from "react-konva";
-import { Cordinate } from "src/interfaces";
+import { useEffect, useState } from "react";
+import { Image } from "react-konva";
 
-interface UnitProps {
-  unit: Cordinate;
+import { RendererUnit } from "@game/renderer";
+
+export interface UnitProps {
+  unit: RendererUnit;
 }
 
-export const Unit = ({ unit }: UnitProps) => (
-  <Rect x={unit[0]} y={unit[1]} width={10} height={10} fill={"green"} stroke={"black"} strokeWidth={1} />
-);
+const UNIT_STATE = 0;
+
+export const Unit = ({ unit }: UnitProps) => {
+  const [animationState, setAnimationState] = useState<number>(0);
+
+  useEffect(() => {
+    const timeout = setInterval(() => setAnimationState(x => ((x + 1) % 4) + 4 * UNIT_STATE), 200);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return (
+    <Image
+      x={unit.cordinate[0]}
+      y={unit.cordinate[1]}
+      image={unit.sprite}
+      width={unit.sprite.height}
+      height={unit.sprite.height}
+      scale={{ x: 2, y: 2 }}
+      crop={{ x: animationState * unit.sprite.height, y: 0, width: unit.sprite.height, height: unit.sprite.height }}
+    />
+  );
+};

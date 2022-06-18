@@ -11,7 +11,7 @@ export class ModManager {
     const unitsPromise = this.loadJSON<ModUnitConfig[]>(modBase + "/units.json").then(unitsConfig => {
       return Promise.all(
         unitsConfig.map(unit =>
-          this.fetchPNG(modBase + "/" + unit.file).then(image => ({ ...unit, sprite: image } as ModUnit)),
+          this.fetchPNG(modBase + "/" + unit.file).then(sprite => ({ ...unit, sprite } as ModUnit)),
         ),
       );
     });
@@ -25,9 +25,9 @@ export class ModManager {
     return fetch(file).then(x => x.json());
   }
 
-  async fetchPNG(imagePath: string): Promise<string> {
+  async fetchPNG(imagePath: string): Promise<ImageBitmap> {
     return fetch(imagePath)
       .then(x => x.blob())
-      .then(URL.createObjectURL);
+      .then(x => createImageBitmap(x));
   }
 }

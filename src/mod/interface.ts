@@ -19,7 +19,7 @@ export interface ModConfig {
 }
 
 export interface ModUnit extends ModUnitConfig {
-  sprite: string;
+  sprite: ImageBitmap;
 }
 
 export interface Mod {

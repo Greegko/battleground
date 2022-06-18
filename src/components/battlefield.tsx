@@ -27,7 +27,7 @@ export const Battlefield = ({ renderer }: RendererProps) => {
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
         <FPS />
-        {rendereState && rendereState.units.map(unit => <Unit unit={unit} />)}
+        {rendereState && rendereState.units.map((unit, i) => <Unit key={i} unit={unit} />)}
       </Layer>
     </Stage>
   );

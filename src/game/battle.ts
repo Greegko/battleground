@@ -1,10 +1,11 @@
 import { flatten, head, sortBy, without } from "ramda";
 
-import { Cordinate, Unit } from "../interfaces";
-import { calculateAngle } from "../utils/calculate-angle";
-import { calculateDisntance } from "../utils/calculate-distance";
-// import { calculateDisntance as calculateDistance } from "../utils/calculate-distance";
-import { randomInt } from "../utils/random-int";
+import { calculateAngle } from "@utils/calculate-angle";
+import { calculateDisntance } from "@utils/calculate-distance";
+// import { calculateDisntance as calculateDistance } from "@utils/calculate-distance";
+import { randomInt } from "@utils/random-int";
+
+import { Cordinate, Unit } from "./interface";
 
 interface BattleUnit extends Unit {
   cordinate: Cordinate;
