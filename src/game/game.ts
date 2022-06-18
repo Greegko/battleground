@@ -16,11 +16,11 @@ export class Game {
   start(): void {
     const randomUnit = () => sample(this.mod.units);
 
-    const units = Array(4)
+    const units = Array(100)
       .fill(null)
       .map(() => randomUnit());
 
-    const teams = chunk(units, 2);
+    const teams = chunk(units, 50);
     this.battle = new Battle(teams, { size: 500 });
 
     const timer = setInterval(() => {
@@ -28,7 +28,7 @@ export class Game {
       if (!this.battle?.getState().isRunning) {
         clearInterval(timer);
       }
-    }, 10);
+    }, 20);
   }
 
   getBattle(): Battle | undefined {

@@ -16,6 +16,7 @@ export const Unit = ({ unit }: UnitProps) => {
       setTimeout(() => setAnimationState(17), 400);
       setTimeout(() => setAnimationState(18), 600);
       setTimeout(() => setAnimationState(19), 800);
+
       return;
     }
 

@@ -7,19 +7,19 @@ import { randomInt } from "@utils/random-int";
 
 import { Cordinate, Unit } from "./interface";
 
-enum UnitActionType {
+export enum UnitActionType {
   None,
   Move,
   Attack,
   Recover,
 }
 
-interface UnitAction {
+export interface UnitAction {
   type: UnitActionType;
   time: number;
 }
 
-interface UnitState {
+export interface UnitState {
   unit: Unit;
   team: number;
   cordinate: Cordinate;

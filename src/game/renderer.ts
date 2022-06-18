@@ -1,7 +1,7 @@
 import { Cordinate } from "@game/interface";
 import { ModUnit } from "@mod/interface";
 
-import { Battle } from "./battle";
+import { Battle, UnitActionType } from "./battle";
 
 export enum RendererUnitState {
   Idle,
@@ -30,12 +30,31 @@ export class Renderer {
     const battleState = this.battle.getState();
 
     this.state = {
-      units: battleState.units.map(x => ({
-        currentHp: x.currentHp,
-        cordinate: x.cordinate,
-        sprite: (x.unit as ModUnit).sprite,
-        state: x.currentHp > 0 ? RendererUnitState.Move : RendererUnitState.Dead,
-      })),
+      units: battleState.units.map(x => {
+        const state = (() => {
+          switch (true) {
+            case x.currentHp === 0:
+              return RendererUnitState.Dead;
+            case !battleState.isRunning:
+              return RendererUnitState.Idle;
+            case x.action.type === UnitActionType.Move:
+              return RendererUnitState.Move;
+            case x.action.type === UnitActionType.Attack:
+              return RendererUnitState.Attack;
+            case x.action.type === UnitActionType.Recover:
+              return RendererUnitState.Idle;
+            default:
+              return RendererUnitState.Idle;
+          }
+        })();
+
+        return {
+          currentHp: x.currentHp,
+          cordinate: x.cordinate,
+          sprite: (x.unit as ModUnit).sprite,
+          state,
+        };
+      }),
     };
   }
 
