@@ -28,7 +28,11 @@ interface UnitState {
 }
 
 export interface BattleState {
+  isRunning: boolean;
+
   units: UnitState[];
+
+  aliveUnits: UnitState[];
 
   teamMembers: Map<UnitState, UnitState[]>;
   enemyTeamMembers: Map<UnitState, UnitState[]>;
@@ -62,11 +66,11 @@ export class Battle {
       }),
     );
 
-    this.state = { units, ...this.createCache(units) };
+    this.state = { isRunning: true, units, aliveUnits: [...units], ...this.createCache(units) };
   }
 
   tick(): void {
-    this.state.units.forEach(unitState => {
+    this.state.aliveUnits.forEach(unitState => {
       switch (unitState.action.type) {
         case UnitActionType.Move:
           this.move(unitState);
@@ -96,10 +100,23 @@ export class Battle {
     return this.state;
   }
 
+  private checkEndCondition(): void {
+    if (this.state.aliveUnits.some((unit, index, array) => unit.team !== array[0].team)) {
+      return;
+    }
+    this.state.isRunning = false;
+  }
+
   private attack(unit: UnitState): void {
     const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit)!);
 
     enemyUnit.currentHp = Math.max(0, enemyUnit.currentHp - unit.unit.attack.dmg);
+
+    if (enemyUnit.currentHp === 0) {
+      enemyUnit.action = { type: UnitActionType.None, time: 0 };
+      this.killUnitCacheUpdate(enemyUnit);
+      this.checkEndCondition();
+    }
 
     unit.action = { type: UnitActionType.Recover, time: unit.unit.attack.recover };
   }
@@ -118,6 +135,14 @@ export class Battle {
     if (calculateDistance(unit.cordinate, enemyUnit.cordinate) < 30) {
       unit.action = { type: UnitActionType.Attack, time: unit.unit.attack.speed };
     }
+  }
+
+  private killUnitCacheUpdate(unit: UnitState) {
+    this.state.aliveUnits = without([unit], this.state.aliveUnits);
+
+    const { teamMembers, enemyTeamMembers } = this.createCache(this.state.aliveUnits);
+    this.state.teamMembers = teamMembers;
+    this.state.enemyTeamMembers = enemyTeamMembers;
   }
 
   private createCache(units: UnitState[]) {

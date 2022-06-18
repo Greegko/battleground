@@ -34,7 +34,7 @@ export class Renderer {
         currentHp: x.currentHp,
         cordinate: x.cordinate,
         sprite: this.mod.units[0].sprite,
-        state: x.currentHp > 0 ? RendererUnitState.Idle : RendererUnitState.Dead,
+        state: x.currentHp > 0 ? RendererUnitState.Move : RendererUnitState.Dead,
       })),
     };
   }
