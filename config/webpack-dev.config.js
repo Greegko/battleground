@@ -5,8 +5,4 @@ module.exports = Object.assign(webpackConfig, {
   devtool: "cheap-module-source-map",
 
   stats: "minimal",
-
-  devServer: {
-    historyApiFallback: true,
-  },
 });
