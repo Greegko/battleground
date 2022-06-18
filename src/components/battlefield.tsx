@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Layer, Stage } from "react-konva";
 
-import { Renderer, RendererState } from "../game/renderer";
+import { Renderer, RendererState } from "@game/renderer";
+
 import { FPS } from "./fps";
 import { Unit } from "./unit";
 

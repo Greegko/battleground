@@ -12,9 +12,9 @@ export enum RendererUnitState {
 
 export interface RendererUnit {
   cordinate: Cordinate;
-  sprite: ImageBitmap;
   currentHp: number;
   state: RendererUnitState;
+  unit: ModUnit;
 }
 
 export interface RendererState {
@@ -49,9 +49,9 @@ export class Renderer {
         })();
 
         return {
+          unit: x.unit as ModUnit,
           currentHp: x.currentHp,
           cordinate: x.cordinate,
-          sprite: (x.unit as ModUnit).sprite,
           state,
         };
       }),

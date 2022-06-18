@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
+import { Game } from "@game/game";
+import { Renderer } from "@game/renderer";
 import { ModManager } from "@mod/mod-manager";
 
-import { Game } from "../game/game";
-import { Renderer } from "../game/renderer";
 import { Battlefield } from "./battlefield";
 
 const MOD = "default";

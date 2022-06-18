@@ -28,11 +28,16 @@ export const Unit = ({ unit }: UnitProps) => {
     <Image
       x={unit.cordinate[0]}
       y={unit.cordinate[1]}
-      image={unit.sprite}
-      width={unit.sprite.height}
-      height={unit.sprite.height}
-      scale={{ x: 2, y: 2 }}
-      crop={{ x: animationState * unit.sprite.height, y: 0, width: unit.sprite.height, height: unit.sprite.height }}
+      image={unit.unit.sprite}
+      width={unit.unit.sprite.height}
+      height={unit.unit.sprite.height}
+      scale={{ x: unit.unit.size + 1, y: unit.unit.size + 1 }}
+      crop={{
+        x: animationState * unit.unit.sprite.height,
+        y: 0,
+        width: unit.unit.sprite.height,
+        height: unit.unit.sprite.height,
+      }}
     />
   );
 };

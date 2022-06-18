@@ -21,14 +21,14 @@ export class Game {
       .map(() => randomUnit());
 
     const teams = chunk(units, 50);
-    this.battle = new Battle(teams, { size: 500 });
+    this.battle = new Battle(teams, { dimension: [2000, 1000] });
 
     const timer = setInterval(() => {
       this.battle!.tick();
       if (!this.battle?.getState().isRunning) {
         clearInterval(timer);
       }
-    }, 20);
+    }, 10);
   }
 
   getBattle(): Battle | undefined {

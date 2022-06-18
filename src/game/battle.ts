@@ -2,10 +2,9 @@ import { flatten, head, sortBy, without } from "ramda";
 
 import { calculateAngle } from "@utils/calculate-angle";
 import { calculateDistance } from "@utils/calculate-distance";
-// import { calculateDisntance as calculateDistance } from "@utils/calculate-distance";
 import { randomInt } from "@utils/random-int";
 
-import { Cordinate, Unit } from "./interface";
+import { Cordinate, Dimension, Unit } from "./interface";
 
 export enum UnitActionType {
   None,
@@ -39,7 +38,7 @@ export interface BattleState {
 }
 
 export interface BattleConfig {
-  size: number;
+  dimension: Dimension;
 }
 
 const closestUnit = (unit: UnitState, units: UnitState[]): UnitState => {
@@ -60,7 +59,7 @@ export class Battle {
             team: teamIndex,
             action: { time: 0, type: UnitActionType.None },
             currentHp: unit.hp,
-            cordinate: [randomInt(0, config.size), randomInt(0, config.size)] as Cordinate,
+            cordinate: [randomInt(0, config.dimension[0]), randomInt(0, config.dimension[1])] as Cordinate,
           } as UnitState;
         });
       }),
@@ -132,8 +131,8 @@ export class Battle {
     const deltaX = Math.floor(-Math.cos(rot) * unit.unit.speed * 10) / 10;
     const deltaY = Math.floor(-Math.sin(rot) * unit.unit.speed * 10) / 10;
 
-    unit.cordinate[0] = Math.min(Math.max(0, Math.round(unit.cordinate[0] + deltaX)), this.config.size);
-    unit.cordinate[1] = Math.min(Math.max(0, Math.round(unit.cordinate[1] + deltaY)), this.config.size);
+    unit.cordinate[0] = Math.min(Math.max(0, Math.round(unit.cordinate[0] + deltaX)), this.config.dimension[0]);
+    unit.cordinate[1] = Math.min(Math.max(0, Math.round(unit.cordinate[1] + deltaY)), this.config.dimension[1]);
 
     if (calculateDistance(unit.cordinate, enemyUnit.cordinate) < 30) {
       unit.action = { type: UnitActionType.Attack, time: unit.unit.attack.speed };
