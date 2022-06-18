@@ -50,18 +50,20 @@ export class Battle {
   }
 
   tick(): void {
-    return;
-
     this.state.units.forEach(unitState => {
       const enemyUnit = closestUnit(unitState, this.state.enemyTeamMembers.get(unitState)!);
+
+      if (unitState.cordinate[0] === enemyUnit.cordinate[0] && unitState.cordinate[1] === enemyUnit.cordinate[1]) {
+        return;
+      }
 
       const rot = calculateAngle(enemyUnit.cordinate, unitState.cordinate);
 
       const deltaX = Math.floor(-Math.cos(rot) * unitState.unit.speed * 10) / 10;
       const deltaY = Math.floor(-Math.sin(rot) * unitState.unit.speed * 10) / 10;
 
-      unitState.cordinate[0] = Math.min(Math.max(0, unitState.cordinate[0] + deltaX), this.config.size);
-      unitState.cordinate[1] = Math.min(Math.max(0, unitState.cordinate[1] + deltaY), this.config.size);
+      unitState.cordinate[0] = Math.min(Math.max(0, Math.round(unitState.cordinate[0] + deltaX)), this.config.size);
+      unitState.cordinate[1] = Math.min(Math.max(0, Math.round(unitState.cordinate[1] + deltaY)), this.config.size);
     });
   }
 
