@@ -1,5 +1,5 @@
 import { Cordinate } from "@game/interface";
-import { Mod } from "@mod/interface";
+import { ModUnit } from "@mod/interface";
 
 import { Battle } from "./battle";
 
@@ -24,7 +24,7 @@ export interface RendererState {
 export class Renderer {
   private state!: RendererState;
 
-  constructor(private battle: Battle, private mod: Mod) {}
+  constructor(private battle: Battle) {}
 
   calculateState(): void {
     const battleState = this.battle.getState();
@@ -33,7 +33,7 @@ export class Renderer {
       units: battleState.units.map(x => ({
         currentHp: x.currentHp,
         cordinate: x.cordinate,
-        sprite: this.mod.units[0].sprite,
+        sprite: (x.unit as ModUnit).sprite,
         state: x.currentHp > 0 ? RendererUnitState.Move : RendererUnitState.Dead,
       })),
     };

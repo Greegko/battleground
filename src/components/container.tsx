@@ -18,7 +18,7 @@ export const Container = () => {
       game.setMod(mod);
       game.start();
 
-      setRenderer(new Renderer(game.getBattle()!, mod));
+      setRenderer(new Renderer(game.getBattle()!));
     });
   }, [modManager, game]);
 
