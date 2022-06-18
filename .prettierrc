@@ -2,7 +2,7 @@
   "trailingComma": "all",
   "printWidth": 120,
   "arrowParens": "avoid",
-  "importOrder": ["<THIRD_PARTY_MODULES>", "^@rpg-village/", "^@(web|lib)", "^\\.\\.?/.*(?<!scss)$", "scss"],
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^@(mod|utils|game|interface)", "^\\.\\.?/.*(?<!scss)$", "scss"],
   "importOrderSeparation": true,
   "importOrderParserPlugins": ["classProperties", "typescript", "decorators-legacy", "jsx"],
   "importOrderSortSpecifiers": true
