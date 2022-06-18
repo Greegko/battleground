@@ -7,63 +7,61 @@ import { randomInt } from "@utils/random-int";
 
 import { Cordinate, Unit } from "./interface";
 
-interface BattleUnit extends Unit {
-  cordinate: Cordinate;
+interface UnitState {
+  unit: Unit;
   team: number;
+  cordinate: Cordinate;
 }
 
 export interface BattleState {
-  units: BattleUnit[];
+  units: UnitState[];
+
+  teamMembers: Map<UnitState, UnitState[]>;
+  enemyTeamMembers: Map<UnitState, UnitState[]>;
 }
 
 export interface BattleConfig {
   size: number;
 }
 
-interface BattleCache {
-  teamMembers: Map<BattleUnit, BattleUnit[]>;
-  enemyTeamMembers: Map<BattleUnit, BattleUnit[]>;
-}
-
-const closestUnit = (unit: BattleUnit, units: BattleUnit[]): BattleUnit => {
+const closestUnit = (unit: UnitState, units: UnitState[]): UnitState => {
   const list = sortBy(x => calculateDisntance(unit.cordinate, x.cordinate), units);
 
   return head(list)!;
 };
 
 export class Battle {
-  private state: BattleState;
-  private cache!: BattleCache;
+  private state!: BattleState;
 
   constructor(teams: Unit[][], private config: BattleConfig) {
-    this.state = {
-      units: flatten(
-        teams.map((units, index) =>
-          units.map(unit => ({
-            ...unit,
+    const units = flatten(
+      teams.map((units, teamIndex) => {
+        return units.map(unit => {
+          return {
+            unit,
+            team: teamIndex,
             cordinate: [randomInt(0, config.size), randomInt(0, config.size)] as Cordinate,
-            team: index,
-          })),
-        ),
-      ),
-    };
+          } as UnitState;
+        });
+      }),
+    );
 
-    this.refreshCache();
+    this.state = { units, ...this.createCache(units) };
   }
 
   tick(): void {
     return;
 
-    this.state.units.forEach(unit => {
-      const enemyUnit = closestUnit(unit, this.cache.enemyTeamMembers.get(unit)!);
+    this.state.units.forEach(unitState => {
+      const enemyUnit = closestUnit(unitState, this.state.enemyTeamMembers.get(unitState)!);
 
-      const rot = calculateAngle(enemyUnit.cordinate, unit.cordinate);
+      const rot = calculateAngle(enemyUnit.cordinate, unitState.cordinate);
 
-      const deltaX = Math.floor(-Math.cos(rot) * unit.speed * 10) / 10;
-      const deltaY = Math.floor(-Math.sin(rot) * unit.speed * 10) / 10;
+      const deltaX = Math.floor(-Math.cos(rot) * unitState.unit.speed * 10) / 10;
+      const deltaY = Math.floor(-Math.sin(rot) * unitState.unit.speed * 10) / 10;
 
-      unit.cordinate[0] = Math.min(Math.max(0, unit.cordinate[0] + deltaX), this.config.size);
-      unit.cordinate[1] = Math.min(Math.max(0, unit.cordinate[1] + deltaY), this.config.size);
+      unitState.cordinate[0] = Math.min(Math.max(0, unitState.cordinate[0] + deltaX), this.config.size);
+      unitState.cordinate[1] = Math.min(Math.max(0, unitState.cordinate[1] + deltaY), this.config.size);
     });
   }
 
@@ -71,27 +69,24 @@ export class Battle {
     return this.state;
   }
 
-  private refreshCache(): void {
+  private createCache(units: UnitState[]) {
     const teamMembers = new Map();
     const enemyTeamMembers = new Map();
 
-    this.state.units.forEach(unit => {
+    units.forEach(unit => {
       teamMembers.set(
         unit,
         without(
-          this.state.units.filter(x => x.team === unit.team),
+          units.filter(x => x.team === unit.team),
           [unit],
         ),
       );
       enemyTeamMembers.set(
         unit,
-        this.state.units.filter(allUnit => unit.team !== allUnit.team),
+        units.filter(allUnit => unit.team !== allUnit.team),
       );
     });
 
-    this.cache = {
-      teamMembers,
-      enemyTeamMembers,
-    };
+    return { teamMembers, enemyTeamMembers };
   }
 }
