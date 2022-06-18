@@ -7,7 +7,7 @@ export interface UnitProps {
   unit: RendererUnit;
 }
 
-const UNIT_STATE = 0;
+const UNIT_STATE = 1;
 
 export const Unit = ({ unit }: UnitProps) => {
   const [animationState, setAnimationState] = useState<number>(0);
