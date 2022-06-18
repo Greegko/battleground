@@ -101,7 +101,10 @@ export class Battle {
   }
 
   private checkEndCondition(): void {
-    if (this.state.aliveUnits.some((unit, index, array) => unit.team !== array[0].team)) {
+    if (
+      this.state.aliveUnits.length > 1 &&
+      this.state.aliveUnits.some((unit, index, array) => unit.team !== array[0].team)
+    ) {
       return;
     }
     this.state.isRunning = false;
