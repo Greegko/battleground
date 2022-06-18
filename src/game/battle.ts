@@ -72,13 +72,22 @@ export class Battle {
     this.state.aliveUnits.forEach(unit => (unit.cooldowns.attack = Math.max(0, unit.cooldowns.attack - 1)));
 
     this.state.aliveUnits.forEach(unitState => {
+      const enemyUnit = closestUnit(unitState, this.state.enemyTeamMembers.get(unitState)!);
+
       switch (unitState.action.type) {
         case UnitActionType.None:
-          this.move(unitState);
+          const attackDistance = unitState.unit.attack.distance || 30;
+
+          if (calculateDistance(unitState.cordinate, enemyUnit.cordinate) > attackDistance) {
+            this.move(unitState);
+          } else {
+            if (unitState.cooldowns.attack === 0) {
+              unitState.action = { type: UnitActionType.Attack, time: unitState.unit.attack.animationTime };
+            }
+          }
+
           break;
         case UnitActionType.Attack:
-          if (unitState.cooldowns.attack > 0) return;
-
           if (unitState.action.time === 0) {
             this.attack(unitState);
           } else {
@@ -128,10 +137,6 @@ export class Battle {
 
     unit.cordinate[0] = Math.min(Math.max(0, Math.round(unit.cordinate[0] + deltaX)), this.config.dimension[0]);
     unit.cordinate[1] = Math.min(Math.max(0, Math.round(unit.cordinate[1] + deltaY)), this.config.dimension[1]);
-
-    if (calculateDistance(unit.cordinate, enemyUnit.cordinate) < 30) {
-      unit.action = { type: UnitActionType.Attack, time: unit.unit.attack.animationTime };
-    }
   }
 
   private killUnitCacheUpdate(unit: UnitState) {
