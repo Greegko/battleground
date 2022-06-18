@@ -6,7 +6,7 @@ export interface Unit {
   attack: {
     distance: number;
     dmg: number;
-    recover: number;
+    animationTime: number;
     speed: number;
   };
 }

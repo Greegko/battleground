@@ -8,9 +8,7 @@ import { Cordinate, Dimension, Unit } from "./interface";
 
 export enum UnitActionType {
   None,
-  Move,
   Attack,
-  Recover,
 }
 
 export interface UnitAction {
@@ -23,6 +21,7 @@ export interface UnitState {
   team: number;
   cordinate: Cordinate;
   action: UnitAction;
+  cooldowns: { attack: number };
   currentHp: number;
 }
 
@@ -60,7 +59,8 @@ export class Battle {
             action: { time: 0, type: UnitActionType.None },
             currentHp: unit.hp,
             cordinate: [randomInt(0, config.dimension[0]), randomInt(0, config.dimension[1])] as Cordinate,
-          } as UnitState;
+            cooldowns: { attack: 0 },
+          };
         });
       }),
     );
@@ -69,27 +69,21 @@ export class Battle {
   }
 
   tick(): void {
+    this.state.aliveUnits.forEach(unit => (unit.cooldowns.attack = Math.max(0, unit.cooldowns.attack - 1)));
+
     this.state.aliveUnits.forEach(unitState => {
       switch (unitState.action.type) {
-        case UnitActionType.Move:
+        case UnitActionType.None:
           this.move(unitState);
           break;
         case UnitActionType.Attack:
+          if (unitState.cooldowns.attack > 0) return;
+
           if (unitState.action.time === 0) {
             this.attack(unitState);
           } else {
             unitState.action.time--;
           }
-          break;
-        case UnitActionType.Recover:
-          if (unitState.action.time === 0) {
-            unitState.action = { type: UnitActionType.None, time: 0 };
-          } else {
-            unitState.action.time--;
-          }
-          break;
-        case UnitActionType.None:
-          unitState.action = { type: UnitActionType.Move, time: 0 };
           break;
       }
     });
@@ -120,7 +114,8 @@ export class Battle {
       this.checkEndCondition();
     }
 
-    unit.action = { type: UnitActionType.Recover, time: unit.unit.attack.recover };
+    unit.cooldowns.attack = unit.unit.attack.speed;
+    unit.action = { type: UnitActionType.None, time: 0 };
   }
 
   private move(unit: UnitState): void {
@@ -135,7 +130,7 @@ export class Battle {
     unit.cordinate[1] = Math.min(Math.max(0, Math.round(unit.cordinate[1] + deltaY)), this.config.dimension[1]);
 
     if (calculateDistance(unit.cordinate, enemyUnit.cordinate) < 30) {
-      unit.action = { type: UnitActionType.Attack, time: unit.unit.attack.speed };
+      unit.action = { type: UnitActionType.Attack, time: unit.unit.attack.animationTime };
     }
   }
 

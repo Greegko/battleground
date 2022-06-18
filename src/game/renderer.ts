@@ -37,12 +37,8 @@ export class Renderer {
               return RendererUnitState.Dead;
             case !battleState.isRunning:
               return RendererUnitState.Idle;
-            case x.action.type === UnitActionType.Move:
-              return RendererUnitState.Move;
             case x.action.type === UnitActionType.Attack:
               return RendererUnitState.Attack;
-            case x.action.type === UnitActionType.Recover:
-              return RendererUnitState.Idle;
             default:
               return RendererUnitState.Idle;
           }
