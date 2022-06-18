@@ -1,4 +1,4 @@
-import { Mod, ModConfig, ModUnit, ModUnitConfig } from "./interface";
+import { Mod, ModConfigFile, ModSpriteFile, ModUnitConfigFile } from "./interface";
 
 const MODS_PATH = "mods";
 
@@ -7,18 +7,25 @@ export class ModManager {
 
   async loadMod(name: string): Promise<Mod> {
     const modBase = MODS_PATH + "/" + name;
-    const configPromise = this.loadJSON<ModConfig>(modBase + "/config.json");
-    const unitsPromise = this.loadJSON<ModUnitConfig[]>(modBase + "/units.json").then(unitsConfig => {
-      return Promise.all(
-        unitsConfig.map(unit =>
-          this.fetchPNG(modBase + "/" + unit.file).then(sprite => ({ ...unit, sprite } as ModUnit)),
+    const configPromise = this.loadJSON<ModConfigFile>(modBase + "/config.json");
+
+    const spritesPromise = this.loadJSON<ModSpriteFile>(modBase + "/sprites.json")
+      .then(sprites =>
+        Promise.all(
+          sprites.map(sprite =>
+            this.fetchPNG(modBase + "/" + sprite.file).then(imageBitmap => ({ id: sprite.id, sprite: imageBitmap })),
+          ),
         ),
+      )
+      .then(sprites =>
+        sprites.reduce((acc, { id, sprite }) => ((acc[id] = sprite), acc), {} as Record<string, ImageBitmap>),
       );
-    });
 
-    const [config, units] = await Promise.all([configPromise, unitsPromise]);
+    const unitsPromise = this.loadJSON<ModUnitConfigFile[]>(modBase + "/units.json");
 
-    return { config, units };
+    const [config, units, sprites] = await Promise.all([configPromise, unitsPromise, spritesPromise]);
+
+    return { config, units, sprites };
   }
 
   async loadJSON<T>(file: string): Promise<T> {

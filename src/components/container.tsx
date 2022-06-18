@@ -6,7 +6,7 @@ import { ModManager } from "@mod/mod-manager";
 
 import { Battlefield } from "./battlefield";
 
-const MOD = "default";
+const MOD = "hero_hours";
 
 export const Container = () => {
   const [modManager] = useState(() => new ModManager());
@@ -18,7 +18,7 @@ export const Container = () => {
       game.setMod(mod);
       game.start();
 
-      setRenderer(new Renderer(game.getBattle()!));
+      setRenderer(new Renderer(game.getBattle()!, mod));
     });
   }, [modManager, game]);
 

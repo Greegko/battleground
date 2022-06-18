@@ -1,10 +1,10 @@
 import { Unit } from "@game/interface";
 
-export interface ModUnitConfig extends Unit {
-  file: string;
+export interface ModUnitConfigFile extends Unit {
+  sprite_id: string;
 }
 
-export interface ModConfig {
+export interface ModConfigFile {
   spriteDefinition: {
     frame: {
       idle: [number, number];
@@ -12,16 +12,16 @@ export interface ModConfig {
       attack: [number, number];
       hurt: [number, number];
       death: [number, number];
-      corpse: [number, number];
     };
   };
 }
 
-export interface ModUnit extends ModUnitConfig {
-  sprite: ImageBitmap;
-}
+export type ModSpriteFile = { file: string; id: string }[];
+
+export interface ModUnit extends ModUnitConfigFile {}
 
 export interface Mod {
-  config: ModConfig;
+  config: ModConfigFile;
   units: ModUnit[];
+  sprites: Record<string, ImageBitmap>;
 }
