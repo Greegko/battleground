@@ -3,9 +3,18 @@ import { Mod } from "@mod/interface";
 
 import { Battle } from "./battle";
 
+export enum RendererUnitState {
+  Idle,
+  Move,
+  Attack,
+  Dead,
+}
+
 export interface RendererUnit {
   cordinate: Cordinate;
   sprite: ImageBitmap;
+  currentHp: number;
+  state: RendererUnitState;
 }
 
 export interface RendererState {
@@ -21,7 +30,12 @@ export class Renderer {
     const battleState = this.battle.getState();
 
     this.state = {
-      units: battleState.units.map(x => ({ cordinate: x.cordinate, sprite: this.mod.units[0].sprite })),
+      units: battleState.units.map(x => ({
+        currentHp: x.currentHp,
+        cordinate: x.cordinate,
+        sprite: this.mod.units[0].sprite,
+        state: x.currentHp > 0 ? RendererUnitState.Idle : RendererUnitState.Dead,
+      })),
     };
   }
 

@@ -1,7 +1,6 @@
-export interface ModUnitConfig {
-  name: string;
-  speed: number;
-  size: number;
+import { Unit } from "@game/interface";
+
+export interface ModUnitConfig extends Unit {
   file: string;
 }
 

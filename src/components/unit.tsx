@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
 import { Image } from "react-konva";
 
-import { RendererUnit } from "@game/renderer";
+import { RendererUnit, RendererUnitState } from "@game/renderer";
 
 export interface UnitProps {
   unit: RendererUnit;
 }
 
-const UNIT_STATE = 1;
-
 export const Unit = ({ unit }: UnitProps) => {
   const [animationState, setAnimationState] = useState<number>(0);
 
   useEffect(() => {
-    const timeout = setInterval(() => setAnimationState(x => ((x + 1) % 4) + 4 * UNIT_STATE), 200);
+    if (unit.state === RendererUnitState.Dead) {
+      setTimeout(() => setAnimationState(16), 200);
+      setTimeout(() => setAnimationState(17), 400);
+      setTimeout(() => setAnimationState(18), 600);
+      setTimeout(() => setAnimationState(19), 800);
+      return;
+    }
+
+    const timeout = setInterval(() => setAnimationState(x => ((x + 1) % 4) + 4 * unit.state), 200);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [unit.state]);
 
   return (
     <Image

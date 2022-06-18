@@ -1,16 +1,30 @@
 import { flatten, head, sortBy, without } from "ramda";
 
 import { calculateAngle } from "@utils/calculate-angle";
-import { calculateDisntance } from "@utils/calculate-distance";
+import { calculateDistance } from "@utils/calculate-distance";
 // import { calculateDisntance as calculateDistance } from "@utils/calculate-distance";
 import { randomInt } from "@utils/random-int";
 
 import { Cordinate, Unit } from "./interface";
 
+enum UnitActionType {
+  None,
+  Move,
+  Attack,
+  Recover,
+}
+
+interface UnitAction {
+  type: UnitActionType;
+  time: number;
+}
+
 interface UnitState {
   unit: Unit;
   team: number;
   cordinate: Cordinate;
+  action: UnitAction;
+  currentHp: number;
 }
 
 export interface BattleState {
@@ -25,7 +39,7 @@ export interface BattleConfig {
 }
 
 const closestUnit = (unit: UnitState, units: UnitState[]): UnitState => {
-  const list = sortBy(x => calculateDisntance(unit.cordinate, x.cordinate), units);
+  const list = sortBy(x => calculateDistance(unit.cordinate, x.cordinate), units);
 
   return head(list)!;
 };
@@ -40,6 +54,8 @@ export class Battle {
           return {
             unit,
             team: teamIndex,
+            action: { time: 0, type: UnitActionType.None },
+            currentHp: unit.hp,
             cordinate: [randomInt(0, config.size), randomInt(0, config.size)] as Cordinate,
           } as UnitState;
         });
@@ -51,24 +67,57 @@ export class Battle {
 
   tick(): void {
     this.state.units.forEach(unitState => {
-      const enemyUnit = closestUnit(unitState, this.state.enemyTeamMembers.get(unitState)!);
-
-      if (unitState.cordinate[0] === enemyUnit.cordinate[0] && unitState.cordinate[1] === enemyUnit.cordinate[1]) {
-        return;
+      switch (unitState.action.type) {
+        case UnitActionType.Move:
+          this.move(unitState);
+          break;
+        case UnitActionType.Attack:
+          if (unitState.action.time === 0) {
+            this.attack(unitState);
+          } else {
+            unitState.action.time--;
+          }
+          break;
+        case UnitActionType.Recover:
+          if (unitState.action.time === 0) {
+            unitState.action = { type: UnitActionType.None, time: 0 };
+          } else {
+            unitState.action.time--;
+          }
+          break;
+        case UnitActionType.None:
+          unitState.action = { type: UnitActionType.Move, time: 0 };
+          break;
       }
-
-      const rot = calculateAngle(enemyUnit.cordinate, unitState.cordinate);
-
-      const deltaX = Math.floor(-Math.cos(rot) * unitState.unit.speed * 10) / 10;
-      const deltaY = Math.floor(-Math.sin(rot) * unitState.unit.speed * 10) / 10;
-
-      unitState.cordinate[0] = Math.min(Math.max(0, Math.round(unitState.cordinate[0] + deltaX)), this.config.size);
-      unitState.cordinate[1] = Math.min(Math.max(0, Math.round(unitState.cordinate[1] + deltaY)), this.config.size);
     });
   }
 
   getState(): BattleState {
     return this.state;
+  }
+
+  private attack(unit: UnitState): void {
+    const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit)!);
+
+    enemyUnit.currentHp = Math.max(0, enemyUnit.currentHp - unit.unit.attack.dmg);
+
+    unit.action = { type: UnitActionType.Recover, time: unit.unit.attack.recover };
+  }
+
+  private move(unit: UnitState): void {
+    const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit)!);
+
+    const rot = calculateAngle(enemyUnit.cordinate, unit.cordinate);
+
+    const deltaX = Math.floor(-Math.cos(rot) * unit.unit.speed * 10) / 10;
+    const deltaY = Math.floor(-Math.sin(rot) * unit.unit.speed * 10) / 10;
+
+    unit.cordinate[0] = Math.min(Math.max(0, Math.round(unit.cordinate[0] + deltaX)), this.config.size);
+    unit.cordinate[1] = Math.min(Math.max(0, Math.round(unit.cordinate[1] + deltaY)), this.config.size);
+
+    if (calculateDistance(unit.cordinate, enemyUnit.cordinate) < 30) {
+      unit.action = { type: UnitActionType.Attack, time: unit.unit.attack.speed };
+    }
   }
 
   private createCache(units: UnitState[]) {
