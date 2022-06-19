@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { Game } from "@game/game";
-import { Renderer } from "@game/renderer";
 import { ModManager } from "@mod/mod-manager";
 
 import { Battlefield } from "./battlefield";
@@ -9,20 +8,20 @@ import { Battlefield } from "./battlefield";
 const MOD = "hero_hours";
 
 export const Container = () => {
-  const [modManager] = useState(() => new ModManager());
-  const [game] = useState(() => new Game());
-  const [renderer, setRenderer] = useState<Renderer>();
+  const [modManager] = useState(new ModManager());
+  const [game, setGame] = useState<Game>();
 
   useEffect(() => {
     modManager.loadMod(MOD).then(mod => {
-      game.setMod(mod);
+      const game = new Game();
+      game.init(mod);
       game.start();
 
-      setRenderer(new Renderer(game.getBattle()!, mod));
+      setGame(game);
     });
-  }, [modManager, game]);
+  }, []);
 
-  if (!renderer) return null;
+  if (!game) return null;
 
-  return <Battlefield renderer={renderer} />;
+  return <Battlefield renderer={game.getRenderer()!} />;
 };

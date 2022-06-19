@@ -4,17 +4,17 @@ import { Mod } from "@mod/interface";
 import { sample } from "@utils/array/sample";
 
 import { Battle } from "./battle";
+import { Renderer } from "./renderer";
 
 export class Game {
   private battle: Battle | undefined;
+  private renderer: Renderer | undefined;
 
   private mod!: Mod;
 
-  setMod(mod: Mod): void {
+  init(mod: Mod): void {
     this.mod = mod;
-  }
 
-  start(): void {
     const randomUnit = () => sample(this.mod.units);
 
     const units = Array(100)
@@ -22,17 +22,33 @@ export class Game {
       .map(() => randomUnit());
 
     const teams = chunk(units, 50);
-    this.battle = new Battle(teams, { dimension: [2000, 1000] });
 
+    this.battle = new Battle(teams, { dimension: [2000, 1000] });
+    this.renderer = new Renderer(this.battle, mod);
+  }
+
+  start(): void {
     const timer = setInterval(() => {
       this.battle!.tick();
       if (!this.battle?.getState().isRunning) {
         clearInterval(timer);
       }
     }, 10);
+
+    const requestToRender = () =>
+      requestAnimationFrame(() => {
+        this.renderer!.tick();
+        requestToRender();
+      });
+
+    requestToRender();
   }
 
   getBattle(): Battle | undefined {
     return this.battle;
+  }
+
+  getRenderer(): Renderer | undefined {
+    return this.renderer;
   }
 }

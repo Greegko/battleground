@@ -1,43 +1,18 @@
-import { useEffect, useState } from "react";
 import { Layer, Stage } from "react-konva";
 
-import { Renderer, RendererState } from "@game/renderer";
+import { Renderer } from "@game/renderer";
 
-import { FPS } from "./fps";
-import { Projectile } from "./projectile";
-import { Unit } from "./unit";
+import { RendererObjects } from "./renderer-objects";
 
 export interface RendererProps {
   renderer: Renderer;
 }
 
 export const Battlefield = ({ renderer }: RendererProps) => {
-  const [rendereState, setRendererState] = useState<RendererState>();
-
-  useEffect(
-    function tickRenderer() {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => tickRenderer());
-        setRendererState(renderer.calculateState());
-      });
-    },
-    [renderer],
-  );
-
-  if (!rendereState) return null;
-
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer listening={false}>
-        <FPS />
-
-        {rendereState.projectiles.map((projectile, i) => (
-          <Projectile key={i} projectile={projectile} />
-        ))}
-
-        {rendereState.units.map((unit, i) => (
-          <Unit key={i} unit={unit} />
-        ))}
+        <RendererObjects renderer={renderer} />
       </Layer>
     </Stage>
   );

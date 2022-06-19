@@ -1,84 +1,75 @@
-import { Cordinate } from "@game/interface";
+import { Image } from "konva/lib/shapes/Image";
+
 import { Mod, ModUnit } from "@mod/interface";
 
-import { Battle, BattleState, UnitActionType, UnitState } from "./battle";
+import { Battle, Projectile, UnitState } from "./battle";
 
-export enum RendererUnitState {
-  Idle,
-  Move,
-  Attack,
-  Dead,
-}
+export type Owner = Projectile | UnitState;
 
-export interface RendererUnit {
-  cordinate: Cordinate;
-  currentHp: number;
-  state: RendererUnitState;
-  unit: ModUnit;
+export interface SpriteData {
+  id: number;
+  owner: any;
   sprite: ImageBitmap;
 }
 
-export interface RendererProjectile {
-  sourceLocation: Cordinate;
-  targetLocation: Cordinate;
-  sprite: ImageBitmap;
-}
-
-export interface RendererState {
-  units: RendererUnit[];
-  projectiles: RendererProjectile[];
-}
+export type RenderedSpriteCallback = (owner: Owner, sprite: ImageBitmap, id: number) => void;
+export type RenderedDestroyCallback = (owner: Owner) => void;
 
 export class Renderer {
+  private objectsIdCounter = 0;
+  private renderedObjects = new Map<Owner, Image | null>();
+
   constructor(private battle: Battle, private mod: Mod) {}
 
-  calculateState(): RendererState {
-    const battleState = this.battle.getState();
+  private spriteCreationCallback: RenderedSpriteCallback = null!;
+  private spriteDestroyCallback: RenderedDestroyCallback = null!;
 
-    return {
-      projectiles: this.calculateProjectiles(battleState),
-      units: this.calculateUnitsState(battleState),
-    };
+  hookSpriteCreationCallback(fn: RenderedSpriteCallback): void {
+    this.spriteCreationCallback = fn;
   }
 
-  private calculateProjectiles(battleState: BattleState): RendererProjectile[] {
-    if (!battleState.isRunning) return [];
+  hookSpriteDestroyCallback(fn: RenderedDestroyCallback): void {
+    this.spriteDestroyCallback = fn;
+  }
 
-    return battleState.projectiles.map(projectile => {
-      return {
-        sourceLocation: projectile.sourceLocation,
-        targetLocation: projectile.targetLocation,
-        sprite: this.mod.sprites[projectile.sprite_id],
-      };
+  setImageReference(owner: Owner, image: Image): void {
+    if (!this.renderedObjects.has(owner)) {
+      throw new Error("Owner does not exist");
+    }
+
+    this.renderedObjects.set(owner, image);
+  }
+
+  tick(): void {
+    if (!this.spriteCreationCallback) return;
+
+    const battleState = this.battle.getState();
+
+    battleState.units.forEach(unitState => {
+      const unit = unitState.unit as ModUnit;
+
+      if (!this.renderedObjects.has(unitState)) {
+        this.renderedObjects.set(unitState, null);
+        this.spriteCreationCallback(unitState, this.mod.sprites[unit.sprite_id], this.objectsIdCounter++);
+      }
+
+      const image = this.renderedObjects.get(unitState);
+      if (image) {
+        image.setAttr("x", unitState.cordinate[0]);
+        image.setAttr("y", unitState.cordinate[1]);
+        image.setAttr("scale", { x: 2, y: 2 });
+      }
     });
   }
 
-  private calculateUnitsState(battleState: BattleState): RendererUnit[] {
-    if (!battleState.isRunning) return [];
+  getRendererObjectsList(): SpriteData[] {
+    const entries = [...this.renderedObjects.entries()].map(
+      ([owner], i) =>
+        ({ owner, sprite: this.mod.sprites[((owner as UnitState).unit as ModUnit).sprite_id], id: i } as SpriteData),
+    );
 
-    return battleState.units.map(x => this.calculateUnitState(x));
-  }
+    this.objectsIdCounter = entries.length;
 
-  private calculateUnitState(unitState: UnitState): RendererUnit {
-    const unit = unitState.unit as ModUnit;
-
-    const state = (() => {
-      switch (true) {
-        case unitState.currentHp === 0:
-          return RendererUnitState.Dead;
-        case unitState.action.type === UnitActionType.Attack:
-          return RendererUnitState.Attack;
-        default:
-          return RendererUnitState.Idle;
-      }
-    })();
-
-    return {
-      unit,
-      state,
-      sprite: this.mod.sprites[unit.sprite_id],
-      currentHp: unitState.currentHp,
-      cordinate: unitState.cordinate,
-    };
+    return entries;
   }
 }
