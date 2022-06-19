@@ -1,7 +1,7 @@
 import { Cordinate } from "@game/interface";
 import { Mod, ModUnit } from "@mod/interface";
 
-import { Battle, UnitActionType } from "./battle";
+import { Battle, BattleState, UnitActionType, UnitState } from "./battle";
 
 export enum RendererUnitState {
   Idle,
@@ -30,49 +30,55 @@ export interface RendererState {
 }
 
 export class Renderer {
-  private state!: RendererState;
-
   constructor(private battle: Battle, private mod: Mod) {}
 
-  calculateState(): void {
+  calculateState(): RendererState {
     const battleState = this.battle.getState();
 
-    this.state = {
-      projectiles: battleState.projectiles.map(projectile => {
-        return {
-          sourceLocation: projectile.sourceLocation,
-          targetLocation: projectile.targetLocation,
-          sprite: this.mod.sprites[projectile.sprite_id],
-        };
-      }),
-      units: battleState.units.map(x => {
-        const unit = x.unit as ModUnit;
-
-        const state = (() => {
-          switch (true) {
-            case x.currentHp === 0:
-              return RendererUnitState.Dead;
-            case !battleState.isRunning:
-              return RendererUnitState.Idle;
-            case x.action.type === UnitActionType.Attack:
-              return RendererUnitState.Attack;
-            default:
-              return RendererUnitState.Idle;
-          }
-        })();
-
-        return {
-          unit,
-          state,
-          sprite: this.mod.sprites[unit.sprite_id],
-          currentHp: x.currentHp,
-          cordinate: x.cordinate,
-        };
-      }),
+    return {
+      projectiles: this.calculateProjectiles(battleState),
+      units: this.calculateUnitsState(battleState),
     };
   }
 
-  getState(): RendererState {
-    return this.state;
+  private calculateProjectiles(battleState: BattleState): RendererProjectile[] {
+    if (!battleState.isRunning) return [];
+
+    return battleState.projectiles.map(projectile => {
+      return {
+        sourceLocation: projectile.sourceLocation,
+        targetLocation: projectile.targetLocation,
+        sprite: this.mod.sprites[projectile.sprite_id],
+      };
+    });
+  }
+
+  private calculateUnitsState(battleState: BattleState): RendererUnit[] {
+    if (!battleState.isRunning) return [];
+
+    return battleState.units.map(x => this.calculateUnitState(x));
+  }
+
+  private calculateUnitState(unitState: UnitState): RendererUnit {
+    const unit = unitState.unit as ModUnit;
+
+    const state = (() => {
+      switch (true) {
+        case unitState.currentHp === 0:
+          return RendererUnitState.Dead;
+        case unitState.action.type === UnitActionType.Attack:
+          return RendererUnitState.Attack;
+        default:
+          return RendererUnitState.Idle;
+      }
+    })();
+
+    return {
+      unit,
+      state,
+      sprite: this.mod.sprites[unit.sprite_id],
+      currentHp: unitState.currentHp,
+      cordinate: unitState.cordinate,
+    };
   }
 }

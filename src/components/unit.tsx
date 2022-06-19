@@ -26,6 +26,7 @@ export const Unit = ({ unit }: UnitProps) => {
 
   return (
     <Image
+      perfectDrawEnabled={false}
       x={unit.cordinate[0]}
       y={unit.cordinate[1]}
       image={unit.sprite}

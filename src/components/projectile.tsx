@@ -12,33 +12,26 @@ export interface ProjectProps {
 }
 
 export const Projectile = ({ projectile }: ProjectProps) => {
-  const [cordinate, setCordinate] = useState<Cordinate>();
+  const [cordinate, setCordinate] = useState<Cordinate | null>(projectile.sourceLocation);
   const [angle] = useState(
     () => (calculateAngle(projectile.sourceLocation, projectile.targetLocation) * 180) / Math.PI,
   );
 
   useEffect(() => {
-    let lastCordinate = projectile.sourceLocation;
+    if (cordinate === null) return;
 
-    setCordinate(lastCordinate);
+    if (calculateDistance(cordinate, projectile.targetLocation) < 50) setCordinate(null);
 
-    const interval = setInterval(() => {
-      lastCordinate = transformCordinate(lastCordinate, projectile.targetLocation, 100);
+    setCordinate(transformCordinate(cordinate, projectile.targetLocation, 100));
+  });
 
-      setCordinate(lastCordinate);
+  console.log("Rendered Projectile");
 
-      if (calculateDistance(lastCordinate, projectile.targetLocation) < 50) {
-        clearInterval(interval);
-      }
-    }, 10);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  if (!cordinate) return null;
+  if (cordinate === null) return null;
 
   return (
     <Image
+      perfectDrawEnabled={false}
       x={cordinate[0]}
       y={cordinate[1]}
       rotation={angle}

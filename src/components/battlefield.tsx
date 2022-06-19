@@ -18,8 +18,7 @@ export const Battlefield = ({ renderer }: RendererProps) => {
     function tickRenderer() {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => tickRenderer());
-        renderer.calculateState();
-        setRendererState(renderer.getState());
+        setRendererState(renderer.calculateState());
       });
     },
     [renderer],
@@ -29,8 +28,9 @@ export const Battlefield = ({ renderer }: RendererProps) => {
 
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
-      <Layer>
+      <Layer listening={false}>
         <FPS />
+
         {rendereState.projectiles.map((projectile, i) => (
           <Projectile key={i} projectile={projectile} />
         ))}
