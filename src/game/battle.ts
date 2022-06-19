@@ -1,8 +1,8 @@
-import { flatten, forEach, groupBy, head, sortBy, without } from "lodash-es";
+import { flatten, forEach, groupBy, head, pullAt, sortBy, without } from "lodash-es";
 
-import { calculateAngle } from "@utils/calculate-angle";
 import { calculateDistance } from "@utils/calculate-distance";
 import { randomInt } from "@utils/random-int";
+import { transformCordinate } from "@utils/transform-cordinate";
 
 import { Cordinate, Dimension, Unit } from "./interface";
 
@@ -65,7 +65,7 @@ function getUnitsInDistance(location: Cordinate, area: number, units: UnitState[
 export class Battle {
   private state!: BattleState;
 
-  constructor(inputTeams: Unit[][], private config: BattleConfig) {
+  constructor(inputTeams: Unit[][], config: BattleConfig) {
     const teams = inputTeams.map((units, teamIndex) => {
       return units.map(unit => {
         return {
@@ -100,7 +100,7 @@ export class Battle {
       if (projectile.time === 0) {
         this.doAreaDmg(projectile.team, projectile.area, projectile.dmg, projectile.targetLocation);
 
-        projectiles.splice(index, 1);
+        pullAt(projectiles, index);
       }
     });
 
@@ -197,13 +197,7 @@ export class Battle {
   private move(unit: UnitState): void {
     const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit.team)!)!;
 
-    const rot = calculateAngle(enemyUnit.cordinate, unit.cordinate);
-
-    const deltaX = Math.floor(-Math.cos(rot) * unit.unit.speed * 10) / 10;
-    const deltaY = Math.floor(-Math.sin(rot) * unit.unit.speed * 10) / 10;
-
-    unit.cordinate[0] = Math.min(Math.max(0, Math.round(unit.cordinate[0] + deltaX)), this.config.dimension[0]);
-    unit.cordinate[1] = Math.min(Math.max(0, Math.round(unit.cordinate[1] + deltaY)), this.config.dimension[1]);
+    unit.cordinate = transformCordinate(unit.cordinate, enemyUnit.cordinate, unit.unit.speed);
   }
 
   private killUnitCacheUpdate(unit: UnitState) {
