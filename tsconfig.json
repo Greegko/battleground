@@ -1,19 +1,8 @@
 {
+  "extends": "./tsconfig.webpack.json",
+
   "compilerOptions": {
-    "baseUrl": "./src",
-    "target": "esnext",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "removeComments": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noUnusedLocals": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "paths": {
-      "@mod/*": ["mod/*"],
-      "@utils/*": ["utils/*"],
-      "@game/*": ["game/*"]
-    }
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
   }
 }

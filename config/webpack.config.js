@@ -3,7 +3,7 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 
 const basePath = path.resolve(__dirname, "../");
-const tsconfig = require(path.resolve(basePath, "tsconfig.json"));
+const tsconfig = require(path.resolve(basePath, "tsconfig.webpack.json"));
 
 module.exports = {
   entry: ["./src/main.tsx"],
@@ -35,7 +35,14 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: ["ts-loader"],
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              configFile: "tsconfig.webpack.json",
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
