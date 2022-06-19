@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Image, Text } from "react-konva";
+import { Sprite } from "react-konva";
 
-import { Owner, Renderer } from "@game/renderer";
+import { Owner, ProjectileSpriteData, Renderer, UnitSpriteData } from "@game/renderer";
 
 interface RendererObjectsProp {
   renderer: Renderer;
@@ -10,14 +10,14 @@ interface RendererObjectsProp {
 interface RenderedSprite {
   id: number;
   owner: Owner;
-  sprite: ImageBitmap;
+  sprite: UnitSpriteData | ProjectileSpriteData;
 }
 
 export const RendererObjects = ({ renderer }: RendererObjectsProp) => {
   const [renderedObjects, setRenderedObjects] = useState<RenderedSprite[]>([]);
 
   useEffect(() => {
-    renderer.hookSpriteCreationCallback((owner: Owner, sprite: ImageBitmap, id: number) => {
+    renderer.hookSpriteCreationCallback((owner: Owner, sprite: UnitSpriteData | ProjectileSpriteData, id: number) => {
       setRenderedObjects(objects => [...objects, { owner, sprite, id }]);
     });
 
@@ -28,15 +28,16 @@ export const RendererObjects = ({ renderer }: RendererObjectsProp) => {
 
   return (
     <>
-      <Text text={renderer.getRendererObjectsList().length.toString()} />
       {renderedObjects.map(x => (
-        <Image
+        <Sprite
           key={x.id}
-          ref={image => renderer.setImageReference(x.owner, image!)}
-          image={x.sprite}
-          width={x.sprite.height}
-          height={x.sprite.height}
-          crop={{ x: 0, y: 0, width: x.sprite.height, height: x.sprite.height }}
+          ref={image => renderer.setSpriteReference(x.owner, image!)}
+          image={x.sprite.sprite}
+          animation={x.sprite.animation}
+          animations={x.sprite.animations}
+          width={x.sprite.sprite.height}
+          height={x.sprite.sprite.height}
+          crop={{ x: 0, y: 0, width: x.sprite.sprite.height, height: x.sprite.sprite.height }}
         />
       ))}
     </>

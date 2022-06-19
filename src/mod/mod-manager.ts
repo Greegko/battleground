@@ -1,3 +1,5 @@
+import { merge } from "lodash-es";
+
 import { Mod, ModConfigFile, ModSpriteFile, ModUnitConfigFile } from "./interface";
 
 const MODS_PATH = "mods";
@@ -10,16 +12,8 @@ export class ModManager {
     const configPromise = this.loadJSON<ModConfigFile>(modBase + "/config.json");
 
     const spritesPromise = this.loadJSON<ModSpriteFile>(modBase + "/sprites.json")
-      .then(sprites =>
-        Promise.all(
-          sprites.map(sprite =>
-            this.fetchPNG(modBase + "/" + sprite.file).then(imageBitmap => ({ id: sprite.id, sprite: imageBitmap })),
-          ),
-        ),
-      )
-      .then(sprites =>
-        sprites.reduce((acc, { id, sprite }) => ((acc[id] = sprite), acc), {} as Record<string, ImageBitmap>),
-      );
+      .then(sprites => sprites.map(sprite => ({ [sprite.id]: filenameToImage(modBase + "/" + sprite.file) })))
+      .then(objects => merge({}, ...objects));
 
     const unitsPromise = this.loadJSON<ModUnitConfigFile[]>(modBase + "/units.json");
 
@@ -37,4 +31,11 @@ export class ModManager {
       .then(x => x.blob())
       .then(x => createImageBitmap(x));
   }
+}
+
+function filenameToImage(file: string): HTMLImageElement {
+  const image = new Image();
+  image.src = file;
+
+  return image;
 }

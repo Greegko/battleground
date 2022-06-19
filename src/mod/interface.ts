@@ -23,5 +23,5 @@ export interface ModUnit extends ModUnitConfigFile {}
 export interface Mod {
   config: ModConfigFile;
   units: ModUnit[];
-  sprites: Record<string, ImageBitmap>;
+  sprites: Record<string, HTMLImageElement>;
 }

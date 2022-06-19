@@ -1,3 +1,4 @@
+import Konva from "konva";
 import { chunk } from "lodash-es";
 
 import { Mod } from "@mod/interface";
@@ -28,20 +29,12 @@ export class Game {
   }
 
   start(): void {
-    const timer = setInterval(() => {
+    const anim = new Konva.Animation(() => {
       this.battle!.tick();
-      if (!this.battle?.getState().isRunning) {
-        clearInterval(timer);
-      }
-    }, 10);
+      this.renderer!.tick();
+    });
 
-    const requestToRender = () =>
-      requestAnimationFrame(() => {
-        this.renderer!.tick();
-        requestToRender();
-      });
-
-    requestToRender();
+    anim.start();
   }
 
   getBattle(): Battle | undefined {
