@@ -8,5 +8,9 @@ export interface Unit {
     dmg: number;
     animationTime: number;
     speed: number;
+    projectile: {
+      sprite_id: string;
+      speed: number;
+    };
   };
 }
