@@ -1,4 +1,4 @@
-import { flatten, forEach, groupBy, head, pullAt, sortBy, without } from "lodash-es";
+import { flatten, forEach, groupBy, head, sortBy, without } from "lodash-es";
 
 import { calculateDistance } from "@utils/calculate-distance";
 import { randomInt } from "@utils/random-int";
@@ -84,7 +84,7 @@ export class Battle {
     this.state = {
       isRunning: true,
       units,
-      aliveUnits: [...units],
+      aliveUnits: units,
       enemyTeamMembers: new Map(),
       teamMembers: new Map(),
       projectiles: [],
@@ -94,15 +94,15 @@ export class Battle {
   }
 
   tick(): void {
-    this.state.projectiles.forEach((projectile, index, projectiles) => {
+    this.state.projectiles.forEach(projectile => {
       projectile.time--;
 
       if (projectile.time === 0) {
         this.doAreaDmg(projectile.team, projectile.area, projectile.dmg, projectile.targetLocation);
-
-        pullAt(projectiles, index);
       }
     });
+
+    this.state.projectiles = this.state.projectiles.filter(x => x.time !== 0);
 
     this.state.aliveUnits.forEach(unit => (unit.cooldowns.attack = Math.max(0, unit.cooldowns.attack - 1)));
 
@@ -166,15 +166,18 @@ export class Battle {
 
     const distance = calculateDistance(unit.cordinate, targetLocation);
 
-    this.state.projectiles.push({
-      area: 10,
-      dmg: attack.dmg,
-      sprite_id: attack.projectile.sprite_id,
-      team: unit.team,
-      time: Math.ceil(distance / attack.projectile.speed),
-      targetLocation,
-      sourceLocation: unit.cordinate,
-    });
+    this.state.projectiles = [
+      ...this.state.projectiles,
+      {
+        area: 10,
+        dmg: attack.dmg,
+        sprite_id: attack.projectile.sprite_id,
+        team: unit.team,
+        time: Math.ceil(distance / attack.projectile.speed),
+        sourceLocation: unit.cordinate,
+        targetLocation,
+      },
+    ];
   }
 
   private meleeAttack(unit: UnitState, enemyUnit: UnitState): void {
