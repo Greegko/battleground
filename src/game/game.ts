@@ -1,5 +1,6 @@
+import { chunk } from "lodash-es";
+
 import { Mod } from "@mod/interface";
-import { chunk } from "@utils/array/chunk";
 import { sample } from "@utils/array/sample";
 
 import { Battle } from "./battle";

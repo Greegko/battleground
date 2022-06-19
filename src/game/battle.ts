@@ -1,4 +1,4 @@
-import { flatten, forEachObjIndexed, groupBy, head, sortBy, without } from "ramda";
+import { flatten, forEach, groupBy, head, sortBy, without } from "lodash-es";
 
 import { calculateAngle } from "@utils/calculate-angle";
 import { calculateDistance } from "@utils/calculate-distance";
@@ -54,10 +54,8 @@ export interface BattleConfig {
   dimension: Dimension;
 }
 
-function closestUnit(unit: UnitState, units: UnitState[]): UnitState {
-  const list = sortBy(x => calculateDistance(unit.cordinate, x.cordinate), units);
-
-  return head(list)!;
+function closestUnit(unit: UnitState, units: UnitState[]): UnitState | undefined {
+  return head(sortBy(units, x => calculateDistance(unit.cordinate, x.cordinate)));
 }
 
 function getUnitsInDistance(location: Cordinate, area: number, units: UnitState[]): UnitState[] {
@@ -197,7 +195,7 @@ export class Battle {
   }
 
   private move(unit: UnitState): void {
-    const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit.team)!);
+    const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit.team)!)!;
 
     const rot = calculateAngle(enemyUnit.cordinate, unit.cordinate);
 
@@ -209,20 +207,20 @@ export class Battle {
   }
 
   private killUnitCacheUpdate(unit: UnitState) {
-    this.state.aliveUnits = without([unit], this.state.aliveUnits);
+    this.state.aliveUnits = without(this.state.aliveUnits, unit);
 
     this.updateTeamCache();
   }
 
   private updateTeamCache() {
     const units = this.state.aliveUnits;
-    const teams = groupBy(x => x.team.toString(), units);
+    const teams = groupBy(units, x => x.team);
 
-    forEachObjIndexed((team, teamKey) => {
+    forEach(teams, (team, teamKey) => {
       const teamId = parseInt(teamKey);
 
       this.state.teamMembers.set(teamId, team);
-      this.state.enemyTeamMembers.set(teamId, without(team, units));
-    }, teams);
+      this.state.enemyTeamMembers.set(teamId, without(units, ...team));
+    });
   }
 }
