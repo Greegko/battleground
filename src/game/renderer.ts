@@ -18,8 +18,15 @@ export interface RendererUnit {
   sprite: ImageBitmap;
 }
 
+export interface RendererProjectile {
+  sourceLocation: Cordinate;
+  targetLocation: Cordinate;
+  sprite: ImageBitmap;
+}
+
 export interface RendererState {
   units: RendererUnit[];
+  projectiles: RendererProjectile[];
 }
 
 export class Renderer {
@@ -31,6 +38,13 @@ export class Renderer {
     const battleState = this.battle.getState();
 
     this.state = {
+      projectiles: battleState.projectiles.map(projectile => {
+        return {
+          sourceLocation: projectile.sourceLocation,
+          targetLocation: projectile.targetLocation,
+          sprite: this.mod.sprites[projectile.sprite_id],
+        };
+      }),
       units: battleState.units.map(x => {
         const unit = x.unit as ModUnit;
 
