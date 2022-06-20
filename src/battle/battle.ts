@@ -1,66 +1,12 @@
-import { flatten, forEach, groupBy, head, sortBy, without } from "lodash-es";
+import { flatten, forEach, groupBy, without } from "lodash-es";
 
 import { calculateDistance } from "@utils/calculate-distance";
 import { randomInt } from "@utils/random-int";
 import { transformCordinate } from "@utils/transform-cordinate";
 
-import { Cordinate, Dimension, Unit } from "./interface";
-
-type Tick = number;
-type TeamID = number;
-
-export enum UnitActionType {
-  None,
-  Attack,
-}
-
-export interface UnitAction {
-  type: UnitActionType;
-  time: Tick;
-}
-
-export interface UnitState {
-  unit: Unit;
-  team: TeamID;
-  cordinate: Cordinate;
-  action: UnitAction;
-  cooldowns: { attack: Tick };
-  currentHp: number;
-}
-
-export interface Projectile {
-  team: TeamID;
-  area: number;
-  sprite_id: string;
-  dmg: number;
-  sourceLocation: Cordinate;
-  targetLocation: Cordinate;
-  time: Tick;
-}
-
-export interface BattleState {
-  isRunning: boolean;
-
-  units: UnitState[];
-  projectiles: Projectile[];
-
-  aliveUnits: UnitState[];
-
-  teamMembers: Map<TeamID, UnitState[]>;
-  enemyTeamMembers: Map<TeamID, UnitState[]>;
-}
-
-export interface BattleConfig {
-  dimension: Dimension;
-}
-
-function closestUnit(unit: UnitState, units: UnitState[]): UnitState | undefined {
-  return head(sortBy(units, x => calculateDistance(unit.cordinate, x.cordinate)));
-}
-
-function getUnitsInDistance(location: Cordinate, area: number, units: UnitState[]): UnitState[] {
-  return units.filter(unit => calculateDistance(unit.cordinate, location) <= area);
-}
+import { Cordinate, Unit } from "../interface";
+import { BattleConfig, BattleState, TeamID, UnitActionType, UnitState } from "./interface";
+import { closestUnit, getUnitsInDistance } from "./utils";
 
 export class Battle {
   private state!: BattleState;

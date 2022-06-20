@@ -1,13 +1,13 @@
-import Konva from "konva";
 import { chunk } from "lodash-es";
 
+import Konva from "konva";
+
+import { Battle } from "@battle/battle";
 import { Mod } from "@mod/interface";
+import { Renderer } from "@renderer/renderer";
 import { sample } from "@utils/array/sample";
 
-import { Battle } from "./battle";
-import { Renderer } from "./renderer";
-
-export class Game {
+export class Battleground {
   private battle: Battle | undefined;
   private renderer: Renderer | undefined;
 

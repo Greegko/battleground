@@ -2,8 +2,8 @@
   "trailingComma": "all",
   "printWidth": 120,
   "arrowParens": "avoid",
-  "importOrder": ["<THIRD_PARTY_MODULES>", "^@(mod|utils|game)", "^\\.\\.?/.*(?<!scss)$", "scss"],
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^konva", "^@(mod|utils|battleground|battle|interface|)", "^\\."],
   "importOrderSeparation": true,
-  "importOrderParserPlugins": ["classProperties", "typescript", "decorators-legacy", "jsx"],
+  "importOrderParserPlugins": ["classProperties", "typescript", "decorators-legacy"],
   "importOrderSortSpecifiers": true
 }

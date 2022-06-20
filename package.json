@@ -4,43 +4,21 @@
   "description": "",
   "scripts": {
     "build": "webpack --config ./config/webpack.config.js",
-    "start": "webpack serve --config ./config/webpack-dev.config.js",
-    "test": "ava"
+    "start": "webpack serve --config ./config/webpack-dev.config.js"
   },
   "dependencies": {
     "konva": "8.3.9",
     "lodash-es": "4.17.21",
-    "node-sass": "7.0.1",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
-    "react-konva": "18.1.1",
-    "ts-loader": "9.3.0",
     "typescript": "4.7.3",
     "webpack": "5.73.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "3.2.0",
     "@types/lodash-es": "4.17.6",
-    "@types/react": "18.0.10",
-    "@types/react-dom": "18.0.5",
-    "@types/react-redux": "7.1.24",
-    "ava": "4.3.0",
-    "copy-webpack-plugin": "^11.0.0",
-    "css-loader": "6.7.1",
+    "copy-webpack-plugin": "11.0.0",
     "prettier": "2.7.0",
-    "sass-loader": "13.0.0",
     "source-map-loader": "3.0.1",
-    "style-loader": "3.3.1",
-    "ts-node": "10.8.1",
     "webpack-cli": "4.10.0",
     "webpack-dev-server": "4.9.2"
-  },
-  "ava": {
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   }
 }

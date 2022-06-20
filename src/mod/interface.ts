@@ -1,4 +1,4 @@
-import { Unit } from "@game/interface";
+import { Unit } from "../interface";
 
 export interface ModUnitConfigFile extends Unit {
   sprite_id: string;

@@ -1,5 +1,4 @@
-import { Cordinate } from "@game/interface";
-
+import { Cordinate } from "../interface";
 import { calculateAngle } from "./calculate-angle";
 
 export function transformCordinate(cordinate: Cordinate, targetCordinate: Cordinate, distance: number): Cordinate {
