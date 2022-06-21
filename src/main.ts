@@ -1,6 +1,7 @@
 import { Layer } from "konva/lib/Layer";
 import { Stage } from "konva/lib/Stage";
 import { Sprite } from "konva/lib/shapes/Sprite";
+import { Text } from "konva/lib/shapes/Text";
 
 import { ModManager } from "@mod/mod-manager";
 
@@ -39,5 +40,11 @@ modManager.loadMod(MOD).then(mod => {
 });
 
 stage.add(layer);
+
+const tick_text = new Text({ fill: "#ffffff", x: 0, y: 0 });
+
+battleground.setTickText(tick_text);
+
+layer.add(tick_text);
 
 layer.draw();

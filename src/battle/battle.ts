@@ -28,6 +28,7 @@ export class Battle {
     const units = flatten(teams);
 
     this.state = {
+      tick: 0,
       isRunning: true,
       units,
       aliveUnits: units,
@@ -40,6 +41,8 @@ export class Battle {
   }
 
   tick(): void {
+    this.state.tick++;
+
     this.state.projectiles.forEach(projectile => {
       projectile.time--;
 

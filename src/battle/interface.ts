@@ -33,6 +33,7 @@ export interface Projectile {
 }
 
 export interface BattleState {
+  tick: number;
   isRunning: boolean;
 
   units: UnitState[];
