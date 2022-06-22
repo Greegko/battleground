@@ -3,8 +3,40 @@ import { Cordinate, Dimension, Unit } from "interface";
 export type Tick = number;
 export type TeamID = number;
 
+export enum BattleEventType {
+  Move,
+  Attack,
+  Damaged,
+  Died,
+  Created,
+}
+
+export enum BattleEventSource {
+  Unit,
+  Projectile,
+}
+
+export interface BattleEventUnit {
+  tick: Tick;
+  type: BattleEventType;
+  source: UnitState;
+  sourceType: BattleEventSource.Unit;
+  target?: UnitState;
+}
+
+export interface BattleEventProjectile {
+  tick: Tick;
+  type: BattleEventType;
+  source: Projectile;
+  sourceType: BattleEventSource.Projectile;
+  target?: UnitState;
+}
+
+export type BattleEvent = BattleEventUnit | BattleEventProjectile;
+
 export enum UnitActionType {
   None,
+  Move,
   Attack,
 }
 

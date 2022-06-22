@@ -5,11 +5,23 @@ import { randomInt } from "@utils/random-int";
 import { transformCordinate } from "@utils/transform-cordinate";
 
 import { Cordinate, Unit } from "../interface";
-import { BattleConfig, BattleState, TeamID, UnitActionType, UnitState } from "./interface";
+import {
+  BattleConfig,
+  BattleEvent,
+  BattleEventSource,
+  BattleEventType,
+  BattleState,
+  TeamID,
+  UnitActionType,
+  UnitState,
+} from "./interface";
 import { closestUnit, getUnitsInDistance } from "./utils";
 
 export class Battle {
-  private state!: BattleState;
+  private state: BattleState;
+  private events: BattleEvent[] = [];
+
+  private lastRequestedTick: number = -1;
 
   constructor(inputTeams: Unit[][], config: BattleConfig) {
     const teams = inputTeams.map((units, teamIndex) => {
@@ -26,6 +38,15 @@ export class Battle {
     });
 
     const units = flatten(teams);
+
+    units.forEach(unit => {
+      this.events.push({
+        tick: 0,
+        type: BattleEventType.Created,
+        source: unit,
+        sourceType: BattleEventSource.Unit,
+      });
+    });
 
     this.state = {
       tick: 0,
@@ -56,12 +77,13 @@ export class Battle {
     this.state.aliveUnits.forEach(unit => (unit.cooldowns.attack = Math.max(0, unit.cooldowns.attack - 1)));
 
     this.state.aliveUnits.forEach(unitState => {
-      const enemyUnit = closestUnit(unitState, this.state.enemyTeamMembers.get(unitState.team)!);
+      const enemyUnit = closestUnit(unitState, this.state.enemyTeamMembers.get(unitState.team));
 
       if (!enemyUnit) return;
 
       switch (unitState.action.type) {
         case UnitActionType.None:
+        case UnitActionType.Move:
           const attackDistance = unitState.unit.attack.distance || 30;
 
           if (calculateDistance(unitState.cordinate, enemyUnit.cordinate) > attackDistance) {
@@ -69,6 +91,13 @@ export class Battle {
           } else {
             if (unitState.cooldowns.attack === 0) {
               unitState.action = { type: UnitActionType.Attack, time: unitState.unit.attack.animationTime };
+
+              this.events.push({
+                tick: this.state.tick,
+                type: BattleEventType.Attack,
+                source: unitState,
+                sourceType: BattleEventSource.Unit,
+              });
             }
           }
 
@@ -92,6 +121,14 @@ export class Battle {
     return this.state;
   }
 
+  getEventsSinceLastTime(): BattleEvent[] {
+    const events = this.events.filter(x => x.tick > this.lastRequestedTick);
+
+    this.lastRequestedTick = this.state.tick;
+
+    return events;
+  }
+
   private checkEndCondition(): void {
     if (
       this.state.aliveUnits.length > 1 &&
@@ -103,7 +140,7 @@ export class Battle {
   }
 
   private doAreaDmg(team: TeamID, area: number, dmg: number, location: Cordinate) {
-    const enemyUnits = this.state.enemyTeamMembers.get(team)!;
+    const enemyUnits = this.state.enemyTeamMembers.get(team);
 
     const reachableEnemies = getUnitsInDistance(location, area, enemyUnits);
 
@@ -115,20 +152,26 @@ export class Battle {
 
     const distance = calculateDistance(unit.cordinate, targetLocation);
 
-    this.state.projectiles = [
-      ...this.state.projectiles,
-      {
-        area: 10,
-        dmg: attack.dmg,
-        sprite_id: attack.projectile.sprite_id,
-        team: unit.team,
-        time: Math.ceil(distance / attack.projectile.speed),
-        sourceLocation: unit.cordinate,
-        targetLocation,
-      },
-    ];
+    const projectile = {
+      area: 10,
+      dmg: attack.dmg,
+      sprite_id: attack.projectile.sprite_id,
+      team: unit.team,
+      time: Math.ceil(distance / attack.projectile.speed),
+      sourceLocation: unit.cordinate,
+      targetLocation,
+    };
+
+    this.state.projectiles = [...this.state.projectiles, projectile];
 
     unit.action = { type: UnitActionType.None, time: 0 };
+
+    this.events.push({
+      tick: this.state.tick,
+      type: BattleEventType.Created,
+      source: projectile,
+      sourceType: BattleEventSource.Projectile,
+    });
   }
 
   private meleeAttack(unit: UnitState, enemyUnit: UnitState): void {
@@ -141,7 +184,21 @@ export class Battle {
   private doDmg(unit: UnitState, dmg: number) {
     unit.currentHp = Math.max(0, unit.currentHp - dmg);
 
+    this.events.push({
+      tick: this.state.tick,
+      type: BattleEventType.Damaged,
+      source: unit,
+      sourceType: BattleEventSource.Unit,
+    });
+
     if (unit.currentHp === 0) {
+      this.events.push({
+        tick: this.state.tick,
+        type: BattleEventType.Died,
+        source: unit,
+        sourceType: BattleEventSource.Unit,
+      });
+
       unit.action = { type: UnitActionType.None, time: 0 };
       this.killUnitCacheUpdate(unit);
       this.checkEndCondition();
@@ -149,9 +206,17 @@ export class Battle {
   }
 
   private move(unit: UnitState): void {
-    const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit.team)!)!;
+    const enemyUnit = closestUnit(unit, this.state.enemyTeamMembers.get(unit.team));
 
     unit.cordinate = transformCordinate(unit.cordinate, enemyUnit.cordinate, unit.unit.speed);
+    unit.action = { type: UnitActionType.Move, time: 0 };
+
+    this.events.push({
+      tick: this.state.tick,
+      type: BattleEventType.Move,
+      source: unit,
+      sourceType: BattleEventSource.Unit,
+    });
   }
 
   private killUnitCacheUpdate(unit: UnitState) {

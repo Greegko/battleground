@@ -1,4 +1,4 @@
-import { flatten, intersection, mapValues, range, without } from "lodash-es";
+import { flatten, mapValues, range } from "lodash-es";
 
 import { Sprite } from "konva/lib/shapes/Sprite";
 
@@ -6,7 +6,7 @@ import { Mod, ModUnit } from "@mod/interface";
 import { calculateAngle } from "@utils/calculate-angle";
 
 import { Battle } from "../battle/battle";
-import { BattleState, Projectile, UnitState } from "../battle/interface";
+import { BattleEventSource, BattleEventType, Projectile, UnitState } from "../battle/interface";
 
 export type Owner = Projectile | UnitState;
 
@@ -32,8 +32,6 @@ export class Renderer {
   private objectsIdCounter = 0;
   private renderedObjects = new Map<Owner, Sprite | null>();
 
-  private prevBattleState: BattleState = { units: [], projectiles: [] } as any as BattleState;
-
   constructor(private battle: Battle, private mod: Mod) {}
 
   private spriteCreationCallback: RenderedSpriteCallback = null!;
@@ -57,47 +55,57 @@ export class Renderer {
   tick(): void {
     if (!this.spriteCreationCallback) return;
 
-    const battleState = this.battle.getState();
+    const battleEvents = this.battle.getEventsSinceLastTime();
 
-    const updatedUnits = getExistingItems(this.prevBattleState.units, battleState.units);
-    updatedUnits.forEach(unitState => {
-      const sprite = this.renderedObjects.get(unitState);
-      if (sprite) {
-        sprite.x(unitState.cordinate[0]);
-        sprite.y(unitState.cordinate[1]);
+    battleEvents.forEach(event => {
+      const unitState = event.source;
+      const sprite = this.renderedObjects.get(event.source);
 
-        if (unitState.currentHp === 0) {
-          sprite.animation("death");
-          sprite.on("frameIndexChange", function () {
-            if (this.frameIndex() === 2) {
-              sprite.stop();
-              sprite.off("frameIndexChange");
-            }
-          });
-        }
+      switch (event.type) {
+        case BattleEventType.Move:
+          if (event.sourceType === BattleEventSource.Unit) {
+            sprite.animation("walk");
+            sprite.start();
+
+            sprite.x(event.source.cordinate[0]);
+            sprite.y(event.source.cordinate[1]);
+          }
+          break;
+        case BattleEventType.Died:
+          if (event.sourceType === BattleEventSource.Unit) {
+            sprite.animation("death");
+            sprite.start();
+            sprite.on("frameIndexChange", function () {
+              if (this.frameIndex() === 2) {
+                sprite.stop();
+                sprite.off("frameIndexChange");
+              }
+            });
+          }
+          break;
+        case BattleEventType.Attack:
+          sprite.animation("attack");
+          break;
+        case BattleEventType.Created:
+          if (event.sourceType === BattleEventSource.Unit) {
+            const unit = event.source.unit as ModUnit;
+
+            this.renderedObjects.set(unitState, null);
+            this.spriteCreationCallback(unitState, this.createUnitSpriteData(unit.sprite_id), this.objectsIdCounter++);
+          }
+
+          if (event.sourceType === BattleEventSource.Projectile) {
+            this.renderedObjects.set(event.source, null);
+
+            this.spriteCreationCallback(
+              event.source,
+              this.createProjectileSpriteData(event.source.sprite_id),
+              this.objectsIdCounter++,
+            );
+          }
+          break;
       }
     });
-
-    const addedUnits = getAddedItems(this.prevBattleState.units, battleState.units);
-    addedUnits.forEach(unitState => {
-      const unit = unitState.unit as ModUnit;
-
-      this.renderedObjects.set(unitState, null);
-      this.spriteCreationCallback(unitState, this.createUnitSpriteData(unit.sprite_id), this.objectsIdCounter++);
-    });
-
-    const addedProjectiles = getAddedItems(this.prevBattleState.projectiles, battleState.projectiles);
-    addedProjectiles.forEach(projectile => {
-      this.renderedObjects.set(projectile, null);
-
-      this.spriteCreationCallback(
-        projectile,
-        this.createProjectileSpriteData(projectile.sprite_id),
-        this.objectsIdCounter++,
-      );
-    });
-
-    this.prevBattleState = { ...battleState };
   }
 
   private setUnitDefaultValues(unitState: UnitState, sprite: Sprite) {
@@ -146,12 +154,4 @@ export class Renderer {
       animations: { idle: [0, 0, sprite.height, sprite.height] },
     };
   }
-}
-
-function getAddedItems<T>(originaObj: T[], newObj: T[]): T[] {
-  return without(newObj, ...originaObj);
-}
-
-function getExistingItems<T>(originaObj: T[], newObj: T[]): T[] {
-  return intersection(originaObj, newObj);
 }
