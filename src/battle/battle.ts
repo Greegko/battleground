@@ -127,6 +127,8 @@ export class Battle {
         targetLocation,
       },
     ];
+
+    unit.action = { type: UnitActionType.None, time: 0 };
   }
 
   private meleeAttack(unit: UnitState, enemyUnit: UnitState): void {

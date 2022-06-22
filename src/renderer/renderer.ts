@@ -118,7 +118,7 @@ export class Renderer {
     sprite.to({
       x: projectile.targetLocation[0],
       y: projectile.targetLocation[1],
-      duration: 1,
+      duration: (1 / 60) * projectile.time,
       onFinish: () => sprite.destroy(),
     });
   }
