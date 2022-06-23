@@ -65,7 +65,6 @@ export class Renderer {
         case BattleEventType.Move:
           if (event.sourceType === BattleEventSource.Unit) {
             sprite.animation("walk");
-            sprite.start();
 
             sprite.x(event.source.cordinate[0]);
             sprite.y(event.source.cordinate[1]);
@@ -74,7 +73,6 @@ export class Renderer {
         case BattleEventType.Died:
           if (event.sourceType === BattleEventSource.Unit) {
             sprite.animation("death");
-            sprite.start();
             sprite.on("frameIndexChange", function () {
               if (this.frameIndex() === 2) {
                 sprite.stop();
