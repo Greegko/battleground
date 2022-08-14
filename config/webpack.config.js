@@ -1,7 +1,5 @@
 const path = require("path");
 
-const CopyPlugin = require("copy-webpack-plugin");
-
 const basePath = path.resolve(__dirname, "../");
 const tsconfig = require(path.resolve(basePath, "tsconfig.webpack.json"));
 
@@ -40,12 +38,10 @@ module.exports = {
           },
         ],
       },
+      {
+        resourceQuery: /url/,
+        type: "asset/resource",
+      },
     ],
   },
-
-  plugins: [
-    new CopyPlugin({
-      patterns: [{ from: "mods", to: "mods" }],
-    }),
-  ],
 };

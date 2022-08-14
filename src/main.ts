@@ -1,50 +1,26 @@
-import { Layer } from "konva/lib/Layer";
-import { Stage } from "konva/lib/Stage";
-import { Sprite } from "konva/lib/shapes/Sprite";
-import { Text } from "konva/lib/shapes/Text";
+import { Debug } from "./debug";
+import { Config } from "./interface";
+import { Loop } from "./loop";
+import { CastleWarsScenario } from "./scenarios/castle-wars";
 
-import { ModManager } from "@mod/mod-manager";
+// import { GroupFightScenario } from "./scenarios/group-fight";
 
-import { Battleground } from "./battleground/battleground";
-import { Owner, ProjectileSpriteData, UnitSpriteData } from "./renderer/renderer";
+const div = document.getElementById("battleground") as HTMLDivElement;
 
-const container = document.getElementById("battleground") as HTMLDivElement;
+const config: Config = {
+  containerNode: div,
+  mapSize: [window.innerWidth, window.innerHeight],
+};
 
-const MOD = "hero_hours";
+// const scenario = new GroupFightScenario();
+const scenario = new CastleWarsScenario();
 
-const modManager = new ModManager();
-const battleground = new Battleground();
-const layer = new Layer();
-const stage = new Stage({
-  container,
-  width: window.innerWidth,
-  height: window.innerHeight,
+scenario.init().then(() => {
+  const loop = new Loop(config, scenario);
+  const debug = new Debug(loop);
+
+  debug.hookGlobalKeys();
+
+  loop.init();
+  loop.start();
 });
-
-modManager.loadMod(MOD).then(mod => {
-  battleground.init(mod);
-  battleground.start();
-
-  const renderer = battleground.getRenderer()!;
-  renderer.hookSpriteCreationCallback((owner: Owner, sprite: UnitSpriteData | ProjectileSpriteData) => {
-    const spriteNode = new Sprite({
-      image: sprite.sprite,
-      animation: sprite.animation,
-      animations: sprite.animations,
-    });
-
-    layer.add(spriteNode);
-
-    renderer.setSpriteReference(owner, spriteNode);
-  });
-});
-
-stage.add(layer);
-
-const tick_text = new Text({ fill: "#ffffff", x: 0, y: 0 });
-
-battleground.setTickText(tick_text);
-
-layer.add(tick_text);
-
-layer.draw();

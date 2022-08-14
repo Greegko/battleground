@@ -6,13 +6,6 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": false,
-    "paths": {
-      "@mod/*": ["mod/*"],
-      "@utils/*": ["utils/*"],
-      "@battleground/*": ["battleground/*"],
-      "@battle/*": ["battle/*"],
-      "@interface/*": ["interface/*"],
-      "@renderer/*": ["renderer/*"]
-    }
+    "paths": {}
   }
 }
