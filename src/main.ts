@@ -1,9 +1,7 @@
+import { CastleWarsMod } from "../mods/castle-wars/castle-wars-mod";
 import { Debug } from "./debug";
 import { Config } from "./interface";
 import { Loop } from "./loop";
-import { CastleWarsScenario } from "./scenarios/castle-wars";
-
-// import { GroupFightScenario } from "./scenarios/group-fight";
 
 const div = document.getElementById("battleground") as HTMLDivElement;
 
@@ -12,11 +10,10 @@ const config: Config = {
   mapSize: [window.innerWidth, window.innerHeight],
 };
 
-// const scenario = new GroupFightScenario();
-const scenario = new CastleWarsScenario();
+const mod = new CastleWarsMod();
 
-scenario.init().then(() => {
-  const loop = new Loop(config, scenario);
+mod.init().then(() => {
+  const loop = new Loop(config, mod);
   const debug = new Debug(loop);
 
   debug.hookGlobalKeys();

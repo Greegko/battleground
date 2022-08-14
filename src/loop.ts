@@ -1,13 +1,12 @@
 import { BattlefieldRenderer } from "./battlefield-renderer/battlefield-renderer";
 import { Battlefield } from "./battlefield/battlefield";
-import { Config } from "./interface/config";
-import { Scenario } from "./interface/scenario";
+import { Config, Mod } from "./interface";
 import { Player } from "./player";
 
 export class Loop {
-  constructor(private config: Config, private scenario: Scenario) {
-    this.renderer = new BattlefieldRenderer(config, scenario.assetManager);
-    this.battleField = new Battlefield(config, scenario.resourceManager);
+  constructor(private config: Config, private mod: Mod) {
+    this.renderer = new BattlefieldRenderer(config, mod.assetManager);
+    this.battleField = new Battlefield(config, mod.resourceManager);
     this.player = new Player();
   }
 
@@ -19,7 +18,7 @@ export class Loop {
   private isRunning: boolean = false;
 
   init() {
-    this.battleField.init(this.scenario.battlefieldInit(this.config));
+    this.battleField.init(this.mod.getInitState(this.config));
 
     this.player.hookKeyboardEvents();
     this.player.hookMoveDirectionChangeCallback(moveDirection =>

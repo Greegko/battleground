@@ -9,7 +9,7 @@ import { subVector } from "../utils/vector";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
 import { BattlefieldRenderer } from "./battlefield-renderer";
 
-type AnimationState = "idle" | "move" | "attack" | "dead";
+type AnimationState = "idle" | "move" | "attack" | "hurt" | "dead";
 
 interface UnitState {
   hp: number;
