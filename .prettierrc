@@ -2,7 +2,7 @@
   "trailingComma": "all",
   "printWidth": 120,
   "arrowParens": "avoid",
-  "importOrder": ["<THIRD_PARTY_MODULES>", "^(pixi.js|gsap)", "^@(mod|utils|battleground|battle|interface|)", "^\\."],
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^(pixi.js|gsap)", "^@battleground", "^\\."],
   "importOrderSeparation": true,
   "importOrderParserPlugins": ["classProperties", "typescript", "decorators-legacy"],
   "importOrderSortSpecifiers": true

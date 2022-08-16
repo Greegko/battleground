@@ -1,6 +1,8 @@
-import { CastleWarsMod } from "../mods/castle-wars/castle-wars-mod";
+import { head, values } from "lodash-es";
+
+import * as mods from "../mods";
 import { Debug } from "./debug";
-import { Config } from "./interface";
+import { Config, Mod } from "./interface";
 import { Loop } from "./loop";
 
 const div = document.getElementById("battleground") as HTMLDivElement;
@@ -10,7 +12,8 @@ const config: Config = {
   mapSize: [window.innerWidth, window.innerHeight],
 };
 
-const mod = new CastleWarsMod();
+const modClass = head(values(mods));
+const mod: Mod = new modClass();
 
 mod.init().then(() => {
   const loop = new Loop(config, mod);

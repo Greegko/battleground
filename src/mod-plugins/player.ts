@@ -1,7 +1,7 @@
 import { pull } from "lodash-es";
 
-import { Vector } from "./utils/vector";
-import { addVector, isZeroVector, subVector } from "./utils/vector";
+import { Vector } from "../utils/vector";
+import { addVector, isZeroVector, subVector } from "../utils/vector";
 
 function getVectorFromKeyCode(code: string): Vector {
   switch (code) {

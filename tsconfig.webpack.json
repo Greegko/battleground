@@ -6,6 +6,11 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": false,
-    "paths": {}
+    "paths": {
+      "@battlefield": ["./public-api"],
+      "@battlefield/interface": ["./interface"],
+      "@battlefield/utils/*": ["./utils/*"],
+      "@battlefield/plugins/*": ["./mod-plugins/*"]
+    }
   }
 }
