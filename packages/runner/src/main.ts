@@ -11,7 +11,11 @@ const config: Config = {
   mapSize: [window.innerWidth, window.innerHeight],
 };
 
-const mod = new CastleWarsMod();
+const selectedMod = new URLSearchParams(window.location.search).get("mod");
+
+const mod = {
+  castle_wars: new CastleWarsMod(),
+}[selectedMod];
 
 mod.init().then(() => {
   const loop = new Loop(config, mod);
