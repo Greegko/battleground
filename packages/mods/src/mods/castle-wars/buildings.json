@@ -1,0 +1,12 @@
+[
+  {
+    "id": "castle",
+    "spriteId": "inn",
+    "maxHp": 1000,
+    "action": {
+      "speed": 100,
+      "effect": [{ "type": "spawn-unit" }]
+    },
+    "size": 100
+  }
+]
