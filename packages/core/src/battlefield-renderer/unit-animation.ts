@@ -4,8 +4,7 @@ import gsap from "gsap";
 import { Graphics, Text } from "pixi.js";
 
 import { Direction, Unit } from "../interface";
-import { Vector } from "../utils/vector";
-import { subVector } from "../utils/vector";
+import { Vector, subVector } from "../utils/vector";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
 import { BattlefieldRenderer } from "./battlefield-renderer";
 

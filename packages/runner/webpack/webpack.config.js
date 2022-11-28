@@ -1,7 +1,6 @@
 const path = require("path");
 
 const basePath = path.resolve(__dirname, "../");
-const tsconfig = require(path.resolve(basePath, "tsconfig.webpack.json"));
 
 module.exports = {
   entry: ["./src/main.ts"],
@@ -17,12 +16,6 @@ module.exports = {
 
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".ts"],
-    alias: Object.keys(tsconfig.compilerOptions.paths).reduce((aliases, aliasName) => {
-      const aliasBase = aliasName.slice(0, -2);
-      const pathBase = tsconfig.compilerOptions.paths[aliasName][0].slice(0, -2);
-
-      return { ...aliases, [aliasBase]: path.resolve(basePath, tsconfig.compilerOptions.baseUrl, pathBase) };
-    }, {}),
   },
 
   module: {
@@ -33,7 +26,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
-              configFile: "tsconfig.webpack.json",
+              configFile: "../tsconfig.base.json",
             },
           },
         ],

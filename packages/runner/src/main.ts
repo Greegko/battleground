@@ -1,8 +1,7 @@
-import { head, values } from "lodash-es";
+import { Config } from "@battleground/core";
+import { CastleWarsMod } from "@battleground/mods";
 
-import * as mods from "../mods";
 import { Debug } from "./debug";
-import { Config, Mod } from "./interface";
 import { Loop } from "./loop";
 
 const div = document.getElementById("battleground") as HTMLDivElement;
@@ -12,8 +11,7 @@ const config: Config = {
   mapSize: [window.innerWidth, window.innerHeight],
 };
 
-const modClass = head(values(mods));
-const mod: Mod = new modClass();
+const mod = new CastleWarsMod();
 
 mod.init().then(() => {
   const loop = new Loop(config, mod);
