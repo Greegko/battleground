@@ -7,7 +7,7 @@ module.exports = Object.assign(webpackConfig, {
   stats: "minimal",
 
   devServer: {
-    watchFiles: ["@battleground/core", "@battleground/mods"],
+    watchFiles: ["@battleground/core"],
   },
 
   watchOptions: {

@@ -4,10 +4,11 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm:start:*\"",
+    "start": "npm run build:core && npm run build:mods && concurrently \"npm:start:*\"",
     "start:core": "npm run build:watch --prefix=./packages/core",
     "start:mods": "npm run build:watch --prefix=./packages/mods",
     "start:runner": "npm run serve --prefix=./packages/runner",
+    "build": "npm run build:core && npm run build:mods && npm run build:runner",
     "build:core": "npm run build --prefix=./packages/core",
     "build:mods": "npm run build --prefix=./packages/mods",
     "build:runner": "npm run build --prefix=./packages/runner"

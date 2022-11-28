@@ -7,15 +7,28 @@ module.exports = {
 
   mode: "production",
 
+  experiments: {
+    outputModule: true,
+  },
+
   output: {
-    filename: "bundle.js",
-    path: path.resolve(basePath, "public"),
+    filename: "mods.js",
+    path: path.resolve(basePath, "dist"),
+    library: {
+      type: "module",
+    },
+    module: true,
   },
 
   devtool: "source-map",
 
   resolve: {
     extensions: [".webpack.js", ".web.js", ".js", ".ts"],
+  },
+
+  externals: {
+    "pixi.js": "pixi.js",
+    "lodash-es": "lodash-es",
   },
 
   module: {
@@ -31,6 +44,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        resourceQuery: /\?url$/,
+        type: "asset/inline",
       },
     ],
   },
