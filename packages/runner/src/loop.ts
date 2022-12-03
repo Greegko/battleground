@@ -1,13 +1,22 @@
-import { Config, Mod, Player } from "@battleground/core";
-import { Battlefield } from "@battleground/core";
-import { BattlefieldRenderer } from "@battleground/core";
+import {
+  AssetManager,
+  Battlefield,
+  BattlefieldRenderer,
+  Config,
+  Mod,
+  Player,
+  SpellSelection,
+} from "@battleground/core";
 
 export class Loop {
   constructor(private config: Config, private mod: Mod) {
     this.renderer = new BattlefieldRenderer(config, mod.assetManager);
     this.battleField = new Battlefield(config, mod.resourceManager);
     this.player = new Player();
+    this.spellSelection = new SpellSelection(this.renderer, this.battleField);
   }
+
+  readonly spellSelection: SpellSelection;
 
   private battleField: Battlefield;
 
@@ -16,8 +25,13 @@ export class Loop {
 
   private isRunning: boolean = false;
 
+  get assetManager(): AssetManager {
+    return this.mod.assetManager;
+  }
+
   init() {
-    this.battleField.init(this.mod.getInitState(this.config));
+    this.battleField.init(this.mod.battlefieldInit(this.config));
+    this.spellSelection.init();
 
     this.player.hookKeyboardEvents();
     this.player.hookMoveDirectionChangeCallback(moveDirection =>
@@ -34,13 +48,6 @@ export class Loop {
     this.loop();
   }
 
-  private loop = () => {
-    if (!this.isRunning) return;
-
-    this.tick();
-    requestAnimationFrame(this.loop);
-  };
-
   tick() {
     this.battleField.tick();
 
@@ -52,4 +59,11 @@ export class Loop {
       this.isRunning = false;
     }
   }
+
+  private loop = () => {
+    if (!this.isRunning) return;
+
+    this.tick();
+    requestAnimationFrame(this.loop);
+  };
 }

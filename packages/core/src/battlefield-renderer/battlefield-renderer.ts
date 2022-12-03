@@ -27,7 +27,7 @@ export class BattlefieldRenderer {
 
     this.registerPixiInspector();
 
-    config.containerNode.appendChild(this.application.view as unknown as HTMLElement);
+    config.containerNode.appendChild(this.application.view);
 
     this.projectileAnimation = new ProjectileAnimation(this);
     this.unitAnimation = new UnitAnimation(this);
@@ -36,6 +36,11 @@ export class BattlefieldRenderer {
   }
 
   private lastState: SceneState = { units: [], projectiles: [] };
+
+  selectUnits(units: Unit[]): void {
+    this.unitAnimation.clearAllUnitsSelection();
+    units.forEach(unit => this.unitAnimation.selectUnit(unit));
+  }
 
   renderScene(data: SceneState) {
     this.application.ticker.update(0);

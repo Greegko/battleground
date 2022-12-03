@@ -1,1 +1,1 @@
-export * from "./castle-wars-mod";
+export * from "./castle-wars";

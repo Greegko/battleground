@@ -1,0 +1,3 @@
+Source: https://assetstore.unity.com/packages/2d/gui/icons/spellbook-megapack-109615
+
+Test icon placeholders, not for production use

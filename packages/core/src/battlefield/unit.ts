@@ -1,7 +1,9 @@
 import { minBy, random } from "lodash-es";
 
 import { Projectile, Unit } from "../interface";
+import { getUnitCentral } from "../utils/unit";
 import {
+  Vector,
   addVector,
   createRandomVector,
   divVector,
@@ -15,6 +17,7 @@ import {
   subVector,
 } from "../utils/vector";
 import { Context } from "./context";
+import { UnitFilter } from "./unit-filter";
 
 export class UnitContext {
   constructor(private context: Context) {}
@@ -142,7 +145,7 @@ export class UnitContext {
   separation(unit: Unit, units: Unit[]) {
     if (!unit.moveSpeed) return;
 
-    const otherUnitsInDistance = this.inTouchWithOthers(unit, units, 0);
+    const otherUnitsInDistance = this.inTouchWithOthers(unit, units);
     let sumSubVector = otherUnitsInDistance.reduce(
       (acc, curr) => addVector(acc, normVector(subVector(unit.location, curr.location))),
       { x: 0, y: 0 },
@@ -154,44 +157,32 @@ export class UnitContext {
     }
   }
 
+  getUnitsInRange(targetLocation: Vector, distance: number): Unit[] {
+    return UnitFilter.filterBySeekConditions(this.units, ["alive", ["in-distance", { distance }]], { targetLocation });
+  }
+
   private seekTarget(unit: Unit, units: Unit[]): Unit {
-    let sourceUnits = units;
+    let filteredUnits = UnitFilter.filterBySeekConditions(units, unit.action.seekTargetCondition, {
+      team: unit.team,
+    });
 
-    if (unit.action.seekTargetCondition.includes("enemy-team")) {
-      sourceUnits = sourceUnits.filter(x => x.team !== unit.team);
-    }
-
-    if (unit.action.seekTargetCondition.includes("same-team")) {
-      sourceUnits = sourceUnits.filter(x => x.team === unit.team);
-    }
-
-    if (unit.action.seekTargetCondition.includes("alive")) {
-      sourceUnits = sourceUnits.filter(x => x.hp > 0);
-    }
-
-    if (unit.action.seekTargetCondition.includes("dead")) {
-      sourceUnits = sourceUnits.filter(x => x.hp <= 0);
-    }
-
-    if (unit.action.seekTargetCondition.includes("damaged")) {
-      sourceUnits = sourceUnits.filter(x => x.hp < x.maxHp);
-    }
-
-    return minBy(sourceUnits, enemy => getVectorDistance(unit.location, enemy.location));
+    return minBy(filteredUnits, enemy => getVectorDistance(unit.location, enemy.location));
   }
 
   private shootProjectile(unit: Unit, target: Unit) {
     const action = unit.action;
-    const time = Math.ceil(getVectorDistance(unit.location, target.location) / action.projectileSpeed);
+    const targetLocation = getUnitCentral(target);
+    const sourceLocation = getUnitCentral(unit);
+    const time = Math.ceil(getVectorDistance(sourceLocation, targetLocation) / action.projectileSpeed);
 
     const projectile: Projectile = {
       area: 1,
       effect: action.hitEffect,
       projectileId: action.projectileId,
       source: unit,
-      sourceLocation: addVector(unit.location, { x: unit.size / 2, y: unit.size / 2 }),
+      sourceLocation,
       speed: action.projectileSpeed,
-      targetLocation: addVector(target.location, { x: target.size / 2, y: target.size / 2 }),
+      targetLocation,
       time,
       timeState: time,
     };
@@ -199,11 +190,11 @@ export class UnitContext {
     this.context.map.addProjectile(projectile);
   }
 
-  private inTouchWithOthers(unit: Unit, targets: Unit[], threshold: number): Unit[] {
+  private inTouchWithOthers(unit: Unit, targets: Unit[]): Unit[] {
     return targets.filter(
       target =>
         target !== unit &&
-        getVectorDistance(unit.location, target.location) - Math.max(target.size, unit.size) < threshold,
+        getVectorDistance(getUnitCentral(unit), getUnitCentral(target)) < target.size / 2 + unit.size / 2,
     );
   }
 }

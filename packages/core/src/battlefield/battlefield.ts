@@ -6,6 +6,7 @@ import { Context } from "./context";
 import { EffectsContext } from "./effects";
 import { ManuallyControlledUnit } from "./manually-controlled-unit";
 import { MapContext } from "./map";
+import { SpellsContext } from "./spells";
 import { UnitContext } from "./unit";
 
 interface BattlefieldState {
@@ -15,6 +16,11 @@ interface BattlefieldState {
 
 export interface BattlefieldInit {
   units: Unit[];
+}
+
+export interface UnitSelection {
+  point: Vector;
+  range: number;
 }
 
 export class Battlefield {
@@ -29,6 +35,7 @@ export class Battlefield {
       map: new MapContext(this.context),
       manuallyControlledUnit: new ManuallyControlledUnit(),
       effect: new EffectsContext(this.context),
+      spells: new SpellsContext(this.context),
       resourceManager,
     } as Context);
   }
@@ -89,5 +96,9 @@ export class Battlefield {
     const actionableUnits = this.context.unit.units.filter(x => x.hp > 0);
 
     return actionableUnits.every((x, _index, array) => x.team === array[0].team);
+  }
+
+  get spellsContext(): SpellsContext {
+    return this.context.spells;
   }
 }

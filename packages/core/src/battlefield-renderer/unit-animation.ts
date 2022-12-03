@@ -1,21 +1,29 @@
 import { merge } from "lodash-es";
 
+import { GlowFilter } from "@pixi/filter-glow";
 import gsap from "gsap";
 import { Graphics, Text } from "pixi.js";
 
 import { Direction, Unit } from "../interface";
-import { Vector, subVector } from "../utils/vector";
+import { Vector } from "../utils/vector";
+import { subVector } from "../utils/vector";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
 import { BattlefieldRenderer } from "./battlefield-renderer";
 
-type AnimationState = "idle" | "move" | "attack" | "hurt" | "dead";
+type AnimationState = "idle" | "move" | "attack" | "dead";
 
-interface UnitState {
+interface UnitTransformedState {
   hp: number;
   location: Vector;
   facing: Direction.Left | Direction.Right | undefined;
   animation: AnimationState;
 }
+
+interface UnitRenderState {
+  selected: boolean;
+}
+
+type UnitState = UnitTransformedState & UnitRenderState;
 
 export class UnitAnimation {
   constructor(private renderer: BattlefieldRenderer) {}
@@ -36,6 +44,7 @@ export class UnitAnimation {
         animation: "idle",
         hp: unit.hp,
         location: unit.location,
+        selected: false,
       });
     }
 
@@ -100,6 +109,27 @@ export class UnitAnimation {
     this.unitState.set(unit, merge(oldState, newState));
   }
 
+  clearAllUnitsSelection() {
+    [...this.unitState.entries()].forEach(([unit]) => this.unselectUnit(unit));
+  }
+
+  selectUnit(unit: Unit) {
+    const node = this.unitNodes.get(unit);
+    const oldState = this.unitState.get(unit);
+
+    node.filters = [new GlowFilter()];
+
+    this.unitState.set(unit, merge(oldState, { selected: true }));
+  }
+
+  unselectUnit(unit: Unit) {
+    const node = this.unitNodes.get(unit);
+    const oldState = this.unitState.get(unit);
+    node.filters = [];
+
+    this.unitState.set(unit, merge(oldState, { selected: false }));
+  }
+
   private createNumberTextAnimation(location: Vector, val: number, color: string) {
     const text = new Text(val, { fontSize: 14, fill: color });
     text.x = location.x + 12;
@@ -116,12 +146,13 @@ export class UnitAnimation {
   }
 
   private createUnitNode(unit: Unit) {
-    const unitSprite = this.renderer.assetManager.getAsset(unit.spriteId);
+    const unitSprite = this.renderer.assetManager.getSprite(unit.spriteId);
 
     const unitNode = new AnimatedSpriteUnit(unitSprite.texture, unitSprite.animations, "idle");
+
     unitNode.animationSpeed = 0.075;
-    unitNode.x = unit.location.x;
-    unitNode.y = unit.location.y;
+
+    unitNode.position.copyFrom(unit.location);
 
     const baseRatio = unit.size / unitNode.height;
     unitNode.scale.x = baseRatio;
@@ -175,7 +206,7 @@ export class UnitAnimation {
     healthbarNode.y = unit.location.y + unit.size + 6;
   }
 
-  private transformUnitToState(unit: Unit): UnitState {
+  private transformUnitToState(unit: Unit): UnitTransformedState {
     const animation = (() => {
       if (unit.hp === 0) return "dead";
       if (unit.actionState && unit.actionState.speed > 0 && !unit.actionState.cooldown && unit.action.animation)

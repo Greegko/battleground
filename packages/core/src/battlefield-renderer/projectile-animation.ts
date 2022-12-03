@@ -1,7 +1,7 @@
 import { Sprite } from "pixi.js";
 
 import { Projectile } from "../interface";
-import { getVectorAngle, multVector, normVector, subVector } from "../utils/vector";
+import { multVector, normVector, subVector } from "../utils/vector";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
 import { BattlefieldRenderer } from "./battlefield-renderer";
 
@@ -32,12 +32,11 @@ export class ProjectileAnimation {
   }
 
   private createProjectileNode(projectile: Projectile): Sprite {
-    const projectileConfig = this.renderer.assetManager.getAsset(projectile.projectileId);
+    const projectileConfig = this.renderer.assetManager.getSprite(projectile.projectileId);
     const projectileNode = new AnimatedSpriteUnit(projectileConfig.texture, projectileConfig.animations, "idle");
 
-    projectileNode.x = projectile.sourceLocation.x;
-    projectileNode.y = projectile.sourceLocation.y;
-    projectileNode.rotation = getVectorAngle(projectile.sourceLocation, projectile.targetLocation);
+    projectileNode.position.copyFrom(projectile.sourceLocation);
+    projectileNode.anchor.set(0.5, 0);
 
     this.projectileNodes.set(projectile, projectileNode);
 

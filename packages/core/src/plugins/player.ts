@@ -1,6 +1,7 @@
-import { initial, pull } from "lodash-es";
+import { pull } from "lodash-es";
 
-import { Vector, addVector, isZeroVector, subVector } from "../utils/vector";
+import { Vector } from "../utils/vector";
+import { addVector, isZeroVector, subVector } from "../utils/vector";
 
 function getVectorFromKeyCode(code: string): Vector {
   switch (code) {
@@ -19,8 +20,6 @@ type MoveDirectionCallback = (direction: Vector) => void;
 
 export class Player {
   private moveDirectionChange: MoveDirectionCallback = (direction: Vector) => {};
-
-  init() {}
 
   hookMoveDirectionChangeCallback(cb: MoveDirectionCallback) {
     this.moveDirectionChange = cb;

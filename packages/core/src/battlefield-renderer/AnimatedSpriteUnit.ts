@@ -6,6 +6,7 @@ type States = Record<State, number | [number, number]>;
 export class AnimatedSpriteUnit extends AnimatedSprite {
   private states: States;
   private state: State;
+
   constructor(textures: Texture[] | FrameObject[], states: States, state: State, autoUpdate = true) {
     super(textures, autoUpdate);
     this.states = states;

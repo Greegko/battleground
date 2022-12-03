@@ -7,5 +7,6 @@ export interface SpriteConfig {
 
 export interface AssetManager {
   init(): Promise<any>;
-  getAsset(assetId: string): SpriteConfig;
+  getSprite(assetId: string): SpriteConfig;
+  getAsset(assetId: string): string;
 }

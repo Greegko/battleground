@@ -1,6 +1,13 @@
 import { Vector } from "../utils/vector";
 
-export type SeekConditions = "enemy-team" | "alive" | "dead" | "same-team" | "damaged";
+export type SeekCondition =
+  | "enemy-team"
+  | "alive"
+  | "dead"
+  | "same-team"
+  | "damaged"
+  | ["in-distance", { distance: number }];
+
 export type EffectType = "revive" | "heal" | "dmg" | "spawn-unit";
 export type Effect = { type: EffectType; args?: any };
 export type Animation = "attack";
@@ -12,7 +19,7 @@ export interface ActionState {
 }
 
 export interface Action {
-  seekTargetCondition: SeekConditions[];
+  seekTargetCondition: SeekCondition[];
   animation: Animation;
   speed: number;
   cooldown: number;

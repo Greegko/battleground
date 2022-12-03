@@ -3,7 +3,7 @@ const path = require("path");
 const basePath = path.resolve(__dirname, "../");
 
 module.exports = {
-  entry: ["./src/main.ts"],
+  entry: ["./src/main.tsx"],
 
   mode: "production",
 
@@ -15,13 +15,13 @@ module.exports = {
   devtool: "source-map",
 
   resolve: {
-    extensions: [".webpack.js", ".web.js", ".js", ".ts"],
+    extensions: [".webpack.js", ".web.js", ".js", ".ts", ".tsx"],
   },
 
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {
@@ -31,6 +31,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.scss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
     ],
   },

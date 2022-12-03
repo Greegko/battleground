@@ -1,6 +1,6 @@
 import { Projectile } from "../interface";
-import { getVectorDistance } from "../utils/vector";
 import { Context } from "./context";
+import { UnitFilter } from "./unit-filter";
 
 export class MapContext {
   constructor(private context: Context) {}
@@ -12,10 +12,11 @@ export class MapContext {
   }
 
   landProjectile(projectile: Projectile) {
-    const hitUnits = this.context.unit.units
-      .filter(unit => projectile.source.team !== unit.team)
-      .filter(unit => unit.hp > 0)
-      .filter(unit => getVectorDistance(projectile.targetLocation, unit.location) <= unit.size + projectile.area);
+    const hitUnits = UnitFilter.filterBySeekConditions(
+      this.context.unit.units,
+      ["enemy-team", "alive", ["in-distance", { distance: projectile.area }]],
+      { team: projectile.source.team, targetLocation: projectile.targetLocation },
+    );
 
     hitUnits.forEach(unit => this.context.effect.applyEffect(projectile.effect, unit));
   }

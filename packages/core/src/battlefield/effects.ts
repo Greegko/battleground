@@ -6,7 +6,7 @@ import { Context } from "./context";
 export class EffectsContext {
   constructor(private context: Context) {}
 
-  applyEffect(effects: Effect[], targetUnit?: Unit) {
+  applyEffect(effects: Effect[], targetUnit: Unit) {
     const dmgEffect = find(effects, { type: "dmg" });
     if (dmgEffect) {
       this.dmg(targetUnit, dmgEffect.args);
