@@ -1,4 +1,4 @@
-import { Application, Loader, Sprite, Spritesheet } from "pixi.js";
+import { Application, Assets, Sprite, Spritesheet } from "pixi.js";
 
 import { AssetManager, SpriteConfig } from "@battleground/core";
 
@@ -17,18 +17,14 @@ export class HHAssetManager implements AssetManager {
   private assetRenderApplication: Application = new Application();
 
   async init() {
-    Loader.shared.add(sprite_png_url);
-    Loader.shared.add(spells_png_url);
+    Assets.add("sprite", sprite_png_url);
+    Assets.add("spells", spells_png_url);
 
-    return new Promise(resolve => Loader.shared.load(resolve))
-      .then(() => {
-        this.spriteSheet = new Spritesheet(Loader.shared.resources[sprite_png_url].texture, sprite_json);
-        return this.spriteSheet.parse();
-      })
-      .then(() => {
-        this.spellSheet = new Spritesheet(Loader.shared.resources[spells_png_url].texture, spell_json);
-        return this.spellSheet.parse();
-      });
+    return Assets.load(["sprite", "spells"]).then(({ sprite, spells }) => {
+      this.spriteSheet = new Spritesheet(sprite, sprite_json);
+      this.spellSheet = new Spritesheet(spells, spell_json);
+      return Promise.all([this.spriteSheet.parse(), this.spellSheet.parse()]);
+    });
   }
 
   getSprite(assetId: string): SpriteConfig {
@@ -49,13 +45,13 @@ export class HHAssetManager implements AssetManager {
     };
   }
 
-  getAsset(assetId: string): string {
+  getAsset(assetId: string): Promise<string> {
     const spellSheetTexture = this.spellSheet.textures[assetId + ".png"];
 
     if (!spellSheetTexture) throw Error(`Texture doesn't exists for ${assetId}!`);
 
     const sprite = new Sprite(spellSheetTexture);
-    const base64 = this.assetRenderApplication.renderer.plugins.extract.base64(sprite);
+    const base64 = (this.assetRenderApplication.renderer as any).extract.base64(sprite);
 
     sprite.destroy();
 

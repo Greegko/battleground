@@ -13,6 +13,10 @@ export class AnimatedSpriteUnit extends AnimatedSprite {
     this.state = state;
   }
 
+  override set currentFrame(newValue: number) {
+    super.currentFrame = newValue;
+  }
+
   override get currentFrame(): number {
     if (this.states === undefined) return 0;
 

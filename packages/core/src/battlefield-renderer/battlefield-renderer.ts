@@ -27,7 +27,7 @@ export class BattlefieldRenderer {
 
     this.registerPixiInspector();
 
-    config.containerNode.appendChild(this.application.view);
+    config.containerNode.appendChild(this.application.view as unknown as HTMLElement);
 
     this.projectileAnimation = new ProjectileAnimation(this);
     this.unitAnimation = new UnitAnimation(this);

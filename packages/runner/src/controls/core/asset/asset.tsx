@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { LoopContext } from "../contexts";
 
@@ -9,5 +9,13 @@ interface AssetProps {
 export const Asset = ({ id }: AssetProps) => {
   const loop = useContext(LoopContext);
 
-  return <img src={loop.assetManager.getAsset(id)} />;
+  const [src, setSrc] = useState(undefined);
+
+  useEffect(() => {
+    loop.assetManager.getAsset(id).then((base64) => setSrc(base64));
+  }, [id]);
+
+  if(!src) return null;
+
+  return <img src={src} />;
 };
