@@ -1,7 +1,7 @@
 [
   {
     "id": "skeleton",
-    "spriteId": "skeleton",
+    "spriteId": "sprites/skeleton/skeleton",
     "moveSpeed": 2,
     "maxHp": 100,
     "action": {
@@ -17,13 +17,13 @@
   },
   {
     "id": "archer",
-    "spriteId": "archer",
+    "spriteId": "sprites/archer/archer",
     "moveSpeed": 2,
     "maxHp": 100,
     "action": {
       "animation": "attack",
       "seekTargetCondition": ["alive", "enemy-team"],
-      "projectileId": "projectile",
+      "projectileId": "sprites/projectiles/projectile",
       "distance": 400,
       "cooldown": 120,
       "speed": 30,
@@ -34,7 +34,7 @@
   },
   {
     "id": "necromancer",
-    "spriteId": "inquisitor",
+    "spriteId": "sprites/inquisitor/inquisitor",
     "moveSpeed": 2,
     "maxHp": 100,
     "action": {
@@ -49,7 +49,7 @@
   },
   {
     "id": "priest",
-    "spriteId": "inquisitor",
+    "spriteId": "sprites/inquisitor/inquisitor",
     "moveSpeed": 2,
     "maxHp": 100,
     "action": {

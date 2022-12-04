@@ -44,28 +44,28 @@ export const SpellBook = () => {
       {open && (
         <>
           <div className="spell" onClick={() => startSpellCasting("fireball")}>
-            <Asset id="fireball" />
+            <Asset id="icons/spells/fireball" />
           </div>
           <div className="spell" onClick={() => startSpellCasting("heal")}>
-            <Asset id="hearth" />
+            <Asset id="icons/spells/hearth" />
           </div>
           <div className="spell inactive">
-            <Asset id="shield_break" />
+            <Asset id="icons/spells/shield_break" />
           </div>
           <div className="spell inactive">
-            <Asset id="lightning" />
+            <Asset id="icons/spells/lightning" />
           </div>
           <div className="spell inactive">
-            <Asset id="arrows" />
+            <Asset id="icons/spells/archer" />
           </div>
           <div className="spell inactive">
-            <Asset id="ice_berg" />
+            <Asset id="icons/spells/ice_berg" />
           </div>
         </>
       )}
 
       <div className="book" onClick={() => setOpen(!open)}>
-        <Asset id="spell_book" />
+        <Asset id="icons/spell_book" />
       </div>
     </span>
   );

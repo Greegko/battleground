@@ -1,7 +1,7 @@
 [
   {
     "id": "castle",
-    "spriteId": "inn",
+    "spriteId": "buildings/inn",
     "maxHp": 1000,
     "action": {
       "speed": 100,

@@ -1,0 +1,726 @@
+{
+  "frames": {
+    "buildings/inn.png": {
+      "frame": { "x": 1, "y": 1, "w": 124, "h": 115 },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 124, "h": 115 },
+      "sourceSize": { "w": 124, "h": 115 }
+    },
+    "icons/spell_book.png": {
+      "frame": { "x": 186, "y": 1, "w": 28, "h": 29 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 28, "h": 29 },
+      "sourceSize": { "w": 28, "h": 29 }
+    },
+    "icons/spells/archer.png": {
+      "frame": { "x": 118, "y": 1, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 }
+    },
+    "icons/spells/fireball.png": {
+      "frame": { "x": 118, "y": 35, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 }
+    },
+    "icons/spells/hearth.png": {
+      "frame": { "x": 118, "y": 69, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 }
+    },
+    "icons/spells/ice_berg.png": {
+      "frame": { "x": 152, "y": 1, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 }
+    },
+    "icons/spells/lightning.png": {
+      "frame": { "x": 152, "y": 35, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 }
+    },
+    "icons/spells/shield_break.png": {
+      "frame": { "x": 152, "y": 69, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 }
+    },
+    "sprites/archer/archer-0.png": {
+      "frame": { "x": 290, "y": 31, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-1.png": {
+      "frame": { "x": 297, "y": 16, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-2.png": {
+      "frame": { "x": 280, "y": 112, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-3.png": {
+      "frame": { "x": 296, "y": 77, "w": 12, "h": 12 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 4, "w": 12, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-4.png": {
+      "frame": { "x": 290, "y": 31, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-5.png": {
+      "frame": { "x": 282, "y": 80, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 2, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-6.png": {
+      "frame": { "x": 290, "y": 31, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-7.png": {
+      "frame": { "x": 292, "y": 62, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 2, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-8.png": {
+      "frame": { "x": 303, "y": 46, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-9.png": {
+      "frame": { "x": 308, "y": 91, "w": 11, "h": 12 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 4, "w": 11, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-10.png": {
+      "frame": { "x": 311, "y": 16, "w": 12, "h": 12 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 4, "w": 12, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-11.png": {
+      "frame": { "x": 300, "y": 1, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-12.png": {
+      "frame": { "x": 297, "y": 16, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-13.png": {
+      "frame": { "x": 306, "y": 61, "w": 11, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 11, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-14.png": {
+      "frame": { "x": 307, "y": 109, "w": 11, "h": 12 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 4, "w": 11, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-15.png": {
+      "frame": { "x": 297, "y": 16, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-16.png": {
+      "frame": { "x": 280, "y": 97, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 4, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-17.png": {
+      "frame": { "x": 294, "y": 95, "w": 12, "h": 12 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 4, "y": 4, "w": 12, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-18.png": {
+      "frame": { "x": 234, "y": 115, "w": 13, "h": 9 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 7, "w": 13, "h": 9 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/archer/archer-19.png": {
+      "frame": { "x": 234, "y": 22, "w": 13, "h": 7 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 9, "w": 13, "h": 7 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-0.png": {
+      "frame": { "x": 270, "y": 1, "w": 13, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 13, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-1.png": {
+      "frame": { "x": 275, "y": 31, "w": 13, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 3, "w": 13, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-2.png": {
+      "frame": { "x": 270, "y": 1, "w": 13, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 13, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-3.png": {
+      "frame": { "x": 249, "y": 109, "w": 14, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 14, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-4.png": {
+      "frame": { "x": 278, "y": 64, "w": 12, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 12, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-5.png": {
+      "frame": { "x": 267, "y": 82, "w": 13, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 3, "w": 13, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-6.png": {
+      "frame": { "x": 278, "y": 64, "w": 12, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 12, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-7.png": {
+      "frame": { "x": 267, "y": 82, "w": 13, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 3, "w": 13, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-8.png": {
+      "frame": { "x": 289, "y": 46, "w": 12, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 12, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-9.png": {
+      "frame": { "x": 304, "y": 31, "w": 12, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 3, "w": 12, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-10.png": {
+      "frame": { "x": 263, "y": 66, "w": 13, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 13, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-11.png": {
+      "frame": { "x": 285, "y": 1, "w": 13, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 3, "w": 13, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-12.png": {
+      "frame": { "x": 281, "y": 17, "w": 12, "h": 14 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 2, "w": 12, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-13.png": {
+      "frame": { "x": 294, "y": 109, "w": 11, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 3, "w": 11, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-14.png": {
+      "frame": { "x": 220, "y": 115, "w": 10, "h": 12 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 4, "w": 10, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-15.png": {
+      "frame": { "x": 294, "y": 109, "w": 11, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 3, "w": 11, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-16.png": {
+      "frame": { "x": 294, "y": 109, "w": 11, "h": 13 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 3, "w": 11, "h": 13 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-17.png": {
+      "frame": { "x": 220, "y": 115, "w": 10, "h": 12 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 4, "w": 10, "h": 12 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-18.png": {
+      "frame": { "x": 314, "y": 1, "w": 10, "h": 10 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 6, "w": 10, "h": 10 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/inquisitor/inquisitor-19.png": {
+      "frame": { "x": 249, "y": 22, "w": 12, "h": 7 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 9, "w": 12, "h": 7 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/projectiles/projectile.png": {
+      "frame": { "x": 310, "y": 76, "w": 10, "h": 10 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 3, "w": 10, "h": 10 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-0.png": {
+      "frame": { "x": 237, "y": 91, "w": 13, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 13, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-1.png": {
+      "frame": { "x": 248, "y": 72, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-2.png": {
+      "frame": { "x": 259, "y": 49, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-3.png": {
+      "frame": { "x": 248, "y": 72, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-4.png": {
+      "frame": { "x": 237, "y": 91, "w": 13, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 13, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-5.png": {
+      "frame": { "x": 243, "y": 54, "w": 14, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 14, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-6.png": {
+      "frame": { "x": 237, "y": 91, "w": 13, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 13, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-7.png": {
+      "frame": { "x": 244, "y": 31, "w": 14, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 14, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-8.png": {
+      "frame": { "x": 237, "y": 91, "w": 13, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 13, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-9.png": {
+      "frame": { "x": 260, "y": 31, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-10.png": {
+      "frame": { "x": 274, "y": 48, "w": 13, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 3, "y": 2, "w": 13, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-11.png": {
+      "frame": { "x": 252, "y": 89, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-12.png": {
+      "frame": { "x": 237, "y": 91, "w": 13, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 13, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-13.png": {
+      "frame": { "x": 252, "y": 89, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-14.png": {
+      "frame": { "x": 254, "y": 1, "w": 15, "h": 14 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 2, "w": 15, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-15.png": {
+      "frame": { "x": 265, "y": 106, "w": 13, "h": 15 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 1, "w": 13, "h": 15 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-16.png": {
+      "frame": { "x": 237, "y": 91, "w": 13, "h": 16 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 2, "y": 0, "w": 13, "h": 16 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-17.png": {
+      "frame": { "x": 254, "y": 1, "w": 15, "h": 14 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 1, "y": 2, "w": 15, "h": 14 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-18.png": {
+      "frame": { "x": 263, "y": 18, "w": 16, "h": 11 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 5, "w": 16, "h": 11 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/skeleton/skeleton-19.png": {
+      "frame": { "x": 216, "y": 22, "w": 16, "h": 8 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 8, "w": 16, "h": 8 },
+      "sourceSize": { "w": 16, "h": 16 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-0.png": {
+      "frame": { "x": 118, "y": 103, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-1.png": {
+      "frame": { "x": 206, "y": 32, "w": 19, "h": 18 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 2, "w": 19, "h": 18 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-2.png": {
+      "frame": { "x": 206, "y": 53, "w": 19, "h": 18 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 2, "w": 19, "h": 18 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-3.png": {
+      "frame": { "x": 186, "y": 32, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-4.png": {
+      "frame": { "x": 118, "y": 103, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-5.png": {
+      "frame": { "x": 186, "y": 53, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-6.png": {
+      "frame": { "x": 186, "y": 74, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-7.png": {
+      "frame": { "x": 198, "y": 95, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-8.png": {
+      "frame": { "x": 118, "y": 103, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-9.png": {
+      "frame": { "x": 226, "y": 32, "w": 20, "h": 16 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 4, "w": 20, "h": 16 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-10.png": {
+      "frame": { "x": 226, "y": 54, "w": 19, "h": 15 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 5, "w": 19, "h": 15 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-11.png": {
+      "frame": { "x": 236, "y": 1, "w": 19, "h": 16 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 4, "w": 19, "h": 16 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-12.png": {
+      "frame": { "x": 138, "y": 103, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-13.png": {
+      "frame": { "x": 206, "y": 74, "w": 18, "h": 18 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 2, "w": 18, "h": 18 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-14.png": {
+      "frame": { "x": 158, "y": 103, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-15.png": {
+      "frame": { "x": 216, "y": 1, "w": 19, "h": 18 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 2, "w": 19, "h": 18 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-16.png": {
+      "frame": { "x": 178, "y": 103, "w": 18, "h": 19 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 1, "w": 18, "h": 19 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-17.png": {
+      "frame": { "x": 218, "y": 94, "w": 19, "h": 17 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 3, "w": 19, "h": 17 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-18.png": {
+      "frame": { "x": 226, "y": 75, "w": 20, "h": 14 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 6, "w": 20, "h": 14 },
+      "sourceSize": { "w": 20, "h": 20 }
+    },
+    "sprites/steam_dragon/Steam Dragon spritesheet-19.png": {
+      "frame": { "x": 198, "y": 116, "w": 20, "h": 9 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 0, "y": 11, "w": 20, "h": 9 },
+      "sourceSize": { "w": 20, "h": 20 }
+    }
+  },
+  "animations": {
+    "sprites/archer/archer": [
+      "sprites/archer/archer-0.png",
+      "sprites/archer/archer-1.png",
+      "sprites/archer/archer-2.png",
+      "sprites/archer/archer-3.png",
+      "sprites/archer/archer-4.png",
+      "sprites/archer/archer-5.png",
+      "sprites/archer/archer-6.png",
+      "sprites/archer/archer-7.png",
+      "sprites/archer/archer-8.png",
+      "sprites/archer/archer-9.png",
+      "sprites/archer/archer-10.png",
+      "sprites/archer/archer-11.png",
+      "sprites/archer/archer-12.png",
+      "sprites/archer/archer-13.png",
+      "sprites/archer/archer-14.png",
+      "sprites/archer/archer-15.png",
+      "sprites/archer/archer-16.png",
+      "sprites/archer/archer-17.png",
+      "sprites/archer/archer-18.png",
+      "sprites/archer/archer-19.png"
+    ],
+    "sprites/inquisitor/inquisitor": [
+      "sprites/inquisitor/inquisitor-0.png",
+      "sprites/inquisitor/inquisitor-1.png",
+      "sprites/inquisitor/inquisitor-2.png",
+      "sprites/inquisitor/inquisitor-3.png",
+      "sprites/inquisitor/inquisitor-4.png",
+      "sprites/inquisitor/inquisitor-5.png",
+      "sprites/inquisitor/inquisitor-6.png",
+      "sprites/inquisitor/inquisitor-7.png",
+      "sprites/inquisitor/inquisitor-8.png",
+      "sprites/inquisitor/inquisitor-9.png",
+      "sprites/inquisitor/inquisitor-10.png",
+      "sprites/inquisitor/inquisitor-11.png",
+      "sprites/inquisitor/inquisitor-12.png",
+      "sprites/inquisitor/inquisitor-13.png",
+      "sprites/inquisitor/inquisitor-14.png",
+      "sprites/inquisitor/inquisitor-15.png",
+      "sprites/inquisitor/inquisitor-16.png",
+      "sprites/inquisitor/inquisitor-17.png",
+      "sprites/inquisitor/inquisitor-18.png",
+      "sprites/inquisitor/inquisitor-19.png"
+    ],
+    "sprites/skeleton/skeleton": [
+      "sprites/skeleton/skeleton-0.png",
+      "sprites/skeleton/skeleton-1.png",
+      "sprites/skeleton/skeleton-2.png",
+      "sprites/skeleton/skeleton-3.png",
+      "sprites/skeleton/skeleton-4.png",
+      "sprites/skeleton/skeleton-5.png",
+      "sprites/skeleton/skeleton-6.png",
+      "sprites/skeleton/skeleton-7.png",
+      "sprites/skeleton/skeleton-8.png",
+      "sprites/skeleton/skeleton-9.png",
+      "sprites/skeleton/skeleton-10.png",
+      "sprites/skeleton/skeleton-11.png",
+      "sprites/skeleton/skeleton-12.png",
+      "sprites/skeleton/skeleton-13.png",
+      "sprites/skeleton/skeleton-14.png",
+      "sprites/skeleton/skeleton-15.png",
+      "sprites/skeleton/skeleton-16.png",
+      "sprites/skeleton/skeleton-17.png",
+      "sprites/skeleton/skeleton-18.png",
+      "sprites/skeleton/skeleton-19.png"
+    ],
+    "sprites/steam_dragon/Steam Dragon spritesheet": [
+      "sprites/steam_dragon/Steam Dragon spritesheet-0.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-1.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-2.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-3.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-4.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-5.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-6.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-7.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-8.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-9.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-10.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-11.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-12.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-13.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-14.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-15.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-16.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-17.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-18.png",
+      "sprites/steam_dragon/Steam Dragon spritesheet-19.png"
+    ]
+  },
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "assets.png",
+    "format": "RGBA8888",
+    "size": { "w": 325, "h": 126 },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:cbf18f6d62a2f379544c928e740c86bf:3eddea7b5128d20fbb909f752f70fe4a:a759b6bbc8381ac9c472b28f589ad0d6$"
+  }
+}

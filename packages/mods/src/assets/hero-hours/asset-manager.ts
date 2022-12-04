@@ -3,32 +3,23 @@ import { Application, Assets, Sprite, Spritesheet } from "pixi.js";
 import { AssetManager, SpriteConfig } from "@battleground/core";
 
 // @ts-ignore
-import spell_json from "./icons/spells.json";
+import sprite_json from "./assets.json";
 // @ts-ignore
-import spells_png_url from "./icons/spells.png?url";
-// @ts-ignore
-import sprite_json from "./spritesheet/sprites.json";
-// @ts-ignore
-import sprite_png_url from "./spritesheet/sprites.png?url";
+import sprite_png_url from "./assets.png?url";
 
 export class HHAssetManager implements AssetManager {
   private spriteSheet: Spritesheet;
-  private spellSheet: Spritesheet;
   private assetRenderApplication: Application = new Application();
 
   async init() {
-    Assets.add("sprite", sprite_png_url);
-    Assets.add("spells", spells_png_url);
-
-    return Assets.load(["sprite", "spells"]).then(({ sprite, spells }) => {
-      this.spriteSheet = new Spritesheet(sprite, sprite_json);
-      this.spellSheet = new Spritesheet(spells, spell_json);
-      return Promise.all([this.spriteSheet.parse(), this.spellSheet.parse()]);
+    return Assets.load(sprite_png_url).then(spriteTexture => {
+      this.spriteSheet = new Spritesheet(spriteTexture, sprite_json);
+      return this.spriteSheet.parse();
     });
   }
 
   getSprite(assetId: string): SpriteConfig {
-    const texture = this.spriteSheet.textures[assetId + ".png"] || this.spriteSheet.animations[assetId + "/" + assetId];
+    const texture = this.spriteSheet.textures[assetId + ".png"] || this.spriteSheet.animations[assetId];
 
     if (!texture) throw Error(`Texture doesn't exists for ${assetId}!`);
 
@@ -46,7 +37,7 @@ export class HHAssetManager implements AssetManager {
   }
 
   getAsset(assetId: string): Promise<string> {
-    const spellSheetTexture = this.spellSheet.textures[assetId + ".png"];
+    const spellSheetTexture = this.spriteSheet.textures[assetId + ".png"];
 
     if (!spellSheetTexture) throw Error(`Texture doesn't exists for ${assetId}!`);
 
