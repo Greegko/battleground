@@ -237,8 +237,7 @@
         "spriteId",
         "size",
         "maxHp",
-        "action",
-        "effects"
+        "action"
       ],
       "type": "object"
     }

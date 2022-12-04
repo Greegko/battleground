@@ -55,7 +55,7 @@ export interface UnitConfig {
   size: number;
   maxHp: number;
   action: Action;
-  effects: Effect[];
+  effects?: Effect[];
   moveSpeed?: number;
 }
 

@@ -30,8 +30,7 @@
       "projectileSpeed": 5,
       "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
     },
-    "size": 32,
-    "effects": []
+    "size": 32
   },
   {
     "id": "necromancer",
@@ -46,8 +45,7 @@
       "speed": 60,
       "hitEffect": [{ "type": "revive" }]
     },
-    "size": 32,
-    "effects": []
+    "size": 32
   },
   {
     "id": "priest",
@@ -62,7 +60,6 @@
       "speed": 60,
       "hitEffect": [{ "type": "heal", "power": 20 }]
     },
-    "size": 32,
-    "effects": []
+    "size": 32
   }
 ]
