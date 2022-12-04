@@ -9,6 +9,14 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": false,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "rootDir": "./packages",
+    "jsx": "react-jsx",
+    "paths": {
+      "@battleground/core": ["./packages/core/src"],
+      "@battleground/core/*": ["./packages/core/src/*"],
+      "@battleground/mods": ["./packages/mods/src"],
+      "@battleground/mods/*": ["./packages/mods/src/*"]
+    }
   }
 }

@@ -1,8 +1,0 @@
-{
-  "extends": "../../tsconfig.base.json",
-  "references": [{ "path": "../core" }, { "path": "../mods" }],
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "outDir": "./dist"
-  }
-}

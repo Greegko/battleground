@@ -7,8 +7,6 @@
     "serve": "webpack serve --config ./webpack/webpack-dev.config.js"
   },
   "dependencies": {
-    "@battleground/core": "*",
-    "@battleground/mods": "*",
     "css-loader": "6.7.2",
     "lodash-es": "4.17.21",
     "react": "18.2.0",

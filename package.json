@@ -4,13 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "npm run build:core && npm run build:mods && concurrently \"npm:start:*\"",
-    "start:core": "npm run build:watch -w packages/core",
-    "start:mods": "npm run build:watch -w packages/mods",
-    "start:runner": "npm run serve -w packages/runner",
-    "build": "npm run build --ws",
-    "build:core": "npm run build -w packages/core",
-    "build:mods": "npm run build -w packages/mods"
+    "build": "npm run build -w packages/runner",
+    "start": "npm run serve -w packages/runner"
   },
   "workspaces": [
     "packages/*"
