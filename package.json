@@ -1,26 +1,32 @@
 {
-  "name": "@battleground/core",
+  "name": "battleground-workspace",
   "version": "1.0.0",
   "description": "",
   "private": true,
   "scripts": {
     "start": "npm run build:core && npm run build:mods && concurrently \"npm:start:*\"",
-    "start:core": "npm run build:watch --prefix=./packages/core",
-    "start:mods": "npm run build:watch --prefix=./packages/mods",
-    "start:runner": "npm run serve --prefix=./packages/runner",
-    "build": "npm run build:core && npm run build:mods && npm run build:runner",
-    "build:core": "npm run build --prefix=./packages/core",
-    "build:mods": "npm run build --prefix=./packages/mods",
-    "build:runner": "npm run build --prefix=./packages/runner"
+    "start:core": "npm run build:watch -w packages/core",
+    "start:mods": "npm run build:watch -w packages/mods",
+    "start:runner": "npm run serve -w packages/runner",
+    "build": "npm run build --ws",
+    "build:core": "npm run build -w packages/core",
+    "build:mods": "npm run build -w packages/mods"
   },
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "concurrently": "7.6.0"
-  },
   "devDependencies": {
+    "concurrently": "7.6.0",
     "@trivago/prettier-plugin-sort-imports": "4.0.0",
     "prettier": "2.8.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Greegko/battleground.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Greegko/battleground/issues"
+  },
+  "homepage": "https://battleground.greegko.com"
 }
