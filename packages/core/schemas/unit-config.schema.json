@@ -3,83 +3,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "Action": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ActionBuilding"
-        },
-        {
-          "$ref": "#/definitions/ActionAttack"
-        },
-        {
-          "$ref": "#/definitions/ActionProjectileAttack"
-        }
-      ]
-    },
-    "ActionAttack": {
-      "additionalProperties": false,
-      "properties": {
-        "animation": {
-          "$ref": "#/definitions/Animation"
-        },
-        "cooldown": {
-          "type": "number"
-        },
-        "distance": {
-          "type": "number"
-        },
-        "effect": {
-          "items": {
-            "$ref": "#/definitions/Effect"
-          },
-          "type": "array"
-        },
-        "hitEffect": {
-          "items": {
-            "$ref": "#/definitions/Effect"
-          },
-          "type": "array"
-        },
-        "seekTargetCondition": {
-          "items": {
-            "$ref": "#/definitions/SeekCondition"
-          },
-          "type": "array"
-        },
-        "speed": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "seekTargetCondition",
-        "animation",
-        "cooldown",
-        "speed",
-        "effect",
-        "distance",
-        "hitEffect"
-      ],
-      "type": "object"
-    },
-    "ActionBuilding": {
-      "additionalProperties": false,
-      "properties": {
-        "effect": {
-          "items": {
-            "$ref": "#/definitions/Effect"
-          },
-          "type": "array"
-        },
-        "speed": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "speed",
-        "effect"
-      ],
-      "type": "object"
-    },
-    "ActionProjectileAttack": {
       "additionalProperties": false,
       "properties": {
         "animation": {
@@ -120,15 +43,9 @@
         }
       },
       "required": [
-        "animation",
         "cooldown",
-        "distance",
-        "effect",
-        "hitEffect",
-        "projectileId",
-        "projectileSpeed",
-        "seekTargetCondition",
-        "speed"
+        "speed",
+        "effect"
       ],
       "type": "object"
     },

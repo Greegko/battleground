@@ -39,27 +39,17 @@ export interface ActionState {
   targetUnit?: Unit;
 }
 
-export type ActionBuilding = {
-  speed: number;
-  effect: Effect[];
-};
-
-export interface ActionAttack {
-  seekTargetCondition: SeekCondition[];
-  animation: Animation;
+export interface Action {
+  seekTargetCondition?: SeekCondition[];
+  animation?: Animation;
   cooldown: number;
   speed: number;
   effect: Effect[];
-  distance: number;
-  hitEffect: Effect[];
+  distance?: number;
+  hitEffect?: Effect[];
+  projectileId?: string;
+  projectileSpeed?: number;
 }
-
-export interface ActionProjectileAttack extends ActionAttack {
-  projectileId: string;
-  projectileSpeed: number;
-}
-
-export type Action = ActionBuilding | ActionAttack | ActionProjectileAttack;
 
 export interface UnitConfig {
   id: string;

@@ -5,7 +5,8 @@
     "maxHp": 1000,
     "action": {
       "speed": 100,
-      "effect": [{ "type": "spawn-unit" }]
+      "effect": [{ "type": "spawn-unit" }],
+      "cooldown": 0
     },
     "size": 100,
     "effects": []
