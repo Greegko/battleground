@@ -29,7 +29,7 @@ export class EffectsContext {
   private dmg(targetUnit: Unit, args: DmgEffectArgs) {
     const armor = find(targetUnit.effects, { type: "armor" }) as ArmorEffect;
 
-    const dmg = armor.args.type === args.type ? Math.max(0, args.power - armor.args.power) : args.power;
+    const dmg = armor && armor.args.type === args.type ? Math.max(0, args.power - armor.args.power) : args.power;
 
     if (dmg) {
       targetUnit.hp = Math.max(0, targetUnit.hp - dmg);

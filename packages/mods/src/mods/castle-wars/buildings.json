@@ -7,6 +7,7 @@
       "speed": 100,
       "effect": [{ "type": "spawn-unit" }]
     },
+    "effects": [],
     "size": 100
   }
 ]
