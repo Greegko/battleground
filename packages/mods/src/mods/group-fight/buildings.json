@@ -8,7 +8,6 @@
       "effect": [{ "type": "spawn-unit" }],
       "cooldown": 0
     },
-    "size": 100,
-    "effects": []
+    "size": 100
   }
 ]

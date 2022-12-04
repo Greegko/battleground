@@ -16,11 +16,11 @@ export class SpellsContext {
   private spells: Record<SpellID, Spell> = {
     heal: {
       seekConditions: ["same-team", "alive", "damaged", ["in-distance", { distance: 200 }]],
-      effects: [{ type: EffectType.Heal, args: { power: 100 } }],
+      effects: [{ type: EffectType.Heal, power: 100 }],
     },
     fireball: {
       seekConditions: ["enemy-team", "alive", ["in-distance", { distance: 100 }]],
-      effects: [{ type: EffectType.Dmg, args: { type: DmgType.Pure, power: 100 } }],
+      effects: [{ type: EffectType.Dmg, dmgType: DmgType.Pure, power: 100 }],
     },
   };
 

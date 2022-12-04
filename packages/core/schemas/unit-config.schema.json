@@ -44,8 +44,7 @@
       },
       "required": [
         "cooldown",
-        "speed",
-        "effect"
+        "speed"
       ],
       "type": "object"
     },
@@ -56,8 +55,11 @@
     "ArmorEffect": {
       "additionalProperties": false,
       "properties": {
-        "args": {
-          "$ref": "#/definitions/ArmorEffectArgs"
+        "dmgType": {
+          "$ref": "#/definitions/DmgType"
+        },
+        "power": {
+          "type": "number"
         },
         "type": {
           "const": "armor",
@@ -66,22 +68,7 @@
       },
       "required": [
         "type",
-        "args"
-      ],
-      "type": "object"
-    },
-    "ArmorEffectArgs": {
-      "additionalProperties": false,
-      "properties": {
-        "power": {
-          "type": "number"
-        },
-        "type": {
-          "$ref": "#/definitions/DmgType"
-        }
-      },
-      "required": [
-        "type",
+        "dmgType",
         "power"
       ],
       "type": "object"
@@ -89,8 +76,11 @@
     "DmgEffect": {
       "additionalProperties": false,
       "properties": {
-        "args": {
-          "$ref": "#/definitions/DmgEffectArgs"
+        "dmgType": {
+          "$ref": "#/definitions/DmgType"
+        },
+        "power": {
+          "type": "number"
         },
         "type": {
           "const": "dmg",
@@ -99,22 +89,7 @@
       },
       "required": [
         "type",
-        "args"
-      ],
-      "type": "object"
-    },
-    "DmgEffectArgs": {
-      "additionalProperties": false,
-      "properties": {
-        "power": {
-          "type": "number"
-        },
-        "type": {
-          "$ref": "#/definitions/DmgType"
-        }
-      },
-      "required": [
-        "type",
+        "dmgType",
         "power"
       ],
       "type": "object"
@@ -168,17 +143,8 @@
     "HealEffect": {
       "additionalProperties": false,
       "properties": {
-        "args": {
-          "additionalProperties": false,
-          "properties": {
-            "power": {
-              "type": "number"
-            }
-          },
-          "required": [
-            "power"
-          ],
-          "type": "object"
+        "power": {
+          "type": "number"
         },
         "type": {
           "const": "heal",
@@ -187,7 +153,7 @@
       },
       "required": [
         "type",
-        "args"
+        "power"
       ],
       "type": "object"
     },

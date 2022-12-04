@@ -10,10 +10,10 @@
       "distance": 40,
       "cooldown": 120,
       "speed": 30,
-      "hitEffect": [{ "type": "dmg", "args": { "type": "physical", "power": 20 } }]
+      "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
     },
     "size": 32,
-    "effects": [{ "type": "armor", "args": { "type": "physical", "power": 5 } }]
+    "effects": [{ "type": "armor", "dmgType": "physical", "power": 5 }]
   },
   {
     "id": "archer",
@@ -28,10 +28,9 @@
       "cooldown": 120,
       "speed": 30,
       "projectileSpeed": 5,
-      "hitEffect": [{ "type": "dmg", "args": { "type": "physical", "power": 20 } }]
+      "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
     },
-    "size": 32,
-    "effects": []
+    "size": 32
   },
   {
     "id": "necromancer",
@@ -46,8 +45,7 @@
       "speed": 60,
       "hitEffect": [{ "type": "revive" }]
     },
-    "size": 32,
-    "effects": []
+    "size": 32
   },
   {
     "id": "priest",
@@ -60,9 +58,8 @@
       "distance": 100,
       "cooldown": 150,
       "speed": 60,
-      "hitEffect": [{ "type": "heal", "args": { "power": 20 } }]
+      "hitEffect": [{ "type": "heal", "power": 20 }]
     },
-    "size": 32,
-    "effects": []
+    "size": 32
   }
 ]

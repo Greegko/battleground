@@ -1,6 +1,6 @@
 import { find } from "lodash-es";
 
-import { ArmorEffect, DmgEffect, DmgEffectArgs, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
+import { ArmorEffect, DmgEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
 
 export class EffectsContext {
@@ -9,27 +9,28 @@ export class EffectsContext {
   applyEffect(effects: Effect[], targetUnit: Unit) {
     const dmgEffect = find(effects, { type: EffectType.Dmg }) as DmgEffect;
     if (dmgEffect) {
-      this.dmg(targetUnit, dmgEffect.args);
+      this.dmg(targetUnit, dmgEffect);
     }
 
-    if (find(effects, { type: "revive" })) {
+    if (find(effects, { type: EffectType.Review })) {
       targetUnit.hp = targetUnit.maxHp;
     }
 
-    if (find(effects, { type: "spawn-unit" })) {
+    if (find(effects, { type: EffectType.SpawnUnit })) {
       this.spawnUnit(targetUnit);
     }
 
-    const healEffect = find(effects, { type: "heal" }) as HealEffect;
+    const healEffect = find(effects, { type: EffectType.Heal }) as HealEffect;
     if (healEffect) {
-      targetUnit.hp = Math.min(targetUnit.hp + healEffect.args.power, targetUnit.maxHp);
+      targetUnit.hp = Math.min(targetUnit.hp + healEffect.power, targetUnit.maxHp);
     }
   }
 
-  private dmg(targetUnit: Unit, args: DmgEffectArgs) {
-    const armor = find(targetUnit.effects, { type: "armor" }) as ArmorEffect;
+  private dmg(targetUnit: Unit, dmgEffect: DmgEffect) {
+    const armor = find(targetUnit.effects, { type: EffectType.Armor }) as ArmorEffect;
 
-    const dmg = armor && armor.args.type === args.type ? Math.max(0, args.power - armor.args.power) : args.power;
+    const dmg =
+      armor && armor.dmgType === dmgEffect.dmgType ? Math.max(0, dmgEffect.power - armor.power) : dmgEffect.power;
 
     if (dmg) {
       targetUnit.hp = Math.max(0, targetUnit.hp - dmg);
@@ -52,7 +53,7 @@ export class EffectsContext {
       actionState: {},
       hp: swapwnedUnit.maxHp,
       team: source.team,
-      effects: [],
+      effects: swapwnedUnit.effects,
     };
 
     this.context.unit.addUnit({ ...swapwnedUnit, ...skeletonState });

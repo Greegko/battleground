@@ -13,8 +13,6 @@ export enum DmgType {
   Phisical = "physical",
   Magic = "magic",
 }
-export type DmgEffectArgs = { type: DmgType; power: number };
-export type ArmorEffectArgs = { type: DmgType; power: number };
 
 export enum EffectType {
   Review = "revive",
@@ -24,10 +22,10 @@ export enum EffectType {
   Armor = "armor",
 }
 
-export type GenericEffect = { type: EffectType; args?: never };
-export type HealEffect = { type: EffectType.Heal; args: { power: number } };
-export type DmgEffect = { type: EffectType.Dmg; args: DmgEffectArgs };
-export type ArmorEffect = { type: EffectType.Armor; args: ArmorEffectArgs };
+export type GenericEffect = { type: EffectType };
+export type HealEffect = { type: EffectType.Heal; power: number };
+export type DmgEffect = { type: EffectType.Dmg; dmgType: DmgType; power: number };
+export type ArmorEffect = { type: EffectType.Armor; dmgType: DmgType; power: number };
 
 export type Effect = GenericEffect | HealEffect | DmgEffect | ArmorEffect;
 
@@ -44,7 +42,7 @@ export interface Action {
   animation?: Animation;
   cooldown: number;
   speed: number;
-  effect: Effect[];
+  effect?: Effect[];
   distance?: number;
   hitEffect?: Effect[];
   projectileId?: string;
