@@ -1,0 +1,363 @@
+{
+  "$ref": "#/definitions/UnitConfig",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Action": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ActionBuilding"
+        },
+        {
+          "$ref": "#/definitions/ActionAttack"
+        },
+        {
+          "$ref": "#/definitions/ActionProjectileAttack"
+        }
+      ]
+    },
+    "ActionAttack": {
+      "additionalProperties": false,
+      "properties": {
+        "animation": {
+          "$ref": "#/definitions/Animation"
+        },
+        "cooldown": {
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "effect": {
+          "items": {
+            "$ref": "#/definitions/Effect"
+          },
+          "type": "array"
+        },
+        "hitEffect": {
+          "items": {
+            "$ref": "#/definitions/Effect"
+          },
+          "type": "array"
+        },
+        "seekTargetCondition": {
+          "items": {
+            "$ref": "#/definitions/SeekCondition"
+          },
+          "type": "array"
+        },
+        "speed": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "seekTargetCondition",
+        "animation",
+        "cooldown",
+        "speed",
+        "effect",
+        "distance",
+        "hitEffect"
+      ],
+      "type": "object"
+    },
+    "ActionBuilding": {
+      "additionalProperties": false,
+      "properties": {
+        "effect": {
+          "items": {
+            "$ref": "#/definitions/Effect"
+          },
+          "type": "array"
+        },
+        "speed": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "speed",
+        "effect"
+      ],
+      "type": "object"
+    },
+    "ActionProjectileAttack": {
+      "additionalProperties": false,
+      "properties": {
+        "animation": {
+          "$ref": "#/definitions/Animation"
+        },
+        "cooldown": {
+          "type": "number"
+        },
+        "distance": {
+          "type": "number"
+        },
+        "effect": {
+          "items": {
+            "$ref": "#/definitions/Effect"
+          },
+          "type": "array"
+        },
+        "hitEffect": {
+          "items": {
+            "$ref": "#/definitions/Effect"
+          },
+          "type": "array"
+        },
+        "projectileId": {
+          "type": "string"
+        },
+        "projectileSpeed": {
+          "type": "number"
+        },
+        "seekTargetCondition": {
+          "items": {
+            "$ref": "#/definitions/SeekCondition"
+          },
+          "type": "array"
+        },
+        "speed": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "animation",
+        "cooldown",
+        "distance",
+        "effect",
+        "hitEffect",
+        "projectileId",
+        "projectileSpeed",
+        "seekTargetCondition",
+        "speed"
+      ],
+      "type": "object"
+    },
+    "Animation": {
+      "const": "attack",
+      "type": "string"
+    },
+    "ArmorEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/definitions/ArmorEffectArgs"
+        },
+        "type": {
+          "const": "armor",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "args"
+      ],
+      "type": "object"
+    },
+    "ArmorEffectArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "power": {
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/DmgType"
+        }
+      },
+      "required": [
+        "type",
+        "power"
+      ],
+      "type": "object"
+    },
+    "DmgEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/definitions/DmgEffectArgs"
+        },
+        "type": {
+          "const": "dmg",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "args"
+      ],
+      "type": "object"
+    },
+    "DmgEffectArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "power": {
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/DmgType"
+        }
+      },
+      "required": [
+        "type",
+        "power"
+      ],
+      "type": "object"
+    },
+    "DmgType": {
+      "enum": [
+        "pure",
+        "physical",
+        "magic"
+      ],
+      "type": "string"
+    },
+    "Effect": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/GenericEffect"
+        },
+        {
+          "$ref": "#/definitions/HealEffect"
+        },
+        {
+          "$ref": "#/definitions/DmgEffect"
+        },
+        {
+          "$ref": "#/definitions/ArmorEffect"
+        }
+      ]
+    },
+    "EffectType": {
+      "enum": [
+        "revive",
+        "heal",
+        "dmg",
+        "spawn-unit",
+        "armor"
+      ],
+      "type": "string"
+    },
+    "GenericEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/EffectType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "HealEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "additionalProperties": false,
+          "properties": {
+            "power": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "power"
+          ],
+          "type": "object"
+        },
+        "type": {
+          "const": "heal",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "args"
+      ],
+      "type": "object"
+    },
+    "SeekCondition": {
+      "anyOf": [
+        {
+          "const": "enemy-team",
+          "type": "string"
+        },
+        {
+          "const": "alive",
+          "type": "string"
+        },
+        {
+          "const": "dead",
+          "type": "string"
+        },
+        {
+          "const": "same-team",
+          "type": "string"
+        },
+        {
+          "const": "damaged",
+          "type": "string"
+        },
+        {
+          "items": [
+            {
+              "const": "in-distance",
+              "type": "string"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "distance": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "distance"
+              ],
+              "type": "object"
+            }
+          ],
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        }
+      ]
+    },
+    "UnitConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/definitions/Action"
+        },
+        "effects": {
+          "items": {
+            "$ref": "#/definitions/Effect"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "maxHp": {
+          "type": "number"
+        },
+        "moveSpeed": {
+          "type": "number"
+        },
+        "size": {
+          "type": "number"
+        },
+        "spriteId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "spriteId",
+        "size",
+        "maxHp",
+        "action",
+        "effects"
+      ],
+      "type": "object"
+    }
+  }
+}

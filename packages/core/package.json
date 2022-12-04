@@ -2,6 +2,9 @@
   "name": "@battleground/core",
   "version": "1.0.0",
   "description": "",
+  "scripts": {
+    "generate-schema": "ts-json-schema-generator --path ./src/interface/unit.ts --strict-tuples --type \"UnitConfig\" -o schemas/unit-config.schema.json"
+  },
   "dependencies": {
     "@pixi/filter-glow": "5.0.0",
     "gsap": "3.11.3",
@@ -9,6 +12,7 @@
     "pixi.js": "7.0.4"
   },
   "devDependencies": {
-    "@types/lodash-es": "4.17.6"
+    "@types/lodash-es": "4.17.6",
+    "ts-json-schema-generator": "1.1.2"
   }
 }

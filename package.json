@@ -5,14 +5,15 @@
   "private": true,
   "scripts": {
     "build": "npm run build -w packages/runner",
-    "start": "npm run serve -w packages/runner"
+    "start": "npm run serve -w packages/runner",
+    "core:generate-schema": "npm run generate-schema -w packages/core"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "concurrently": "7.6.0",
     "@trivago/prettier-plugin-sort-imports": "4.0.0",
+    "concurrently": "7.6.0",
     "prettier": "2.8.0"
   },
   "repository": {

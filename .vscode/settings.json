@@ -2,7 +2,7 @@
   "json.schemas": [
     {
       "fileMatch": ["units.json", "buildings.json"],
-      "url": "./packages/core/src/unit.schema.json"
+      "url": "./packages/core/schemas/vscode-unit-config.schema.json"
     }
   ]
 }

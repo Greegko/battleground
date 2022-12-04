@@ -6,11 +6,12 @@
     "maxHp": 100,
     "action": {
       "animation": "attack",
-      "seekTargetCondition": ["alive", "enemy-team"],
+      "seekTargetCondition": ["alive", "enemy-team", ["in-distance", { "distance": 2 }]],
       "distance": 40,
       "cooldown": 120,
       "speed": 30,
-      "hitEffect": [{ "type": "dmg", "args": { "type": "physical", "power": 20 } }]
+      "hitEffect": [{ "type": "dmg", "args": { "type": "physical", "power": 20 } }],
+      "effect": []
     },
 
     "size": 32,
@@ -29,7 +30,8 @@
       "cooldown": 120,
       "speed": 30,
       "projectileSpeed": 5,
-      "hitEffect": [{ "type": "dmg", "args": { "type": "physical", "power": 20 } }]
+      "hitEffect": [{ "type": "dmg", "args": { "type": "physical", "power": 20 } }],
+      "effect": []
     },
     "size": 32,
     "effects": []
@@ -45,7 +47,8 @@
       "distance": 100,
       "cooldown": 500,
       "speed": 60,
-      "hitEffect": [{ "type": "revive" }]
+      "hitEffect": [{ "type": "revive" }],
+      "effect": []
     },
     "size": 32,
     "effects": []
@@ -61,7 +64,8 @@
       "distance": 100,
       "cooldown": 150,
       "speed": 60,
-      "hitEffect": [{ "type": "heal", "args": { "power": 20 } }]
+      "hitEffect": [{ "type": "heal", "args": { "power": 20 } }],
+      "effect": []
     },
     "size": 32,
     "effects": []
