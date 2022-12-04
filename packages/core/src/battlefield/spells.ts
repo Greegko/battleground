@@ -1,4 +1,4 @@
-import { Effect, SeekCondition, Unit } from "../interface";
+import { DmgType, Effect, EffectType, SeekCondition, Unit } from "../interface";
 import { Vector } from "../utils/vector";
 import { Context } from "./context";
 import { UnitFilter } from "./unit-filter";
@@ -16,11 +16,11 @@ export class SpellsContext {
   private spells: Record<SpellID, Spell> = {
     heal: {
       seekConditions: ["same-team", "alive", "damaged", ["in-distance", { distance: 200 }]],
-      effects: [{ type: "heal", args: 100 }],
+      effects: [{ type: EffectType.Heal, args: { power: 100 } }],
     },
     fireball: {
       seekConditions: ["enemy-team", "alive", ["in-distance", { distance: 100 }]],
-      effects: [{ type: "dmg", args: 100 }],
+      effects: [{ type: EffectType.Dmg, args: { type: DmgType.Pure, power: 100 } }],
     },
   };
 

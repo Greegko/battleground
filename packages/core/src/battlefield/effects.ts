@@ -1,13 +1,13 @@
 import { find } from "lodash-es";
 
-import { Effect, Unit, UnitState } from "../interface";
+import { ArmorEffect, DmgEffect, DmgEffectArgs, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
 
 export class EffectsContext {
   constructor(private context: Context) {}
 
   applyEffect(effects: Effect[], targetUnit: Unit) {
-    const dmgEffect = find(effects, { type: "dmg" });
+    const dmgEffect = find(effects, { type: EffectType.Dmg }) as DmgEffect;
     if (dmgEffect) {
       this.dmg(targetUnit, dmgEffect.args);
     }
@@ -20,14 +20,20 @@ export class EffectsContext {
       this.spawnUnit(targetUnit);
     }
 
-    const healEffect = find(effects, { type: "heal" });
+    const healEffect = find(effects, { type: "heal" }) as HealEffect;
     if (healEffect) {
-      targetUnit.hp = Math.min(targetUnit.hp + healEffect.args, targetUnit.maxHp);
+      targetUnit.hp = Math.min(targetUnit.hp + healEffect.args.power, targetUnit.maxHp);
     }
   }
 
-  private dmg(unit: Unit, dmg: number) {
-    unit.hp = Math.max(0, unit.hp - dmg);
+  private dmg(targetUnit: Unit, args: DmgEffectArgs) {
+    const armor = find(targetUnit.effects, { type: "armor" }) as ArmorEffect;
+
+    const dmg = armor.args.type === args.type ? Math.max(0, args.power - armor.args.power) : args.power;
+
+    if (dmg) {
+      targetUnit.hp = Math.max(0, targetUnit.hp - dmg);
+    }
   }
 
   private spawnUnit(source: Unit) {
@@ -46,6 +52,7 @@ export class EffectsContext {
       actionState: {},
       hp: swapwnedUnit.maxHp,
       team: source.team,
+      effects: [],
     };
 
     this.context.unit.addUnit({ ...swapwnedUnit, ...skeletonState });

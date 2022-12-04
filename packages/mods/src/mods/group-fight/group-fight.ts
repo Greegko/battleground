@@ -51,6 +51,7 @@ export class GroupFightMod implements Mod {
       hp: 100,
       actionState: {},
       team,
+      effects: [],
     };
 
     const unit = { ...unitConfig, ...unitState } as Unit;

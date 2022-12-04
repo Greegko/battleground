@@ -8,8 +8,29 @@ export type SeekCondition =
   | "damaged"
   | ["in-distance", { distance: number }];
 
-export type EffectType = "revive" | "heal" | "dmg" | "spawn-unit";
-export type Effect = { type: EffectType; args?: any };
+export enum DmgType {
+  Pure = "pure",
+  Phisical = "phisical",
+  Magic = "magic",
+}
+export type DmgEffectArgs = { type: DmgType; power: number };
+export type ArmorEffectArgs = { type: DmgType; power: number };
+
+export enum EffectType {
+  Review = "revive",
+  Heal = "heal",
+  Dmg = "dmg",
+  SpawnUnit = "spawn-unit",
+  Armor = "armor",
+}
+
+export type GenericEffect = { type: EffectType; args?: never };
+export type HealEffect = { type: EffectType.Heal; args: { power: number } };
+export type DmgEffect = { type: EffectType.Dmg; args: DmgEffectArgs };
+export type ArmorEffect = { type: EffectType.Armor; args: ArmorEffectArgs };
+
+export type Effect = GenericEffect | HealEffect | DmgEffect | ArmorEffect;
+
 export type Animation = "attack";
 
 export interface ActionState {
@@ -43,6 +64,7 @@ export interface UnitState {
   location: Vector;
   hp: number;
   team: number;
+  effects: Effect[];
   actionState: ActionState;
   moveDirection?: Vector;
 }
