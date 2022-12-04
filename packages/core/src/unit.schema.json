@@ -1,0 +1,43 @@
+{
+  "$id": "https://greegko.com/unit.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": { "type": "string" },
+      "spriteId": { "type": "string" },
+      "moveSpeed": { "type": "number" },
+      "maxHp": { "type": "number" },
+      "action": { "$ref": "#/$defs/action" },
+      "size": { "type": "number" },
+      "effects": { "type": "array", "items": { "$ref": "#/$defs/effect" } }
+    },
+    "additionalProperties": false,
+    "requiredProperties": ["id", "spriteId", "moveSpeed", "maxHp", "action", "size", "effects"]
+  },
+
+  "$defs": {
+    "seekCondition": { "type": "string" },
+    "effect": { "type": "object", "properties": { "type": "string" } },
+
+    "action": {
+      "type": "object",
+      "properties": {
+        "animation": { "type": "string" },
+        "seekTargetCondition": { "type": "array", "items": { "$ref": "#/$defs/seekCondition" } },
+        "distance": { "type": "number" },
+        "cooldown": { "type": "number" },
+        "projectileId": { "type": "string" },
+        "projectileSpeed": { "type": "number" },
+        "speed": { "type": "number" },
+        "effect": { "type": "array", "items": { "$ref": "#/$defs/effect" } },
+        "hitEffect": { "type": "array", "items": { "$ref": "#/$defs/effect" } }
+      },
+      "dependentRequired": {
+        "projectileId": ["projectileSpeed"]
+      },
+      "additionalProperties": false
+    }
+  }
+}
