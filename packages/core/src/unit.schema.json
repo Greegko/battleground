@@ -18,8 +18,31 @@
   },
 
   "$defs": {
-    "seekCondition": { "type": "string" },
-    "effect": { "type": "object", "properties": { "type": "string" } },
+    "seekCondition": {
+      "oneOf": [
+        { "enum": ["enemy-team", "alive", "dead", "same-team", "damaged"] },
+        {
+          "type": "array",
+          "prefixItems": [
+            { "const": "in-distance" },
+            {
+              "type": "object",
+              "properties": { "distance": { "type": "number" } },
+              "requiredProperties": ["distance"],
+              "additionalProperties": false
+            }
+          ],
+          "items": false
+        }
+      ]
+    },
+
+    "effect": {
+      "type": "object",
+      "properties": { "type": { "enum": ["revive", "heal", "dmg", "spawn-unit", "armor"] } }
+    },
+
+    "dmgType": { "enum": ["pure", "physical", "magic"] },
 
     "action": {
       "type": "object",

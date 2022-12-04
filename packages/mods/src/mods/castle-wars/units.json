@@ -14,7 +14,7 @@
     },
 
     "size": 32,
-    "effects": [{ "type": "armor", "args": { "type": "physical", "power": "10" } }]
+    "effects": [{ "type": "armor", "args": { "type": "physical", "power": 10 } }]
   },
   {
     "id": "archer",
