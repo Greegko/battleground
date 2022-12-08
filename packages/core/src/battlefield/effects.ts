@@ -43,7 +43,9 @@ export class EffectsContext {
 
       if (random < 0.1) return "necromancer";
       if (random < 0.2) return "priest";
+      if (random < 0.3) return "steam_dragon";
       if (random < 0.5) return "archer";
+
       return "skeleton";
     })();
 

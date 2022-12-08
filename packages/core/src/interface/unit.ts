@@ -12,6 +12,7 @@ export enum DmgType {
   Pure = "pure",
   Phisical = "physical",
   Magic = "magic",
+  Fire = "fire",
 }
 
 export enum EffectType {

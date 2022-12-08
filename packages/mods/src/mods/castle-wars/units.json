@@ -61,5 +61,20 @@
       "hitEffect": [{ "type": "heal", "power": 20 }]
     },
     "size": 32
+  },
+  {
+    "id": "steam_dragon",
+    "spriteId": "sprites/steam_dragon/Steam Dragon spritesheet",
+    "moveSpeed": 2,
+    "maxHp": 100,
+    "action": {
+      "animation": "attack",
+      "seekTargetCondition": ["alive", "enemy-team"],
+      "distance": 100,
+      "cooldown": 150,
+      "speed": 60,
+      "hitEffect": [{ "type": "dmg", "dmgType": "fire", "power": 35 }]
+    },
+    "size": 32
   }
 ]
