@@ -21,14 +21,23 @@ export enum EffectType {
   Dmg = "dmg",
   SpawnUnit = "spawn-unit",
   Armor = "armor",
+  Dot = "dot",
 }
 
 export type GenericEffect = { type: EffectType };
 export type HealEffect = { type: EffectType.Heal; power: number };
 export type DmgEffect = { type: EffectType.Dmg; dmgType: DmgType; power: number };
 export type ArmorEffect = { type: EffectType.Armor; dmgType: DmgType; power: number };
+export type DotEffect = {
+  type: EffectType.Dot;
+  dmgType: DmgType;
+  power: number;
+  interval: number;
+  period: number;
+  state?: { intervalState: number; remainingPeriod: number };
+};
 
-export type Effect = GenericEffect | HealEffect | DmgEffect | ArmorEffect;
+export type Effect = GenericEffect | HealEffect | DmgEffect | ArmorEffect | DotEffect;
 
 export type Animation = "attack";
 
@@ -43,7 +52,6 @@ export interface Action {
   animation?: Animation;
   cooldown: number;
   speed: number;
-  state?: ActionState;
   effect?: Effect[];
   distance?: number;
   hitEffect?: Effect[];
@@ -67,6 +75,9 @@ export interface UnitState {
   team: number;
   effects: Effect[];
   moveDirection?: Vector;
+  action: {
+    state: ActionState;
+  };
 }
 
 export type Unit = UnitConfig & UnitState;

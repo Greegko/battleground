@@ -1,6 +1,6 @@
-import { find, groupBy, map, merge, sum, sumBy } from "lodash-es";
+import { find, merge } from "lodash-es";
 
-import { ArmorEffect, DmgEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
+import { DmgEffect, DotEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
 
 export class EffectsContext {
@@ -9,7 +9,7 @@ export class EffectsContext {
   applyEffect(effects: Effect[], targetUnit: Unit) {
     const dmgEffects = effects.filter(x => x.type === EffectType.Dmg) as DmgEffect[];
     if (dmgEffects.length) {
-      this.dmg(targetUnit, dmgEffects);
+      this.context.unit.dmg(targetUnit, dmgEffects);
     }
 
     if (find(effects, { type: EffectType.Review })) {
@@ -20,29 +20,14 @@ export class EffectsContext {
       this.spawnUnit(targetUnit);
     }
 
+    const dotEffects = effects.filter(x => x.type === EffectType.Dot) as DotEffect[];
+    targetUnit.effects.push(
+      ...dotEffects.map(x => ({ ...x, state: { intervalState: x.interval, remainingPeriod: x.period } } as DotEffect)),
+    );
+
     const healEffect = find(effects, { type: EffectType.Heal }) as HealEffect;
     if (healEffect) {
       targetUnit.hp = Math.min(targetUnit.hp + healEffect.power, targetUnit.maxHp);
-    }
-  }
-
-  private dmg(targetUnit: Unit, dmgEffects: DmgEffect[]) {
-    const armors = targetUnit.effects.filter(x => x.type === EffectType.Armor) as ArmorEffect[];
-
-    const effectsByDmgType = groupBy(dmgEffects, x => x.dmgType);
-
-    const totalDmgs = map(effectsByDmgType, (effects, dmgType) => {
-      const dmgArmors = armors.filter(x => x.dmgType === dmgType);
-      const totalArmor = sumBy(dmgArmors, "power");
-      const totalDmg = sumBy(effects, "power");
-
-      return Math.max(0, totalDmg - totalArmor);
-    });
-
-    const totalDmg = sum(totalDmgs);
-
-    if (totalDmg) {
-      targetUnit.hp = Math.max(0, targetUnit.hp - totalDmg);
     }
   }
 
@@ -64,9 +49,10 @@ export class EffectsContext {
       hp: spawnedUnit.maxHp,
       team: source.team,
       effects: spawnedUnit.effects || [],
+      action: { state: {} },
     };
 
-    const unit = merge({}, spawnedUnit, skeletonState, { action: { state: {} } });
+    const unit = merge({}, spawnedUnit, skeletonState);
 
     this.context.unit.addUnit(unit);
   }

@@ -30,8 +30,9 @@ export class CastleWarsMod implements Mod {
       hp: unitConfig.maxHp,
       team,
       effects: unitConfig.effects || [],
+      action: { state: {} },
     };
 
-    return merge({}, unitConfig, unitState, { action: { state: {} } });
+    return merge({}, unitConfig, unitState);
   }
 }

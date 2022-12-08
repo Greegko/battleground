@@ -51,9 +51,9 @@ export class Battlefield {
       this.context.unit.moveUnit(controlledUnit);
     }
 
-    const actionableUnits = this.context.unit.units.filter(x => x.hp > 0);
+    const aliveUnits = this.context.unit.units.filter(x => x.hp > 0);
 
-    for (let unit of actionableUnits) {
+    for (let unit of aliveUnits) {
       if (unit === controlledUnit) continue;
 
       unit.moveDirection = undefined;
@@ -62,9 +62,10 @@ export class Battlefield {
       this.context.unit.seekAndMoveToTarget(unit, this.context.unit.units);
       this.context.unit.lockTarget(unit, this.context.unit.units);
       this.context.unit.action(unit);
-      this.context.unit.separation(unit, actionableUnits);
+      this.context.unit.separation(unit, aliveUnits);
       this.context.unit.screenBoundaries(unit);
       this.context.unit.moveUnit(unit);
+      this.context.unit.triggerDotEffects(unit);
     }
 
     for (let projectile of this.context.map.projectiles) {

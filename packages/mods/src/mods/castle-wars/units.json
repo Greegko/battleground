@@ -75,7 +75,7 @@
       "speed": 60,
       "hitEffect": [
         { "type": "dmg", "dmgType": "fire", "power": 7 },
-        { "type": "dmg", "dmgType": "physical", "power": 7 }
+        { "type": "dot", "dmgType": "fire", "power": 5, "interval": 50, "period": 5 }
       ]
     },
     "size": 32

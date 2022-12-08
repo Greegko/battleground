@@ -1,6 +1,6 @@
-import { minBy, random } from "lodash-es";
+import { groupBy, map, minBy, random, sum, sumBy, without } from "lodash-es";
 
-import { Projectile, Unit } from "../interface";
+import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, Unit } from "../interface";
 import { getUnitCentral } from "../utils/unit";
 import {
   Vector,
@@ -23,6 +23,31 @@ export class UnitContext {
   constructor(private context: Context) {}
 
   units: Unit[] = [];
+
+  triggerDotEffects(unit: Unit) {
+    const effects = unit.effects.filter(x => x.type === EffectType.Dot) as DotEffect[];
+
+    effects.forEach(effect => effect.state.intervalState--);
+
+    const triggerEffects = effects.filter(x => x.state.intervalState === 0);
+
+    this.dmg(unit, triggerEffects);
+
+    const clearEffects = [];
+
+    for (let effect of triggerEffects) {
+      if (effect.state.remainingPeriod === 1) {
+        clearEffects.push(effect);
+      } else {
+        effect.state.remainingPeriod--;
+        effect.state.intervalState = effect.interval;
+      }
+    }
+
+    if (clearEffects.length > 0) {
+      unit.effects = without(unit.effects, ...clearEffects);
+    }
+  }
 
   addUnit(unit: Unit) {
     this.units.push(unit);
@@ -159,6 +184,26 @@ export class UnitContext {
 
   getUnitsInRange(targetLocation: Vector, distance: number): Unit[] {
     return UnitFilter.filterBySeekConditions(this.units, ["alive", ["in-distance", { distance }]], { targetLocation });
+  }
+
+  dmg(targetUnit: Unit, dmgEffects: { dmgType: DmgType; power: number }[]) {
+    const armors = targetUnit.effects.filter(x => x.type === EffectType.Armor) as ArmorEffect[];
+
+    const effectsByDmgType = groupBy(dmgEffects, x => x.dmgType);
+
+    const totalDmgs = map(effectsByDmgType, (effects, dmgType) => {
+      const dmgArmors = armors.filter(x => x.dmgType === dmgType);
+      const totalArmor = sumBy(dmgArmors, "power");
+      const totalDmg = sumBy(effects, "power");
+
+      return Math.max(0, totalDmg - totalArmor);
+    });
+
+    const totalDmg = sum(totalDmgs);
+
+    if (totalDmg) {
+      targetUnit.hp = Math.max(0, targetUnit.hp - totalDmg);
+    }
   }
 
   private seekTarget(unit: Unit, units: Unit[]): Unit {

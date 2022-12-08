@@ -98,9 +98,55 @@
       "enum": [
         "pure",
         "physical",
-        "magic"
+        "magic",
+        "fire"
       ],
       "type": "string"
+    },
+    "DotEffect": {
+      "additionalProperties": false,
+      "properties": {
+        "dmgType": {
+          "$ref": "#/definitions/DmgType"
+        },
+        "interval": {
+          "type": "number"
+        },
+        "period": {
+          "type": "number"
+        },
+        "power": {
+          "type": "number"
+        },
+        "state": {
+          "additionalProperties": false,
+          "properties": {
+            "intervalState": {
+              "type": "number"
+            },
+            "remainingPeriod": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "intervalState",
+            "remainingPeriod"
+          ],
+          "type": "object"
+        },
+        "type": {
+          "const": "dot",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "dmgType",
+        "power",
+        "interval",
+        "period"
+      ],
+      "type": "object"
     },
     "Effect": {
       "anyOf": [
@@ -115,6 +161,9 @@
         },
         {
           "$ref": "#/definitions/ArmorEffect"
+        },
+        {
+          "$ref": "#/definitions/DotEffect"
         }
       ]
     },
@@ -124,7 +173,8 @@
         "heal",
         "dmg",
         "spawn-unit",
-        "armor"
+        "armor",
+        "dot"
       ],
       "type": "string"
     },
