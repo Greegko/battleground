@@ -4,7 +4,7 @@ import { LoopContext } from "./controls/core";
 import { Debug } from "./debug";
 import { Config } from "@battleground/core";
 import { Loop } from "./loop";
-import { CastleWarsMod, GroupFightMod } from "@battleground/mods";
+import { CastleWarsMod } from "@battleground/mods";
 
 interface GameProperties {
   children: JSX.Element;
@@ -14,7 +14,6 @@ const selectedMod = new URLSearchParams(window.location.search).get("mod");
 
 const mod = {
   castle_wars: new CastleWarsMod(),
-  group_fight: new GroupFightMod(),
 }[selectedMod];
 
 export const Game = ({ children }: GameProperties) => {
