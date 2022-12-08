@@ -1,4 +1,4 @@
-import { find, groupBy, map, sum, sumBy } from "lodash-es";
+import { find, groupBy, map, merge, sum, sumBy } from "lodash-es";
 
 import { ArmorEffect, DmgEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
@@ -58,15 +58,16 @@ export class EffectsContext {
       return "skeleton";
     })();
 
-    const swapwnedUnit = this.context.resourceManager.getUnitConfig(unitId);
+    const spawnedUnit = this.context.resourceManager.getUnitConfig(unitId);
     const skeletonState: UnitState = {
       location: { x: source.location.x + source.size / 2, y: source.location.y + source.size + 20 },
-      actionState: {},
-      hp: swapwnedUnit.maxHp,
+      hp: spawnedUnit.maxHp,
       team: source.team,
-      effects: swapwnedUnit.effects || [],
+      effects: spawnedUnit.effects || [],
     };
 
-    this.context.unit.addUnit({ ...swapwnedUnit, ...skeletonState });
+    const unit = merge({}, spawnedUnit, skeletonState, { action: { state: {} } });
+
+    this.context.unit.addUnit(unit);
   }
 }

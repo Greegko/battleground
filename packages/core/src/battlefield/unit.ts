@@ -80,11 +80,11 @@ export class UnitContext {
 
     const target = this.seekTarget(unit, units);
 
-    if (target === unit.actionState.targetUnit) return;
+    if (target === unit.action.state.targetUnit) return;
 
     if (!target) {
-      unit.actionState.speed = undefined;
-      unit.actionState.targetUnit = undefined;
+      unit.action.state.speed = undefined;
+      unit.action.state.targetUnit = undefined;
 
       return;
     }
@@ -92,43 +92,43 @@ export class UnitContext {
     const distance = getVectorDistance(unit.location, target.location);
 
     if (distance <= unit.action.distance) {
-      unit.actionState.speed = unit.action.speed;
-      unit.actionState.targetUnit = target;
+      unit.action.state.speed = unit.action.speed;
+      unit.action.state.targetUnit = target;
       unit.moveDirection = undefined;
     } else {
-      unit.actionState.speed = undefined;
-      unit.actionState.targetUnit = undefined;
+      unit.action.state.speed = undefined;
+      unit.action.state.targetUnit = undefined;
     }
   }
 
   action(unit: Unit) {
-    if (unit.action.hitEffect && !unit.actionState.targetUnit) return;
+    if (unit.action.hitEffect && !unit.action.state.targetUnit) return;
 
-    if (unit.actionState.cooldown > 0) return --unit.actionState.cooldown;
+    if (unit.action.state.cooldown > 0) return --unit.action.state.cooldown;
 
-    if (unit.actionState.cooldown === 0) {
-      delete unit.actionState.cooldown;
+    if (unit.action.state.cooldown === 0) {
+      delete unit.action.state.cooldown;
     }
 
-    if (unit.actionState.targetUnit) {
-      const targetUnit = unit.actionState.targetUnit;
+    if (unit.action.state.targetUnit) {
+      const targetUnit = unit.action.state.targetUnit;
 
       const targetUnitDistance = getVectorDistance(unit.location, targetUnit.location);
 
       if (targetUnitDistance > unit.action.distance) {
-        delete unit.actionState.speed;
-        delete unit.actionState.targetUnit;
+        delete unit.action.state.speed;
+        delete unit.action.state.targetUnit;
         return;
       }
     }
 
-    if (unit.actionState.speed > 0) return --unit.actionState.speed;
+    if (unit.action.state.speed > 0) return --unit.action.state.speed;
 
     if (unit.action.projectileId) {
-      this.shootProjectile(unit, unit.actionState.targetUnit);
+      this.shootProjectile(unit, unit.action.state.targetUnit);
     } else {
       if (unit.action.hitEffect) {
-        this.context.effect.applyEffect(unit.action.hitEffect, unit.actionState.targetUnit);
+        this.context.effect.applyEffect(unit.action.hitEffect, unit.action.state.targetUnit);
       }
 
       if (unit.action.effect) {
@@ -136,10 +136,10 @@ export class UnitContext {
       }
     }
 
-    unit.actionState.speed = unit.action.speed;
-    unit.actionState.cooldown = unit.action.cooldown;
+    unit.action.state.speed = unit.action.speed;
+    unit.action.state.cooldown = unit.action.cooldown;
 
-    delete unit.actionState.targetUnit;
+    delete unit.action.state.targetUnit;
   }
 
   separation(unit: Unit, units: Unit[]) {

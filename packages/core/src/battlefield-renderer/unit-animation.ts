@@ -1,6 +1,6 @@
+import { GlowFilter } from "@pixi/filter-glow";
 import { merge } from "lodash-es";
 
-import { GlowFilter } from "@pixi/filter-glow";
 import gsap from "gsap";
 import { Graphics, Text } from "pixi.js";
 
@@ -209,7 +209,7 @@ export class UnitAnimation {
   private transformUnitToState(unit: Unit): UnitTransformedState {
     const animation = (() => {
       if (unit.hp === 0) return "dead";
-      if (unit.actionState && unit.actionState.speed > 0 && !unit.actionState.cooldown && unit.action.animation)
+      if (unit.action.state.speed > 0 && !unit.action.state.cooldown && unit.action.animation)
         return unit.action.animation;
       if (unit.moveDirection) return "move";
 
@@ -217,8 +217,8 @@ export class UnitAnimation {
     })();
 
     const facing = (() => {
-      if (unit.actionState?.targetUnit) {
-        return subVector(unit.location, unit.actionState.targetUnit.location).x > 0 ? Direction.Left : Direction.Right;
+      if (unit.action.state?.targetUnit) {
+        return subVector(unit.location, unit.action.state.targetUnit.location).x > 0 ? Direction.Left : Direction.Right;
       }
 
       if (unit.moveDirection) {

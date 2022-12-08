@@ -43,6 +43,7 @@ export interface Action {
   animation?: Animation;
   cooldown: number;
   speed: number;
+  state?: ActionState;
   effect?: Effect[];
   distance?: number;
   hitEffect?: Effect[];
@@ -65,7 +66,6 @@ export interface UnitState {
   hp: number;
   team: number;
   effects: Effect[];
-  actionState: ActionState;
   moveDirection?: Vector;
 }
 

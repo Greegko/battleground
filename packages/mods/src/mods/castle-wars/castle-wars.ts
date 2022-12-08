@@ -1,3 +1,5 @@
+import { merge } from "lodash-es";
+
 import { AssetManager, BattlefieldInit, Config, Mod, Unit, UnitState, Vector } from "@battleground/core";
 
 import { HHAssetManager } from "../../assets/hero-hours/asset-manager";
@@ -26,11 +28,10 @@ export class CastleWarsMod implements Mod {
     const unitState: UnitState = {
       location,
       hp: unitConfig.maxHp,
-      actionState: {},
       team,
       effects: unitConfig.effects || [],
     };
 
-    return { ...unitConfig, ...unitState };
+    return merge({}, unitConfig, unitState, { action: { state: {} } });
   }
 }
