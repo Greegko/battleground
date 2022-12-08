@@ -1,4 +1,4 @@
-import { find } from "lodash-es";
+import { find, groupBy, map, sum, sumBy } from "lodash-es";
 
 import { ArmorEffect, DmgEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
@@ -7,9 +7,9 @@ export class EffectsContext {
   constructor(private context: Context) {}
 
   applyEffect(effects: Effect[], targetUnit: Unit) {
-    const dmgEffect = find(effects, { type: EffectType.Dmg }) as DmgEffect;
-    if (dmgEffect) {
-      this.dmg(targetUnit, dmgEffect);
+    const dmgEffects = effects.filter(x => x.type === EffectType.Dmg) as DmgEffect[];
+    if (dmgEffects.length) {
+      this.dmg(targetUnit, dmgEffects);
     }
 
     if (find(effects, { type: EffectType.Review })) {
@@ -26,14 +26,23 @@ export class EffectsContext {
     }
   }
 
-  private dmg(targetUnit: Unit, dmgEffect: DmgEffect) {
-    const armor = find(targetUnit.effects, { type: EffectType.Armor }) as ArmorEffect;
+  private dmg(targetUnit: Unit, dmgEffects: DmgEffect[]) {
+    const armors = targetUnit.effects.filter(x => x.type === EffectType.Armor) as ArmorEffect[];
 
-    const dmg =
-      armor && armor.dmgType === dmgEffect.dmgType ? Math.max(0, dmgEffect.power - armor.power) : dmgEffect.power;
+    const effectsByDmgType = groupBy(dmgEffects, x => x.dmgType);
 
-    if (dmg) {
-      targetUnit.hp = Math.max(0, targetUnit.hp - dmg);
+    const totalDmgs = map(effectsByDmgType, (effects, dmgType) => {
+      const dmgArmors = armors.filter(x => x.dmgType === dmgType);
+      const totalArmor = sumBy(dmgArmors, "power");
+      const totalDmg = sumBy(effects, "power");
+
+      return Math.max(0, totalDmg - totalArmor);
+    });
+
+    const totalDmg = sum(totalDmgs);
+
+    if (totalDmg) {
+      targetUnit.hp = Math.max(0, targetUnit.hp - totalDmg);
     }
   }
 
@@ -55,7 +64,7 @@ export class EffectsContext {
       actionState: {},
       hp: swapwnedUnit.maxHp,
       team: source.team,
-      effects: swapwnedUnit.effects,
+      effects: swapwnedUnit.effects || [],
     };
 
     this.context.unit.addUnit({ ...swapwnedUnit, ...skeletonState });

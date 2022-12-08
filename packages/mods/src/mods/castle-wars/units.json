@@ -73,7 +73,10 @@
       "distance": 100,
       "cooldown": 150,
       "speed": 60,
-      "hitEffect": [{ "type": "dmg", "dmgType": "fire", "power": 35 }]
+      "hitEffect": [
+        { "type": "dmg", "dmgType": "fire", "power": 7 },
+        { "type": "dmg", "dmgType": "physical", "power": 7 }
+      ]
     },
     "size": 32
   }
