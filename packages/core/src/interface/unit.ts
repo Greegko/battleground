@@ -42,8 +42,12 @@ export type Effect = GenericEffect | HealEffect | DmgEffect | ArmorEffect | DotE
 export type Animation = "attack";
 
 export interface ActionState {
-  speed?: number;
   cooldown?: number;
+}
+
+export interface ActionActive {
+  action: Action;
+  speed: number;
   targetUnit?: Unit;
 }
 
@@ -52,6 +56,7 @@ export interface Action {
   animation?: Animation;
   cooldown: number;
   speed: number;
+  state?: ActionState;
   effect?: Effect[];
   distance?: number;
   hitEffect?: Effect[];
@@ -64,7 +69,7 @@ export interface UnitConfig {
   spriteId: string;
   size: number;
   maxHp: number;
-  action: Action;
+  actions: Action[];
   effects?: Effect[];
   moveSpeed?: number;
 }
@@ -74,10 +79,8 @@ export interface UnitState {
   hp: number;
   team: number;
   effects: Effect[];
+  activeAction?: ActionActive;
   moveDirection?: Vector;
-  action: {
-    state: ActionState;
-  };
 }
 
 export type Unit = UnitConfig & UnitState;

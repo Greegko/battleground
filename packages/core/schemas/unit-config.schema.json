@@ -40,12 +40,24 @@
         },
         "speed": {
           "type": "number"
+        },
+        "state": {
+          "$ref": "#/definitions/ActionState"
         }
       },
       "required": [
         "cooldown",
         "speed"
       ],
+      "type": "object"
+    },
+    "ActionState": {
+      "additionalProperties": false,
+      "properties": {
+        "cooldown": {
+          "type": "number"
+        }
+      },
       "type": "object"
     },
     "Animation": {
@@ -257,8 +269,11 @@
     "UnitConfig": {
       "additionalProperties": false,
       "properties": {
-        "action": {
-          "$ref": "#/definitions/Action"
+        "actions": {
+          "items": {
+            "$ref": "#/definitions/Action"
+          },
+          "type": "array"
         },
         "effects": {
           "items": {
@@ -287,7 +302,7 @@
         "spriteId",
         "size",
         "maxHp",
-        "action"
+        "actions"
       ],
       "type": "object"
     }

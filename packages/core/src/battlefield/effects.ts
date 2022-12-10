@@ -35,7 +35,6 @@ export class EffectsContext {
     const unitId = (() => {
       const random = Math.random();
 
-      if (random < 0.1) return "necromancer";
       if (random < 0.2) return "priest";
       if (random < 0.3) return "steam_dragon";
       if (random < 0.5) return "archer";
@@ -49,7 +48,6 @@ export class EffectsContext {
       hp: spawnedUnit.maxHp,
       team: source.team,
       effects: spawnedUnit.effects || [],
-      action: { state: {} },
     };
 
     const unit = merge({}, spawnedUnit, skeletonState);

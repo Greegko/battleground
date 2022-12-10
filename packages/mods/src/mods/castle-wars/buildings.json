@@ -3,11 +3,13 @@
     "id": "castle",
     "spriteId": "buildings/inn",
     "maxHp": 1000,
-    "action": {
-      "speed": 100,
-      "effect": [{ "type": "spawn-unit" }],
-      "cooldown": 0
-    },
+    "actions": [
+      {
+        "speed": 100,
+        "effect": [{ "type": "spawn-unit" }],
+        "cooldown": 0
+      }
+    ],
     "size": 100
   }
 ]

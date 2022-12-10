@@ -4,14 +4,16 @@
     "spriteId": "sprites/skeleton/skeleton",
     "moveSpeed": 2,
     "maxHp": 100,
-    "action": {
-      "animation": "attack",
-      "seekTargetCondition": ["alive", "enemy-team"],
-      "distance": 40,
-      "cooldown": 120,
-      "speed": 30,
-      "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
-    },
+    "actions": [
+      {
+        "animation": "attack",
+        "seekTargetCondition": ["alive", "enemy-team"],
+        "distance": 40,
+        "cooldown": 120,
+        "speed": 30,
+        "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
+      }
+    ],
     "size": 32,
     "effects": [{ "type": "armor", "dmgType": "physical", "power": 10 }]
   },
@@ -20,31 +22,18 @@
     "spriteId": "sprites/archer/archer",
     "moveSpeed": 2,
     "maxHp": 100,
-    "action": {
-      "animation": "attack",
-      "seekTargetCondition": ["alive", "enemy-team"],
-      "projectileId": "sprites/projectiles/projectile",
-      "distance": 400,
-      "cooldown": 120,
-      "speed": 30,
-      "projectileSpeed": 5,
-      "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
-    },
-    "size": 32
-  },
-  {
-    "id": "necromancer",
-    "spriteId": "sprites/inquisitor/inquisitor",
-    "moveSpeed": 2,
-    "maxHp": 100,
-    "action": {
-      "animation": "attack",
-      "seekTargetCondition": ["dead", "same-team"],
-      "distance": 100,
-      "cooldown": 500,
-      "speed": 60,
-      "hitEffect": [{ "type": "revive" }]
-    },
+    "actions": [
+      {
+        "animation": "attack",
+        "seekTargetCondition": ["alive", "enemy-team"],
+        "projectileId": "sprites/projectiles/projectile",
+        "distance": 400,
+        "cooldown": 120,
+        "speed": 30,
+        "projectileSpeed": 5,
+        "hitEffect": [{ "type": "dmg", "dmgType": "physical", "power": 20 }]
+      }
+    ],
     "size": 32
   },
   {
@@ -52,14 +41,24 @@
     "spriteId": "sprites/inquisitor/inquisitor",
     "moveSpeed": 2,
     "maxHp": 100,
-    "action": {
-      "animation": "attack",
-      "seekTargetCondition": ["alive", "same-team", "damaged"],
-      "distance": 100,
-      "cooldown": 150,
-      "speed": 60,
-      "hitEffect": [{ "type": "heal", "power": 20 }]
-    },
+    "actions": [
+      {
+        "animation": "attack",
+        "seekTargetCondition": ["alive", "same-team", "damaged"],
+        "distance": 100,
+        "cooldown": 150,
+        "speed": 60,
+        "hitEffect": [{ "type": "heal", "power": 20 }]
+      },
+      {
+        "animation": "attack",
+        "seekTargetCondition": ["dead", "same-team"],
+        "distance": 100,
+        "cooldown": 500,
+        "speed": 60,
+        "hitEffect": [{ "type": "revive" }]
+      }
+    ],
     "size": 32
   },
   {
@@ -67,17 +66,19 @@
     "spriteId": "sprites/steam_dragon/Steam Dragon spritesheet",
     "moveSpeed": 2,
     "maxHp": 100,
-    "action": {
-      "animation": "attack",
-      "seekTargetCondition": ["alive", "enemy-team"],
-      "distance": 100,
-      "cooldown": 150,
-      "speed": 60,
-      "hitEffect": [
-        { "type": "dmg", "dmgType": "fire", "power": 7 },
-        { "type": "dot", "dmgType": "fire", "power": 5, "interval": 50, "period": 5 }
-      ]
-    },
+    "actions": [
+      {
+        "animation": "attack",
+        "seekTargetCondition": ["alive", "enemy-team"],
+        "distance": 100,
+        "cooldown": 150,
+        "speed": 60,
+        "hitEffect": [
+          { "type": "dmg", "dmgType": "fire", "power": 7 },
+          { "type": "dot", "dmgType": "fire", "power": 5, "interval": 50, "period": 5 }
+        ]
+      }
+    ],
     "size": 32
   }
 ]

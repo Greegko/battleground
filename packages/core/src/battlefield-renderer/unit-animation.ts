@@ -209,16 +209,22 @@ export class UnitAnimation {
   private transformUnitToState(unit: Unit): UnitTransformedState {
     const animation = (() => {
       if (unit.hp === 0) return "dead";
-      if (unit.action.state.speed > 0 && !unit.action.state.cooldown && unit.action.animation)
-        return unit.action.animation;
+      if (
+        unit.activeAction &&
+        unit.activeAction.speed > 0 &&
+        !unit.activeAction.action.state.cooldown &&
+        unit.activeAction.action.animation
+      )
+        return unit.activeAction.action.animation;
+
       if (unit.moveDirection) return "move";
 
       return "idle";
     })();
 
     const facing = (() => {
-      if (unit.action.state?.targetUnit) {
-        return subVector(unit.location, unit.action.state.targetUnit.location).x > 0 ? Direction.Left : Direction.Right;
+      if (unit.activeAction?.targetUnit) {
+        return subVector(unit.location, unit.activeAction.targetUnit.location).x > 0 ? Direction.Left : Direction.Right;
       }
 
       if (unit.moveDirection) {

@@ -1,6 +1,6 @@
-import { groupBy, map, minBy, random, sum, sumBy, without } from "lodash-es";
+import { groupBy, head, last, map, minBy, random, sortBy, sum, sumBy, without } from "lodash-es";
 
-import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, Unit } from "../interface";
+import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, SeekCondition, Unit } from "../interface";
 import { getUnitCentral } from "../utils/unit";
 import {
   Vector,
@@ -91,80 +91,93 @@ export class UnitContext {
   seekAndMoveToTarget(unit: Unit, units: Unit[]) {
     if (!unit.moveSpeed) return;
 
-    const closestTarget = this.seekTarget(unit, units);
+    const closesUnits = unit.actions
+      .map(action => this.seekTarget(unit, units, action.seekTargetCondition))
+      .filter(x => x);
+
+    const closestTarget = last(
+      sortBy(closesUnits, targetUnit => getVectorDistance(unit.location, targetUnit.location)),
+    );
 
     if (!closestTarget) return;
 
-    if (getVectorDistance(unit.location, closestTarget.location) >= unit.action.distance) {
-      unit.moveDirection = normVector(subVector(closestTarget.location, unit.location));
-    }
-  }
-
-  lockTarget(unit: Unit, units: Unit[]) {
-    if (!unit.action.seekTargetCondition) return;
-
-    const target = this.seekTarget(unit, units);
-
-    if (target === unit.action.state.targetUnit) return;
-
-    if (!target) {
-      unit.action.state.speed = undefined;
-      unit.action.state.targetUnit = undefined;
-
+    if (
+      unit.activeAction &&
+      getVectorDistance(unit.location, closestTarget.location) < unit.activeAction.action.distance
+    ) {
       return;
     }
 
-    const distance = getVectorDistance(unit.location, target.location);
+    unit.moveDirection = normVector(subVector(closestTarget.location, unit.location));
+  }
 
-    if (distance <= unit.action.distance) {
-      unit.action.state.speed = unit.action.speed;
-      unit.action.state.targetUnit = target;
-      unit.moveDirection = undefined;
-    } else {
-      unit.action.state.speed = undefined;
-      unit.action.state.targetUnit = undefined;
+  lockTargetAndAction(unit: Unit, units: Unit[]) {
+    if (unit.activeAction) {
+      if (!unit.activeAction.targetUnit) return;
+
+      const distance = getVectorDistance(unit.location, unit.activeAction.targetUnit.location);
+
+      if (distance <= unit.activeAction.action.distance) {
+        return;
+      } else {
+        delete unit.activeAction;
+      }
+    }
+
+    const actions = unit.actions.map(
+      action =>
+        [action, action.seekTargetCondition ? this.seekTarget(unit, units, action.seekTargetCondition) : null] as const,
+    );
+
+    const [action, targetUnit] = head(
+      sortBy(actions, ([, targetUnit]) => (targetUnit ? getVectorDistance(unit.location, targetUnit.location) : 0)),
+    );
+
+    // No valid seek target
+    if (targetUnit === undefined) return;
+
+    // No seek condition for the action
+    if (targetUnit === null) {
+      unit.activeAction = { action, speed: action.speed };
+      return;
+    }
+
+    const distance = getVectorDistance(unit.location, targetUnit.location);
+
+    if (distance <= action.distance) {
+      unit.activeAction = { action, speed: action.speed, targetUnit };
     }
   }
 
-  action(unit: Unit) {
-    if (unit.action.hitEffect && !unit.action.state.targetUnit) return;
-
-    if (unit.action.state.cooldown > 0) return --unit.action.state.cooldown;
-
-    if (unit.action.state.cooldown === 0) {
-      delete unit.action.state.cooldown;
+  executeAction(unit: Unit) {
+    if (!unit.activeAction) return;
+    if (!unit.activeAction.action.state) {
+      unit.activeAction.action.state = {};
     }
 
-    if (unit.action.state.targetUnit) {
-      const targetUnit = unit.action.state.targetUnit;
+    if (unit.activeAction.action.state.cooldown > 0) return --unit.activeAction.action.state.cooldown;
 
-      const targetUnitDistance = getVectorDistance(unit.location, targetUnit.location);
-
-      if (targetUnitDistance > unit.action.distance) {
-        delete unit.action.state.speed;
-        delete unit.action.state.targetUnit;
-        return;
-      }
+    if (unit.activeAction.action.state.cooldown === 0) {
+      delete unit.activeAction.action.state.cooldown;
     }
 
-    if (unit.action.state.speed > 0) return --unit.action.state.speed;
+    if (unit.activeAction.speed > 0) return --unit.activeAction.speed;
 
-    if (unit.action.projectileId) {
-      this.shootProjectile(unit, unit.action.state.targetUnit);
+    if (unit.activeAction.action.projectileId) {
+      this.shootProjectile(unit, unit.activeAction.targetUnit);
     } else {
-      if (unit.action.hitEffect) {
-        this.context.effect.applyEffect(unit.action.hitEffect, unit.action.state.targetUnit);
+      if (unit.activeAction.action.hitEffect) {
+        this.context.effect.applyEffect(unit.activeAction.action.hitEffect, unit.activeAction.targetUnit);
       }
 
-      if (unit.action.effect) {
-        this.context.effect.applyEffect(unit.action.effect, unit);
+      if (unit.activeAction.action.effect) {
+        this.context.effect.applyEffect(unit.activeAction.action.effect, unit);
       }
     }
 
-    unit.action.state.speed = unit.action.speed;
-    unit.action.state.cooldown = unit.action.cooldown;
+    unit.activeAction.action.state.cooldown = unit.activeAction.action.cooldown;
 
-    delete unit.action.state.targetUnit;
+    delete unit.activeAction;
   }
 
   separation(unit: Unit, units: Unit[]) {
@@ -206,16 +219,14 @@ export class UnitContext {
     }
   }
 
-  private seekTarget(unit: Unit, units: Unit[]): Unit {
-    let filteredUnits = UnitFilter.filterBySeekConditions(units, unit.action.seekTargetCondition, {
-      team: unit.team,
-    });
+  private seekTarget(unit: Unit, units: Unit[], seekConditions: SeekCondition[]): Unit {
+    let filteredUnits = UnitFilter.filterBySeekConditions(units, seekConditions, { team: unit.team });
 
     return minBy(filteredUnits, enemy => getVectorDistance(unit.location, enemy.location));
   }
 
   private shootProjectile(unit: Unit, target: Unit) {
-    const action = unit.action;
+    const action = unit.activeAction.action;
     const targetLocation = getUnitCentral(target);
     const sourceLocation = getUnitCentral(unit);
     const time = Math.ceil(getVectorDistance(sourceLocation, targetLocation) / action.projectileSpeed);
