@@ -1,6 +1,6 @@
 import { Battlefield } from "../../src";
 
-export interface DebugOptions {
+export interface LoggerOptions {
   logTurnIterations?: number;
   logState?: {
     init?: boolean;
@@ -11,7 +11,7 @@ export interface DebugOptions {
 export class TestLogger {
   private turnPassed = 0;
 
-  constructor(private battlefield: Battlefield, private config: DebugOptions) {
+  constructor(private battlefield: Battlefield, private config: LoggerOptions) {
     if (config?.logState?.init) {
       console.log("Init state");
       console.log(battlefield.getState());
@@ -32,4 +32,4 @@ export class TestLogger {
   }
 }
 
-export const basicDebugInfos = { logTurnIterations: 1, logState: { init: true, turns: [1, 5, 10] } } as DebugOptions;
+export const basicLoggerConfig = { logTurnIterations: 1, logState: { init: true, turns: [1, 5, 10] } } as LoggerOptions;

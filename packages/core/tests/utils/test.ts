@@ -3,7 +3,7 @@ import * as util from "util";
 
 import { Battlefield, BattlefieldInit, BattlefieldState, Config } from "../../src";
 import { PartialDeep } from "./partial-deep";
-import { DebugOptions, TestLogger } from "./test-logger";
+import { LoggerOptions, TestLogger } from "./test-logger";
 
 util.inspect.defaultOptions.depth = 5;
 
@@ -16,18 +16,18 @@ interface TestConfig {
   turn?: number | boolean;
   runUntilFinish?: boolean;
   expectedState: ExpectedState;
-  debug?: DebugOptions;
+  loggerConfig?: LoggerOptions;
 }
 
 export function test(
   testName: string,
-  { config, initialState, turn, runUntilFinish, expectedState, debug }: TestConfig,
+  { config, initialState, turn, runUntilFinish, expectedState, loggerConfig }: TestConfig,
 ) {
   ava.default(testName, t => {
     const battlefield = new Battlefield(config, null);
     battlefield.init(initialState);
 
-    const logger = new TestLogger(battlefield, debug);
+    const logger = new TestLogger(battlefield, loggerConfig);
 
     let turnPassed = 0;
     for (let i = 0; i < turn; i++) {
