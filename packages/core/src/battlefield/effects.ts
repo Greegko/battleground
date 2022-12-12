@@ -1,4 +1,4 @@
-import { find, merge, propEq } from "ramda";
+import { find, mergeRight, propEq } from "ramda";
 
 import { DmgEffect, DotEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
@@ -50,7 +50,7 @@ export class EffectsContext {
       effects: spawnedUnit.effects || [],
     };
 
-    const unit = merge(spawnedUnit, skeletonState);
+    const unit = mergeRight(spawnedUnit, skeletonState);
 
     this.context.unit.addUnit(unit);
   }
