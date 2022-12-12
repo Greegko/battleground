@@ -6,6 +6,7 @@ export interface LoggerOptions {
     init?: boolean;
     turns?: number[];
     end?: boolean;
+    testEnd?: boolean;
   };
 }
 
@@ -33,6 +34,13 @@ export class TestLogger {
 
     if (this.battlefield.isFinished && this.config?.logState?.end) {
       console.log("End");
+      console.log(this.battlefield.getState());
+    }
+  }
+
+  testEnd() {
+    if (this.config?.logState?.testEnd) {
+      console.log("Test End - Turn", this.turnPassed);
       console.log(this.battlefield.getState());
     }
   }

@@ -5,7 +5,7 @@ import { Battlefield, BattlefieldInit, BattlefieldState, Config } from "../../sr
 import { PartialDeep } from "./partial-deep";
 import { LoggerOptions, TestLogger } from "./test-logger";
 
-util.inspect.defaultOptions.depth = 5;
+util.inspect.defaultOptions.depth = 7;
 
 type TestState = PartialDeep<BattlefieldState & { turn: number }>;
 type ExpectedState = TestState | ((state: TestState) => void);
@@ -43,6 +43,9 @@ export function test(
         logger.tick();
       }
     }
+
+    logger.testEnd();
+
     const gameState = battlefield.getState();
     const testExpectedState = (expectedState: ExpectedState) => {
       if (typeof expectedState === "object") {
