@@ -1,4 +1,4 @@
-import { find, merge, prop } from "ramda";
+import { find, merge, propEq } from "ramda";
 
 import { DmgEffect, DotEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
 import { Context } from "./context";
@@ -12,11 +12,11 @@ export class EffectsContext {
       this.context.unit.dmg(targetUnit, dmgEffects);
     }
 
-    if (find(prop("type", EffectType.Review), effects)) {
+    if (find(propEq("type", EffectType.Review), effects)) {
       targetUnit.hp = targetUnit.maxHp;
     }
 
-    if (find(prop("type", EffectType.SpawnUnit), effects)) {
+    if (find(propEq("type", EffectType.SpawnUnit), effects)) {
       this.spawnUnit(targetUnit);
     }
 
@@ -25,7 +25,7 @@ export class EffectsContext {
       ...dotEffects.map(x => ({ ...x, state: { intervalState: x.interval, remainingPeriod: x.period } } as DotEffect)),
     );
 
-    const healEffect = find(prop("type", EffectType.Heal), effects) as HealEffect;
+    const healEffect = find(propEq("type", EffectType.Heal), effects) as HealEffect;
     if (healEffect) {
       targetUnit.hp = Math.min(targetUnit.hp + healEffect.power, targetUnit.maxHp);
     }

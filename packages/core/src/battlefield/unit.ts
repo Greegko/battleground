@@ -1,4 +1,4 @@
-import { groupBy, head, last, mapObjIndexed, minBy, reduce, sortBy, sum, values, without } from "ramda";
+import { groupBy, head, last, mapObjIndexed, prop, sortBy, sum, values, without } from "ramda";
 
 import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, SeekCondition, Unit } from "../interface";
 import { random } from "../utils";
@@ -32,7 +32,9 @@ export class UnitContext {
 
     const triggerEffects = effects.filter(x => x.state.intervalState === 0);
 
-    this.dmg(unit, triggerEffects);
+    if (triggerEffects.length) {
+      this.dmg(unit, triggerEffects);
+    }
 
     const clearEffects = [];
 
@@ -167,7 +169,7 @@ export class UnitContext {
     if (unit.activeAction.action.projectileId) {
       this.shootProjectile(unit, unit.activeAction.targetUnit);
     } else {
-      if (unit.activeAction.action.hitEffect) {
+      if (unit.activeAction.action.hitEffect && unit.activeAction.targetUnit) {
         this.context.effect.applyEffect(unit.activeAction.action.hitEffect, unit.activeAction.targetUnit);
       }
 
@@ -224,12 +226,12 @@ export class UnitContext {
 
   private seekTarget(unit: Unit, units: Unit[], seekConditions: SeekCondition[]): Unit {
     let filteredUnits = UnitFilter.filterBySeekConditions(units, seekConditions, { team: unit.team });
-
-    return reduce(
-      minBy<Unit>(enemy => getVectorDistance(unit.location, enemy.location)),
-      null,
-      filteredUnits,
+    let targetDistances = filteredUnits.map(
+      target => [getVectorDistance(unit.location, target.location), target] as const,
     );
+    let sorted = sortBy(prop(0), targetDistances);
+
+    return head(sorted)[1];
   }
 
   private shootProjectile(unit: Unit, target: Unit) {
