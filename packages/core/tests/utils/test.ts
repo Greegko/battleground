@@ -3,6 +3,7 @@ import * as util from "util";
 
 import { Battlefield, BattlefieldInit, BattlefieldState, Config } from "../../src";
 import { PartialDeep } from "./partial-deep";
+import { DebugOptions, TestLogger } from "./test-logger";
 
 util.inspect.defaultOptions.depth = 5;
 
@@ -15,20 +16,31 @@ interface TestConfig {
   turn?: number | boolean;
   runUntilFinish?: boolean;
   expectedState: ExpectedState;
+  debug?: DebugOptions;
 }
 
-export function test(testName: string, { config, turn, runUntilFinish, expectedState }: TestConfig) {
+export function test(
+  testName: string,
+  { config, initialState, turn, runUntilFinish, expectedState, debug }: TestConfig,
+) {
   ava.default(testName, t => {
     const battlefield = new Battlefield(config, null);
+    battlefield.init(initialState);
+
+    const logger = new TestLogger(battlefield, debug);
+
     let turnPassed = 0;
     for (let i = 0; i < turn; i++) {
       battlefield.tick();
       turnPassed++;
+      logger.tick();
     }
+
     if (runUntilFinish) {
       while (!battlefield.isFinished) {
         battlefield.tick();
         turnPassed++;
+        logger.tick();
       }
     }
     const gameState = battlefield.getState();
