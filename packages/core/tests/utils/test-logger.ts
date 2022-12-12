@@ -1,4 +1,4 @@
-import { Battlefield } from "@battleground/core";
+import { Battlefield } from "../../src";
 
 export interface DebugOptions {
   logTurnIterations?: number;
