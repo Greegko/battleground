@@ -1,5 +1,5 @@
 import { GlowFilter } from "@pixi/filter-glow";
-import { merge } from "lodash-es";
+import { merge } from "ramda";
 
 import gsap from "gsap";
 import { Graphics, Text } from "pixi.js";

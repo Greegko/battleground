@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
-    "lodash-es": "4.17.21",
+    "ramda": "0.28.0",
     "pixi.js": "7.0.4"
   },
   "devDependencies": {
-    "@types/lodash-es": "4.17.6"
+    "@types/ramda": "0.28.20"
   }
 }

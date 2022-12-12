@@ -1,4 +1,4 @@
-import { pull } from "lodash-es";
+import { without } from "ramda";
 
 import { Vector } from "../utils/vector";
 import { addVector, isZeroVector, subVector } from "../utils/vector";
@@ -27,14 +27,14 @@ export class Player {
 
   hookKeyboardEvents() {
     const trackedKeys = ["w", "s", "a", "d"];
-    const availableKeys = [...trackedKeys];
+    let availableKeys = [...trackedKeys];
 
     let currentDirection: Vector = undefined;
 
     window.addEventListener("keydown", event => {
       if (!availableKeys.includes(event.key)) return;
 
-      pull(availableKeys, event.key);
+      availableKeys = without(availableKeys, [event.key]);
 
       const direction = getVectorFromKeyCode(event.key);
       if (currentDirection) {

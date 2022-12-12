@@ -1,4 +1,4 @@
-import { without } from "lodash-es";
+import { without } from "ramda";
 
 import * as PIXI from "pixi.js";
 import { Application, Container } from "pixi.js";
@@ -48,7 +48,7 @@ export class BattlefieldRenderer {
     data.units.forEach(unit => this.unitAnimation.drawUnitAnimation(unit));
     data.projectiles.forEach(projectile => this.projectileAnimation.drawProjectileAnimation(projectile));
 
-    const removedProjectiles = without(this.lastState.projectiles, ...data.projectiles);
+    const removedProjectiles = without(this.lastState.projectiles, data.projectiles);
     removedProjectiles.forEach(projectile => this.projectileAnimation.removeProjectile(projectile));
 
     this.lastState = {

@@ -1,6 +1,7 @@
-import { groupBy, head, last, map, minBy, random, sortBy, sum, sumBy, without } from "lodash-es";
+import { groupBy, head, last, mapObjIndexed, minBy, reduce, sortBy, sum, values, without } from "ramda";
 
 import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, SeekCondition, Unit } from "../interface";
+import { random } from "../utils";
 import { getUnitCentral } from "../utils/unit";
 import {
   Vector,
@@ -45,7 +46,7 @@ export class UnitContext {
     }
 
     if (clearEffects.length > 0) {
-      unit.effects = without(unit.effects, ...clearEffects);
+      unit.effects = without(unit.effects, clearEffects);
     }
   }
 
@@ -67,7 +68,7 @@ export class UnitContext {
       return;
     }
 
-    const angle = random(-10, 10, false) / 40;
+    const angle = random(-10, 10) / 40;
     unit.moveDirection = rotateBy(unit.moveDirection, angle);
   }
 
@@ -96,7 +97,7 @@ export class UnitContext {
       .filter(x => x);
 
     const closestTarget = last(
-      sortBy(closesUnits, targetUnit => getVectorDistance(unit.location, targetUnit.location)),
+      sortBy(targetUnit => getVectorDistance(unit.location, targetUnit.location), closesUnits),
     );
 
     if (!closestTarget) return;
@@ -130,7 +131,7 @@ export class UnitContext {
     );
 
     const [action, targetUnit] = head(
-      sortBy(actions, ([, targetUnit]) => (targetUnit ? getVectorDistance(unit.location, targetUnit.location) : 0)),
+      sortBy(([, targetUnit]) => (targetUnit ? getVectorDistance(unit.location, targetUnit.location) : 0), actions),
     );
 
     // No valid seek target
@@ -202,15 +203,17 @@ export class UnitContext {
   dmg(targetUnit: Unit, dmgEffects: { dmgType: DmgType; power: number }[]) {
     const armors = targetUnit.effects.filter(x => x.type === EffectType.Armor) as ArmorEffect[];
 
-    const effectsByDmgType = groupBy(dmgEffects, x => x.dmgType);
+    const effectsByDmgType = groupBy(x => x.dmgType, dmgEffects);
 
-    const totalDmgs = map(effectsByDmgType, (effects, dmgType) => {
-      const dmgArmors = armors.filter(x => x.dmgType === dmgType);
-      const totalArmor = sumBy(dmgArmors, "power");
-      const totalDmg = sumBy(effects, "power");
+    const totalDmgs = values(
+      mapObjIndexed((effects, dmgType) => {
+        const dmgArmors = armors.filter(x => x.dmgType === dmgType);
+        const totalArmor = sum(dmgArmors.map(x => x.power));
+        const totalDmg = sum(effects.map(x => x.power));
 
-      return Math.max(0, totalDmg - totalArmor);
-    });
+        return Math.max(0, totalDmg - totalArmor);
+      }, effectsByDmgType),
+    );
 
     const totalDmg = sum(totalDmgs);
 
@@ -222,7 +225,11 @@ export class UnitContext {
   private seekTarget(unit: Unit, units: Unit[], seekConditions: SeekCondition[]): Unit {
     let filteredUnits = UnitFilter.filterBySeekConditions(units, seekConditions, { team: unit.team });
 
-    return minBy(filteredUnits, enemy => getVectorDistance(unit.location, enemy.location));
+    return reduce(
+      minBy<Unit>(enemy => getVectorDistance(unit.location, enemy.location)),
+      null,
+      filteredUnits,
+    );
   }
 
   private shootProjectile(unit: Unit, target: Unit) {

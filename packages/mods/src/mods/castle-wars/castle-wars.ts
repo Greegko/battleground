@@ -1,4 +1,4 @@
-import { merge } from "lodash-es";
+import { merge } from "ramda";
 
 import { AssetManager, BattlefieldInit, Config, Mod, Unit, UnitState, Vector } from "@battleground/core";
 
@@ -32,6 +32,6 @@ export class CastleWarsMod implements Mod {
       effects: unitConfig.effects || [],
     };
 
-    return merge({}, unitConfig, unitState);
+    return merge(unitConfig, unitState);
   }
 }

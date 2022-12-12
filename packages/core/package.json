@@ -3,16 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "test": "concurrently -n core:test,core:build \"npm:test:watch\" \"npm:test:build\"",
+    "test:build": "tsc -p tsconfig.test.json --watch --preserveWatchOutput",
+    "test:watch": "ava --watch",
     "generate-schema": "ts-json-schema-generator --path ./src/interface/unit.ts --strict-tuples --type \"UnitConfig\" -o schemas/unit-config.schema.json"
   },
   "dependencies": {
     "@pixi/filter-glow": "5.0.0",
+    "ava": "4.3.0",
+    "concurrently": "7.6.0",
     "gsap": "3.11.3",
-    "lodash-es": "4.17.21",
-    "pixi.js": "7.0.4"
+    "pixi.js": "7.0.4",
+    "ramda": "0.28.0",
+    "ts-node": "10.9.1",
+    "typescript": "4.9.3"
   },
   "devDependencies": {
-    "@types/lodash-es": "4.17.6",
+    "@types/ramda": "0.28.20",
     "ts-json-schema-generator": "1.1.2"
   }
 }

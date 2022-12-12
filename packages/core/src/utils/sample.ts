@@ -1,6 +1,6 @@
-import { randomInt } from "./random-int";
+import { random } from "./random";
 
 export function sample<T>(array: T[]): T {
   var length = array.length;
-  return array[randomInt(0, length - 1)];
+  return array[random(0, length - 1)];
 }

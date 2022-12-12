@@ -1,4 +1,4 @@
-import { pull } from "lodash-es";
+import { without } from "ramda";
 
 import { Config, Projectile, ResourceManager, Unit } from "../interface";
 import { Vector } from "../utils/vector";
@@ -9,7 +9,7 @@ import { MapContext } from "./map";
 import { SpellsContext } from "./spells";
 import { UnitContext } from "./unit";
 
-interface BattlefieldState {
+export interface BattlefieldState {
   units: Unit[];
   projectiles: Projectile[];
 }
@@ -73,7 +73,7 @@ export class Battlefield {
 
       if (projectile.timeState < 0) {
         this.context.map.landProjectile(projectile);
-        pull(this.context.map.projectiles, projectile);
+        this.context.map.projectiles = without(this.context.map.projectiles, [projectile]);
       }
     }
   }
