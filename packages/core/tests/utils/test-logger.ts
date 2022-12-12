@@ -5,6 +5,7 @@ export interface LoggerOptions {
   logState?: {
     init?: boolean;
     turns?: number[];
+    end?: boolean;
   };
 }
 
@@ -13,7 +14,7 @@ export class TestLogger {
 
   constructor(private battlefield: Battlefield, private config: LoggerOptions) {
     if (config?.logState?.init) {
-      console.log("Init state");
+      console.log("Init");
       console.log(battlefield.getState());
     }
   }
@@ -25,11 +26,16 @@ export class TestLogger {
       console.log("Turn", this.turnPassed);
     }
 
-    if (this.config?.logState?.turns.includes(this.turnPassed)) {
+    if (this.config?.logState?.turns?.includes(this.turnPassed)) {
       console.log("Turn", this.turnPassed);
+      console.log(this.battlefield.getState());
+    }
+
+    if (this.battlefield.isFinished && this.config?.logState?.end) {
+      console.log("End");
       console.log(this.battlefield.getState());
     }
   }
 }
 
-export const basicLoggerConfig = { logTurnIterations: 1, logState: { init: true, turns: [1, 5, 10] } } as LoggerOptions;
+export const basicLoggerConfig = { logTurnIterations: 1, logState: { init: true, end: true } } as LoggerOptions;
