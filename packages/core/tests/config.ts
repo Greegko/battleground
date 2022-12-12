@@ -1,24 +1,66 @@
-import { Action, DmgType, EffectType, Unit, Vector } from "../src";
+import { Action, DmgEffect, DmgType, EffectType, Unit } from "../src";
 
-export const meleeAttack = () =>
+export const dmgEffect = ({
+  dmgType = DmgType.Phisical,
+  power = 10,
+  type = EffectType.Dmg,
+}: Partial<DmgEffect> = {}) => ({ dmgType, power, type });
+
+export const meleeAttack = ({
+  cooldown = 10,
+  speed = 5,
+  distance = 30,
+  seekTargetCondition = ["enemy-team"],
+  hitEffect = [dmgEffect()],
+}: Partial<Action> = {}) =>
   ({
-    cooldown: 10,
-    speed: 5,
-    distance: 30,
-    seekTargetCondition: ["enemy-team"],
-    hitEffect: [{ dmgType: DmgType.Phisical, power: 10, type: EffectType.Dmg }],
+    cooldown,
+    speed,
+    distance,
+    seekTargetCondition,
+    hitEffect,
   } as Action);
 
-export const skeletonUnit = ({ location, team }: { location: Vector; team: number }) =>
+export const rangeAttack = ({
+  cooldown = 10,
+  speed = 5,
+  projectileId = null,
+  projectileSpeed = 10,
+  distance = 100,
+  seekTargetCondition = ["enemy-team"],
+  hitEffect = [dmgEffect()],
+}: Partial<Action> = {}) =>
   ({
-    id: "skeleton",
-    spriteId: null,
+    cooldown,
+    speed,
+    distance,
+    seekTargetCondition,
+    hitEffect,
+    projectileId,
+    projectileSpeed,
+  } as Action);
+
+export const skeletonUnit = ({
+  id = "skeleton",
+  spriteId = null,
+  location = null,
+  size = 20,
+  team = 1,
+  maxHp = 10,
+  hp = 10,
+  moveSpeed = 5,
+  effects = [],
+  actions = [meleeAttack()],
+}: Partial<Unit> = {}) =>
+  ({
+    id,
+    spriteId,
     location,
-    size: 20,
+    size,
     team,
-    maxHp: 10,
-    hp: 10,
-    moveSpeed: 5,
-    effects: [],
-    actions: [meleeAttack()],
+    maxHp,
+    hp,
+    moveSpeed,
+    effects,
+    actions,
   } as Unit);
