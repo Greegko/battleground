@@ -34,7 +34,7 @@ export class Player {
     window.addEventListener("keydown", event => {
       if (!availableKeys.includes(event.key)) return;
 
-      availableKeys = without(availableKeys, [event.key]);
+      availableKeys = without([event.key], availableKeys);
 
       const direction = getVectorFromKeyCode(event.key);
       if (currentDirection) {

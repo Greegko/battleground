@@ -73,7 +73,7 @@ export class Battlefield {
 
       if (projectile.timeState < 0) {
         this.context.map.landProjectile(projectile);
-        this.context.map.projectiles = without(this.context.map.projectiles, [projectile]);
+        this.context.map.projectiles = without([projectile], this.context.map.projectiles);
       }
     }
   }

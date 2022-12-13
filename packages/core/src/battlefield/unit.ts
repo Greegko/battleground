@@ -48,7 +48,7 @@ export class UnitContext {
     }
 
     if (clearEffects.length > 0) {
-      unit.effects = without(unit.effects, clearEffects);
+      unit.effects = without(clearEffects, unit.effects);
     }
   }
 
@@ -231,7 +231,7 @@ export class UnitContext {
     );
     let sorted = sortBy(prop(0), targetDistances);
 
-    return head(sorted)[1];
+    return head(sorted)?.[1];
   }
 
   private shootProjectile(unit: Unit, target: Unit) {
