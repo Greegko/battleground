@@ -1,10 +1,10 @@
 import { GlowFilter } from "@pixi/filter-glow";
-import { mergeRight } from "ramda";
 
 import gsap from "gsap";
 import { Graphics, Text } from "pixi.js";
 
 import { Direction, Unit } from "../interface";
+import { merge } from "../utils";
 import { Vector } from "../utils/vector";
 import { subVector } from "../utils/vector";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
@@ -106,7 +106,7 @@ export class UnitAnimation {
       this.createHealthBar(unit);
     }
 
-    this.unitState.set(unit, mergeRight(oldState, newState));
+    this.unitState.set(unit, merge(oldState, newState));
   }
 
   clearAllUnitsSelection() {
@@ -119,7 +119,7 @@ export class UnitAnimation {
 
     node.filters = [new GlowFilter()];
 
-    this.unitState.set(unit, mergeRight(oldState, { selected: true }));
+    this.unitState.set(unit, merge(oldState, { selected: true }));
   }
 
   unselectUnit(unit: Unit) {
@@ -127,7 +127,7 @@ export class UnitAnimation {
     const oldState = this.unitState.get(unit);
     node.filters = [];
 
-    this.unitState.set(unit, mergeRight(oldState, { selected: false }));
+    this.unitState.set(unit, merge(oldState, { selected: false }));
   }
 
   private createNumberTextAnimation(location: Vector, val: number, color: string) {

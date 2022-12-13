@@ -1,6 +1,4 @@
-import { mergeRight } from "ramda";
-
-import { AssetManager, BattlefieldInit, Config, Mod, Unit, UnitState, Vector } from "@battleground/core";
+import { AssetManager, BattlefieldInit, Config, Mod, Unit, UnitState, Vector, merge } from "@battleground/core";
 
 import { HHAssetManager } from "../../assets/hero-hours/asset-manager";
 import { ResourceManager } from "./resource-manager";
@@ -32,6 +30,6 @@ export class CastleWarsMod implements Mod {
       effects: unitConfig.effects || [],
     };
 
-    return mergeRight(unitConfig, unitState);
+    return merge(unitConfig, unitState);
   }
 }
