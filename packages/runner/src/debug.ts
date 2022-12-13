@@ -6,7 +6,14 @@ export class Debug {
 
   hookGlobalKeys() {
     window.addEventListener("keypress", event => this.nextFrameEvent(event));
+    window.addEventListener("keypress", event => this.printState(event));
     window.addEventListener("keydown", event => this.gamePauseEvent(event));
+  }
+
+  private printState(event: KeyboardEvent) {
+    if (event.key !== "q") return;
+
+    console.log(this.loop.battleField.getState());
   }
 
   private gamePauseEvent(event: KeyboardEvent) {

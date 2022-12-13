@@ -18,7 +18,7 @@ export class Loop {
 
   readonly spellSelection: SpellSelection;
 
-  private battleField: Battlefield;
+  battleField: Battlefield;
 
   private renderer: BattlefieldRenderer;
   private player: Player;
