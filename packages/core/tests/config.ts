@@ -1,7 +1,7 @@
 import { Action, DmgEffect, DmgType, EffectType, Unit } from "../src";
 
 export const dmgEffect = ({
-  dmgType = DmgType.Phisical,
+  dmgType = DmgType.Physical,
   power = 10,
   type = EffectType.Dmg,
 }: Partial<DmgEffect> = {}) => ({ dmgType, power, type });

@@ -202,7 +202,7 @@ export class UnitContext {
     return UnitFilter.filterBySeekConditions(this.units, ["alive", ["in-distance", { distance }]], { targetLocation });
   }
 
-  dmg(targetUnit: Unit, dmgEffects: { dmgType: DmgType; power: number }[]) {
+  dmg(targetUnit: Unit, dmgEffects: { dmgType: DmgType; power: number | [number, number] }[]) {
     const armors = targetUnit.effects.filter(x => x.type === EffectType.Armor) as ArmorEffect[];
 
     const effectsByDmgType = groupBy(x => x.dmgType, dmgEffects);
@@ -211,7 +211,7 @@ export class UnitContext {
       mapObjIndexed((effects, dmgType) => {
         const dmgArmors = armors.filter(x => x.dmgType === dmgType);
         const totalArmor = sum(dmgArmors.map(x => x.power));
-        const totalDmg = sum(effects.map(x => x.power));
+        const totalDmg = sum(effects.map(x => (Array.isArray(x.power) ? random(x.power[0], x.power[1]) : x.power)));
 
         return Math.max(0, totalDmg - totalArmor);
       }, effectsByDmgType),

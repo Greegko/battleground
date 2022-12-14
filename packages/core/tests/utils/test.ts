@@ -8,7 +8,7 @@ import { LoggerOptions, TestLogger } from "./test-logger";
 util.inspect.defaultOptions.depth = 7;
 
 type TestState = PartialDeep<BattlefieldState & { turn: number }>;
-type ExpectedState = TestState | ((state: TestState) => void);
+type ExpectedState = TestState | ((state: TestState, t: ava.ExecutionContext) => void);
 
 interface TestConfig {
   config: Config;
@@ -51,7 +51,7 @@ export function test(
       if (typeof expectedState === "object") {
         t.like({ turn: turnPassed, ...gameState }, expectedState);
       } else {
-        expectedState({ turn: turnPassed, ...gameState });
+        expectedState({ turn: turnPassed, ...gameState }, t);
       }
     };
 

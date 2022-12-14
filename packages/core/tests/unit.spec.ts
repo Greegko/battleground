@@ -29,6 +29,28 @@ test("dmg", {
   expectedState: { units: [{ hp: 0 }, { hp: 10 }] },
 });
 
+test("dmg range", {
+  config: { mapSize: [40, 40], containerNode: null },
+  initialState: {
+    units: [
+      skeletonUnit({
+        location: { x: 0, y: 0 },
+        hp: 10,
+        team: 1,
+        actions: [meleeAttack({ hitEffect: [dmgEffect({ power: 10 })] })],
+      }),
+      skeletonUnit({
+        hp: 10,
+        location: { x: 20, y: 0 },
+        actions: [meleeAttack({ hitEffect: [dmgEffect({ power: [4, 6] })], speed: 1, distance: 20 })],
+        team: 2,
+      }),
+    ],
+  },
+  turn: 2,
+  expectedState: (state, t) => t.true(state.units[0].hp >= 4 && state.units[0].hp <= 6),
+});
+
 test("shoot projectile", {
   config: { mapSize: [100, 20], containerNode: null },
   initialState: {
