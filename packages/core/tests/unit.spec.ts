@@ -1,4 +1,5 @@
-import { dmgEffect, meleeAttack, rangeAttack, skeletonUnit } from "./config";
+import { DmgType } from "../src";
+import { armorEffect, dmgEffect, dotEffect, meleeAttack, rangeAttack, skeletonUnit } from "./config";
 import { test } from "./utils";
 
 test("move", {
@@ -18,13 +19,141 @@ test("dmg", {
       skeletonUnit({ location: { x: 0, y: 0 }, hp: 10, team: 1 }),
       skeletonUnit({
         location: { x: 20, y: 0 },
-        actions: [meleeAttack({ effect: [dmgEffect({ power: 10 })], speed: 1, distance: 20 })],
+        actions: [meleeAttack({ hitEffect: [dmgEffect({ power: 10 })], speed: 1, distance: 20 })],
         team: 2,
       }),
     ],
   },
   turn: 2,
   expectedState: { units: [{ hp: 0 }, { hp: 10 }] },
+});
+
+test("dmg stack attributes", {
+  initialState: {
+    units: [
+      skeletonUnit({ location: { x: 0, y: 0 }, hp: 100, team: 1 }),
+      skeletonUnit({
+        location: { x: 20, y: 0 },
+        actions: [
+          meleeAttack({
+            hitEffect: [dmgEffect({ power: 10 }), dmgEffect({ power: 10 })],
+            speed: 1,
+            distance: 20,
+            cooldown: 10,
+          }),
+        ],
+        team: 2,
+      }),
+    ],
+  },
+  turn: 2,
+  expectedState: { units: [{ hp: 80 }, { hp: 10 }] },
+});
+
+test("armor", {
+  initialState: {
+    units: [
+      skeletonUnit({ location: { x: 0, y: 0 }, hp: 100, team: 1, effects: [armorEffect({ power: 5 })] }),
+      skeletonUnit({
+        location: { x: 20, y: 0 },
+        actions: [
+          meleeAttack({
+            hitEffect: [dmgEffect({ power: 10 })],
+            speed: 1,
+            distance: 20,
+            cooldown: 10,
+          }),
+        ],
+        team: 2,
+      }),
+    ],
+  },
+  turn: 2,
+  expectedState: { units: [{ hp: 95 }, { hp: 10 }] },
+});
+
+test("armor stack attributes", {
+  initialState: {
+    units: [
+      skeletonUnit({
+        location: { x: 0, y: 0 },
+        hp: 100,
+        team: 1,
+        effects: [armorEffect({ power: 5 }), armorEffect({ power: 2 })],
+      }),
+      skeletonUnit({
+        location: { x: 20, y: 0 },
+        actions: [
+          meleeAttack({
+            hitEffect: [dmgEffect({ power: 10 })],
+            speed: 1,
+            distance: 20,
+            cooldown: 10,
+          }),
+        ],
+        team: 2,
+      }),
+    ],
+  },
+  turn: 2,
+  expectedState: { units: [{ hp: 97 }, { hp: 10 }] },
+});
+
+test("different dmg type with armors", {
+  initialState: {
+    units: [
+      skeletonUnit({
+        location: { x: 0, y: 0 },
+        hp: 100,
+        team: 1,
+        effects: [
+          armorEffect({ power: 5, dmgType: DmgType.Fire }),
+          armorEffect({ power: 2, dmgType: DmgType.Physical }),
+        ],
+      }),
+      skeletonUnit({
+        location: { x: 20, y: 0 },
+        actions: [
+          meleeAttack({
+            hitEffect: [dmgEffect({ power: 10, dmgType: DmgType.Fire })],
+            speed: 1,
+            distance: 20,
+            cooldown: 10,
+          }),
+        ],
+        team: 2,
+      }),
+    ],
+  },
+  turn: 2,
+  expectedState: { units: [{ hp: 95 }, { hp: 10 }] },
+});
+
+test("dot dmg apply", {
+  initialState: {
+    units: [
+      skeletonUnit({
+        location: { x: 0, y: 0 },
+        hp: 50,
+        team: 1,
+        actions: [meleeAttack({ hitEffect: [], speed: 1, distance: 20 })],
+      }),
+      skeletonUnit({
+        location: { x: 20, y: 0 },
+        actions: [
+          meleeAttack({
+            hitEffect: [dotEffect({ interval: 1, period: 3, power: 10 })],
+            speed: 1,
+            distance: 20,
+            cooldown: 5000,
+          }),
+        ],
+        team: 2,
+      }),
+    ],
+  },
+  turn: 5,
+  expectedState: { units: [{ hp: 20 }, { hp: 10 }] },
 });
 
 test("dmg range", {
