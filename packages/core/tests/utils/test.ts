@@ -37,7 +37,7 @@ function createPlayableUrl(initialState: BattlefieldInit, seed: string): string 
   const initStateUrlFragment =
     "&initState=" + encodeURIComponent(lzString.compressToBase64(JSON.stringify(initialState)));
 
-  const seedUrlFragment = seed ? "?seed=" + seed : "";
+  const seedUrlFragment = seed ? "&seed=" + seed : "";
 
   return baseUrl + seedUrlFragment + initStateUrlFragment;
 }

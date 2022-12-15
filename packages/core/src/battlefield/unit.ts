@@ -1,6 +1,16 @@
-import { groupBy, head, last, mapObjIndexed, prop, sortBy, sum, values, without } from "ramda";
+import { groupBy, head, last, mapObjIndexed, mergeRight, prop, sortBy, sum, values, without } from "ramda";
 
-import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, SeekCondition, Unit } from "../interface";
+import {
+  ArmorEffect,
+  DmgType,
+  DotEffect,
+  EffectType,
+  Projectile,
+  SeekCondition,
+  Unit,
+  UnitInit,
+  UnitState,
+} from "../interface";
 import { getUnitCentral } from "../utils/unit";
 import {
   Vector,
@@ -62,8 +72,13 @@ export class UnitContext {
     }
   }
 
-  addUnit(unit: Unit) {
-    this.units.push(unit);
+  addUnit(unit: UnitInit) {
+    const initUnitState: UnitState = {
+      actionsCooldowns: new Map(unit.actions.map(action => [action, 0])),
+      effects: unit.effects || [],
+    };
+
+    this.units.push(mergeRight(initUnitState, unit));
   }
 
   moveUnit(unit: Unit) {

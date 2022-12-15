@@ -1,6 +1,6 @@
 import { find, propEq } from "ramda";
 
-import { DmgEffect, DotEffect, Effect, EffectType, HealEffect, Unit, UnitState } from "../interface";
+import { DmgEffect, DotEffect, Effect, EffectType, HealEffect, Unit, UnitSetup } from "../interface";
 import { merge } from "../utils";
 import { Context } from "./context";
 
@@ -36,12 +36,10 @@ export class EffectsContext {
     const unitId = this.context.random.sample(["priest", "steam_dragon", "archer", "skeleton"]);
 
     const spawnedUnit = this.context.resourceManager.getUnitConfig(unitId);
-    const skeletonState: UnitState = {
+    const skeletonState: UnitSetup = {
       location: { x: source.location.x + source.size / 2, y: source.location.y + source.size + 20 },
       hp: spawnedUnit.maxHp,
       team: source.team,
-      effects: spawnedUnit.effects || [],
-      actionsCooldowns: new Map(spawnedUnit.actions.map(action => [action, 0])),
     };
 
     const unit = merge(spawnedUnit, skeletonState);

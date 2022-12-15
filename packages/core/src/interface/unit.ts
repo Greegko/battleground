@@ -69,14 +69,18 @@ export interface UnitConfig {
   moveSpeed?: number;
 }
 
-export interface UnitState {
+export interface UnitSetup extends Partial<UnitConfig> {
   location: Vector;
   hp: number;
   team: number;
+}
+
+export interface UnitState {
   effects: Effect[];
   actionsCooldowns: Map<Action, number>;
   activeAction?: ActionActive;
   moveDirection?: Vector;
 }
 
-export type Unit = UnitConfig & UnitState;
+export type UnitInit = UnitConfig & UnitSetup;
+export type Unit = UnitInit & UnitState;

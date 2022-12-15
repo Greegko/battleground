@@ -1,6 +1,6 @@
 import { without } from "ramda";
 
-import { Config, Projectile, ResourceManager, Unit } from "../interface";
+import { Config, Projectile, ResourceManager, Unit, UnitInit } from "../interface";
 import { Random } from "../utils";
 import { Vector } from "../utils/vector";
 import { Context } from "./context";
@@ -16,7 +16,7 @@ export interface BattlefieldState {
 }
 
 export interface BattlefieldInit {
-  units: Unit[];
+  units: UnitInit[];
 }
 
 export interface UnitSelection {

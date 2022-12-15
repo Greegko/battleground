@@ -1,4 +1,4 @@
-import { AssetManager, BattlefieldInit, Config, Mod, Unit, UnitState, Vector, merge } from "@battleground/core";
+import { AssetManager, BattlefieldInit, Config, Mod, UnitInit, UnitSetup, Vector, merge } from "@battleground/core";
 
 import { HHAssetManager } from "../../assets/hero-hours/asset-manager";
 import { ResourceManager } from "./resource-manager";
@@ -20,15 +20,13 @@ export class CastleWarsMod implements Mod {
     return { units };
   }
 
-  private generateUnit(unitId: string, location: Vector, team: number): Unit {
+  private generateUnit(unitId: string, location: Vector, team: number): UnitInit {
     const unitConfig = this.resourceManager.getUnitConfig(unitId);
 
-    const unitState: UnitState = {
+    const unitState: UnitSetup = {
       location,
       hp: unitConfig.maxHp,
       team,
-      effects: unitConfig.effects || [],
-      actionsCooldowns: new Map(unitConfig.actions.map(action => [action, 0])),
     };
 
     return merge(unitConfig, unitState);
