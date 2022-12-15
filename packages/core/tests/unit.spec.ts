@@ -2,7 +2,6 @@ import { dmgEffect, meleeAttack, rangeAttack, skeletonUnit } from "./config";
 import { test } from "./utils";
 
 test("move", {
-  config: { mapSize: [100, 20], containerNode: null },
   initialState: {
     units: [
       skeletonUnit({ location: { x: 0, y: 0 }, team: 1, moveSpeed: 5 }),
@@ -14,7 +13,6 @@ test("move", {
 });
 
 test("dmg", {
-  config: { mapSize: [40, 20], containerNode: null },
   initialState: {
     units: [
       skeletonUnit({ location: { x: 0, y: 0 }, hp: 10, team: 1 }),
@@ -30,7 +28,6 @@ test("dmg", {
 });
 
 test("dmg range", {
-  config: { mapSize: [40, 40], containerNode: null },
   initialState: {
     units: [
       skeletonUnit({
@@ -52,7 +49,6 @@ test("dmg range", {
 });
 
 test("shoot projectile", {
-  config: { mapSize: [100, 20], containerNode: null },
   initialState: {
     units: [
       skeletonUnit({ location: { x: 0, y: 0 }, hp: 10, team: 1 }),

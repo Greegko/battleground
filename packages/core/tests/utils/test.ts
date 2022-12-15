@@ -1,4 +1,5 @@
 import * as ava from "ava";
+import { max } from "ramda";
 import * as util from "util";
 
 import { Battlefield, BattlefieldInit, BattlefieldState, Config } from "../../src";
@@ -11,7 +12,6 @@ type TestState = PartialDeep<BattlefieldState & { turn: number }>;
 type ExpectedState = TestState | ((state: TestState, t: ava.ExecutionContext) => void);
 
 interface TestConfig {
-  config: Config;
   initialState: BattlefieldInit;
   turn?: number | boolean;
   runUntilFinish?: boolean;
@@ -20,12 +20,21 @@ interface TestConfig {
   createPlayableLink?: boolean;
 }
 
+function getConfig(initialState: BattlefieldInit): Config {
+  const xs = initialState.units.map(x => x.location.x + x.size + 5);
+  const ys = initialState.units.map(x => x.location.y + x.size + 5);
+  const maxX = xs.reduce(max, 0);
+  const maxY = ys.reduce(max, 0);
+
+  return { mapSize: [maxX, maxY], containerNode: null };
+}
+
 export function test(
   testName: string,
-  { config, initialState, turn, runUntilFinish, expectedState, loggerConfig, createPlayableLink }: TestConfig,
+  { initialState, turn, runUntilFinish, expectedState, loggerConfig, createPlayableLink }: TestConfig,
 ) {
   ava.default(testName, t => {
-    const battlefield = new Battlefield(config, null);
+    const battlefield = new Battlefield(getConfig(initialState), null);
     battlefield.init(initialState);
 
     if (createPlayableLink) {
