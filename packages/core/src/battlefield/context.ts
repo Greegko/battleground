@@ -1,4 +1,5 @@
 import { Config, ResourceManager } from "../interface";
+import { Random } from "../utils";
 import { EffectsContext } from "./effects";
 import { ManuallyControlledUnit } from "./manually-controlled-unit";
 import { MapContext } from "./map";
@@ -7,6 +8,7 @@ import { UnitContext } from "./unit";
 
 export type Context = {
   config: Config;
+  random: Random;
   unit: UnitContext;
   effect: EffectsContext;
   manuallyControlledUnit: ManuallyControlledUnit;

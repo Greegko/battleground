@@ -11,9 +11,10 @@ interface GameProperties {
   children: JSX.Element;
 }
 
-const urlParams =  new URLSearchParams(window.location.search)
+const urlParams =  new URLSearchParams(window.location.search);
 const selectedMod = urlParams.get("mod");
 const speed = urlParams.has('speed') ? parseInt(urlParams.get('speed')) : 'requestFrame';
+const seed = urlParams.get('seed');
 
 const mod = {
   castle_wars: new CastleWarsMod(),
@@ -28,8 +29,15 @@ export const Game = ({ children }: GameProperties) => {
     const config: Config = {
       containerNode: containerRef.current,
       mapSize: [window.innerWidth, window.innerHeight],
-      speed
+      speed,
+      seed
     };
+
+    if(!seed) {
+      config.seed = Math.floor(Math.random() * 1_000_000_000).toString();
+      urlParams.set('seed', config.seed);
+      window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
+    }
 
     mod.init().then(() => {
       const loop = new Loop(config, mod);

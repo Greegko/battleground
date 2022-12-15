@@ -34,13 +34,7 @@ export class EffectsContext {
 
   private spawnUnit(source: Unit) {
     const unitId = (() => {
-      const random = Math.random();
-
-      if (random < 0.2) return "priest";
-      if (random < 0.3) return "steam_dragon";
-      if (random < 0.5) return "archer";
-
-      return "skeleton";
+      return this.context.random.sample(["priest", "steam_dragon", "archer", "skeleton"]);
     })();
 
     const spawnedUnit = this.context.resourceManager.getUnitConfig(unitId);

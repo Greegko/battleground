@@ -1,6 +1,7 @@
 import { without } from "ramda";
 
 import { Config, Projectile, ResourceManager, Unit } from "../interface";
+import { Random } from "../utils";
 import { Vector } from "../utils/vector";
 import { Context } from "./context";
 import { EffectsContext } from "./effects";
@@ -37,6 +38,7 @@ export class Battlefield {
       effect: new EffectsContext(this.context),
       spells: new SpellsContext(this.context),
       resourceManager,
+      random: new Random(config.seed),
     } as Context);
   }
 

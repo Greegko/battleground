@@ -1,12 +1,10 @@
 import { groupBy, head, last, mapObjIndexed, prop, sortBy, sum, values, without } from "ramda";
 
 import { ArmorEffect, DmgType, DotEffect, EffectType, Projectile, SeekCondition, Unit } from "../interface";
-import { random } from "../utils";
 import { getUnitCentral } from "../utils/unit";
 import {
   Vector,
   addVector,
-  createRandomVector,
   divVector,
   getVectorDistance,
   invXVector,
@@ -66,11 +64,11 @@ export class UnitContext {
   wander(unit: Unit) {
     if (!unit.moveSpeed) return;
     if (!unit.moveDirection) {
-      unit.moveDirection = createRandomVector();
+      unit.moveDirection = this.context.random.vector();
       return;
     }
 
-    const angle = random(-10, 10) / 40;
+    const angle = this.context.random.int(-10, 10) / 40;
     unit.moveDirection = rotateBy(unit.moveDirection, angle);
   }
 
@@ -194,7 +192,7 @@ export class UnitContext {
 
     if (otherUnitsInDistance.length > 0) {
       const direction = divVector(sumSubVector, otherUnitsInDistance.length);
-      unit.moveDirection = isZeroVector(direction) ? createRandomVector() : direction;
+      unit.moveDirection = isZeroVector(direction) ? this.context.random.vector() : direction;
     }
   }
 
@@ -211,7 +209,9 @@ export class UnitContext {
       mapObjIndexed((effects, dmgType) => {
         const dmgArmors = armors.filter(x => x.dmgType === dmgType);
         const totalArmor = sum(dmgArmors.map(x => x.power));
-        const totalDmg = sum(effects.map(x => (Array.isArray(x.power) ? random(x.power[0], x.power[1]) : x.power)));
+        const totalDmg = sum(
+          effects.map(x => (Array.isArray(x.power) ? this.context.random.int(x.power[0], x.power[1]) : x.power)),
+        );
 
         return Math.max(0, totalDmg - totalArmor);
       }, effectsByDmgType),
