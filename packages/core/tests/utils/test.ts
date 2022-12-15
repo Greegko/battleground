@@ -30,6 +30,18 @@ function getMapSize(initialState: BattlefieldInit): [number, number] {
   return [maxX, maxY];
 }
 
+function createPlayableUrl(initialState: BattlefieldInit, seed: string): string {
+  const lzString = require("lz-string");
+  const baseUrl = "http://localhost:8080?mod=tester";
+
+  const initStateUrlFragment =
+    "&initState=" + encodeURIComponent(lzString.compressToBase64(JSON.stringify(initialState)));
+
+  const seedUrlFragment = seed ? "?seed=" + seed : "";
+
+  return baseUrl + seedUrlFragment + initStateUrlFragment;
+}
+
 export function test(
   testName: string,
   { initialState, turn, runUntilFinish, expectedState, loggerConfig, createPlayableLink, seed }: TestConfig,
@@ -45,16 +57,8 @@ export function test(
     battlefield.init(initialState);
 
     if (createPlayableLink) {
-      const lzString = require("lz-string");
-      const baseUrl = "http://localhost:8080?mod=tester";
-
-      const initStateUrlFragment =
-        "&initState=" + encodeURIComponent(lzString.compressToBase64(JSON.stringify(initialState)));
-
-      const seedUrlFragment = seed ? "?seed=" + seed : "";
-
       console.log("Playable url");
-      console.log(baseUrl + initStateUrlFragment + seedUrlFragment);
+      console.log(createPlayableUrl(initialState, seed));
     }
 
     const logger = new TestLogger(battlefield, loggerConfig);

@@ -11,7 +11,7 @@ const randomTestUnit = ({ location, team }: { location: Vector; team: number }) 
   });
 
 test("same output on provided seed", {
-  seed: "random-game-seed",
+  seed: "deterministic-run-test",
   initialState: {
     units: [
       randomTestUnit({ location: { x: 0, y: 0 }, team: 1 }),
@@ -40,5 +40,5 @@ test("same output on provided seed", {
     ],
   },
   runUntilFinish: true,
-  expectedState: { turn: 100 },
+  expectedState: { turn: 68 },
 });
