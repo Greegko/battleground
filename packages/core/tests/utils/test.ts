@@ -26,7 +26,7 @@ function getConfig(initialState: BattlefieldInit): Config {
   const maxX = xs.reduce(max, 0);
   const maxY = ys.reduce(max, 0);
 
-  return { mapSize: [maxX, maxY], containerNode: null };
+  return { mapSize: [maxX, maxY], containerNode: null, speed: null };
 }
 
 export function test(

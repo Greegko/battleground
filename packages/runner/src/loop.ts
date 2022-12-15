@@ -64,6 +64,10 @@ export class Loop {
     if (!this.isRunning) return;
 
     this.tick();
-    requestAnimationFrame(this.loop);
+    if (this.config.speed === "requestFrame") {
+      requestAnimationFrame(this.loop);
+    } else {
+      setTimeout(this.loop, 1000 / this.config.speed);
+    }
   };
 }

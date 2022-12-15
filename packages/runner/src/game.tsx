@@ -11,7 +11,9 @@ interface GameProperties {
   children: JSX.Element;
 }
 
-const selectedMod = new URLSearchParams(window.location.search).get("mod");
+const urlParams =  new URLSearchParams(window.location.search)
+const selectedMod = urlParams.get("mod");
+const speed = urlParams.has('speed') ? parseInt(urlParams.get('speed')) : 'requestFrame';
 
 const mod = {
   castle_wars: new CastleWarsMod(),
@@ -26,6 +28,7 @@ export const Game = ({ children }: GameProperties) => {
     const config: Config = {
       containerNode: containerRef.current,
       mapSize: [window.innerWidth, window.innerHeight],
+      speed
     };
 
     mod.init().then(() => {
