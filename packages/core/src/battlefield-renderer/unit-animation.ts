@@ -212,7 +212,7 @@ export class UnitAnimation {
       if (
         unit.activeAction &&
         unit.activeAction.speed > 0 &&
-        !unit.activeAction.action.state.cooldown &&
+        unit.actionsCooldowns.get(unit.activeAction.action) === 0 &&
         unit.activeAction.action.animation
       )
         return unit.activeAction.action.animation;

@@ -61,8 +61,9 @@ export class Battlefield {
       unit.moveDirection = undefined;
 
       // this.context.unit.wander(unit);
+      this.context.unit.triggerActionState(unit);
       this.context.unit.seekAndMoveToTarget(unit, aliveUnits);
-      this.context.unit.lockTargetAndAction(unit, aliveUnits);
+      this.context.unit.lockActionWithTarget(unit, aliveUnits);
       this.context.unit.executeAction(unit);
       this.context.unit.separation(unit, aliveUnits);
       this.context.unit.screenBoundaries(unit);

@@ -28,6 +28,7 @@ export class CastleWarsMod implements Mod {
       hp: unitConfig.maxHp,
       team,
       effects: unitConfig.effects || [],
+      actionsCooldowns: new Map(unitConfig.actions.map(action => [action, 0])),
     };
 
     return merge(unitConfig, unitState);

@@ -82,4 +82,5 @@ export const skeletonUnit = ({
     moveSpeed,
     effects,
     actions,
+    actionsCooldowns: new Map(actions.map(action => [action, 0])),
   } as Unit);

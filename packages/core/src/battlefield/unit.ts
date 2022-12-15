@@ -23,6 +23,18 @@ export class UnitContext {
 
   units: Unit[] = [];
 
+  triggerActionState(unit: Unit) {
+    for (let [action, cooldown] of unit.actionsCooldowns.entries()) {
+      if (cooldown > 0) {
+        unit.actionsCooldowns.set(action, cooldown - 1);
+      }
+    }
+
+    if (unit.activeAction) {
+      if (unit.activeAction.speed > 0) --unit.activeAction.speed;
+    }
+  }
+
   triggerDotEffects(unit: Unit) {
     const effects = unit.effects.filter(x => x.type === EffectType.Dot) as DotEffect[];
 
@@ -91,6 +103,7 @@ export class UnitContext {
 
   seekAndMoveToTarget(unit: Unit, units: Unit[]) {
     if (!unit.moveSpeed) return;
+    if (unit.activeAction) return;
 
     const closesUnits = unit.actions
       .map(action => this.seekTarget(unit, units, action.seekTargetCondition))
@@ -102,28 +115,11 @@ export class UnitContext {
 
     if (!closestTarget) return;
 
-    if (
-      unit.activeAction &&
-      getVectorDistance(unit.location, closestTarget.location) < unit.activeAction.action.distance
-    ) {
-      return;
-    }
-
     unit.moveDirection = normVector(subVector(closestTarget.location, unit.location));
   }
 
-  lockTargetAndAction(unit: Unit, units: Unit[]) {
-    if (unit.activeAction) {
-      if (!unit.activeAction.targetUnit) return;
-
-      const distance = getVectorDistance(unit.location, unit.activeAction.targetUnit.location);
-
-      if (distance <= unit.activeAction.action.distance) {
-        return;
-      } else {
-        delete unit.activeAction;
-      }
-    }
+  lockActionWithTarget(unit: Unit, units: Unit[]) {
+    if (unit.activeAction) return;
 
     const actions = unit.actions.map(
       action =>
@@ -137,7 +133,7 @@ export class UnitContext {
     // No valid seek target
     if (targetUnit === undefined) return;
 
-    // No seek condition for the action
+    // No seek condition for the action (target itself)
     if (targetUnit === null) {
       unit.activeAction = { action, speed: action.speed };
       return;
@@ -147,22 +143,29 @@ export class UnitContext {
 
     if (distance <= action.distance) {
       unit.activeAction = { action, speed: action.speed, targetUnit };
+      delete unit.moveDirection;
     }
   }
 
   executeAction(unit: Unit) {
     if (!unit.activeAction) return;
-    if (!unit.activeAction.action.state) {
-      unit.activeAction.action.state = {};
+
+    if (unit.activeAction.targetUnit) {
+      if (unit.activeAction.targetUnit.hp === 0) {
+        delete unit.activeAction;
+        return;
+      }
+
+      const targetDistance = getVectorDistance(unit.location, unit.activeAction.targetUnit.location);
+
+      if (targetDistance > unit.activeAction.action.distance) {
+        delete unit.activeAction;
+        return;
+      }
     }
 
-    if (unit.activeAction.action.state.cooldown > 0) return --unit.activeAction.action.state.cooldown;
-
-    if (unit.activeAction.action.state.cooldown === 0) {
-      delete unit.activeAction.action.state.cooldown;
-    }
-
-    if (unit.activeAction.speed > 0) return --unit.activeAction.speed;
+    if (unit.activeAction.speed > 0) return;
+    if (unit.actionsCooldowns.get(unit.activeAction.action) > 0) return;
 
     if (unit.activeAction.action.projectileId) {
       this.shootProjectile(unit, unit.activeAction.targetUnit);
@@ -176,7 +179,7 @@ export class UnitContext {
       }
     }
 
-    unit.activeAction.action.state.cooldown = unit.activeAction.action.cooldown;
+    unit.actionsCooldowns.set(unit.activeAction.action, unit.activeAction.action.cooldown);
 
     delete unit.activeAction;
   }

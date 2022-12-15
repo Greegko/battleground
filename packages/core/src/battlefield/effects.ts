@@ -33,9 +33,7 @@ export class EffectsContext {
   }
 
   private spawnUnit(source: Unit) {
-    const unitId = (() => {
-      return this.context.random.sample(["priest", "steam_dragon", "archer", "skeleton"]);
-    })();
+    const unitId = this.context.random.sample(["priest", "steam_dragon", "archer", "skeleton"]);
 
     const spawnedUnit = this.context.resourceManager.getUnitConfig(unitId);
     const skeletonState: UnitState = {
@@ -43,6 +41,7 @@ export class EffectsContext {
       hp: spawnedUnit.maxHp,
       team: source.team,
       effects: spawnedUnit.effects || [],
+      actionsCooldowns: new Map(spawnedUnit.actions.map(action => [action, 0])),
     };
 
     const unit = merge(spawnedUnit, skeletonState);

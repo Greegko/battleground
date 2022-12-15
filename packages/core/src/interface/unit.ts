@@ -41,10 +41,6 @@ export type Effect = GenericEffect | HealEffect | DmgEffect | ArmorEffect | DotE
 
 export type Animation = "attack";
 
-export interface ActionState {
-  cooldown?: number;
-}
-
 export interface ActionActive {
   action: Action;
   speed: number;
@@ -56,7 +52,6 @@ export interface Action {
   animation?: Animation;
   cooldown: number;
   speed: number;
-  state?: ActionState;
   effect?: Effect[];
   distance?: number;
   hitEffect?: Effect[];
@@ -79,6 +74,7 @@ export interface UnitState {
   hp: number;
   team: number;
   effects: Effect[];
+  actionsCooldowns: Map<Action, number>;
   activeAction?: ActionActive;
   moveDirection?: Vector;
 }
