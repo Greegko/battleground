@@ -4,7 +4,8 @@
   "description": "",
   "dependencies": {
     "ramda": "0.28.0",
-    "pixi.js": "7.0.4"
+    "pixi.js": "7.0.4",
+    "lz-string": "1.4.4"
   },
   "devDependencies": {
     "@types/ramda": "0.28.20"

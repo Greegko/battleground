@@ -3,9 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Greegko/battleground/issues"
+  },
+  "homepage": "https://battleground.greegko.com",
   "scripts": {
     "build": "npm run build -w packages/runner",
     "start": "npm run serve -w packages/runner",
+    "core:test": "npm run test -w packages/core",
     "core:generate-schema": "npm run generate-schema -w packages/core"
   },
   "workspaces": [
@@ -18,10 +24,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Greegko/battleground.git"
-  },
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Greegko/battleground/issues"
-  },
-  "homepage": "https://battleground.greegko.com"
+  }
 }

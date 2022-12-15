@@ -17,15 +17,26 @@ interface TestConfig {
   runUntilFinish?: boolean;
   expectedState: ExpectedState;
   loggerConfig?: LoggerOptions;
+  createPlayableLink?: boolean;
 }
 
 export function test(
   testName: string,
-  { config, initialState, turn, runUntilFinish, expectedState, loggerConfig }: TestConfig,
+  { config, initialState, turn, runUntilFinish, expectedState, loggerConfig, createPlayableLink }: TestConfig,
 ) {
   ava.default(testName, t => {
     const battlefield = new Battlefield(config, null);
     battlefield.init(initialState);
+
+    if (createPlayableLink) {
+      const lzString = require("lz-string");
+      const URL = "http://localhost:8080?mod=tester&initState=";
+
+      const initState = encodeURIComponent(lzString.compressToBase64(JSON.stringify(initialState)));
+
+      console.log("Playable url");
+      console.log(URL + initState);
+    }
 
     const logger = new TestLogger(battlefield, loggerConfig);
 
@@ -34,6 +45,8 @@ export function test(
       battlefield.tick();
       turnPassed++;
       logger.tick();
+
+      if (battlefield.isFinished) break;
     }
 
     if (runUntilFinish) {
