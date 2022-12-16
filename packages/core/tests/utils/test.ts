@@ -3,6 +3,7 @@ import { max } from "ramda";
 import * as util from "util";
 
 import { Battlefield, BattlefieldInit, BattlefieldState, Config } from "../../src";
+import { createPlayableUrl } from "./create-playable-url";
 import { PartialDeep } from "./partial-deep";
 import { LoggerOptions, TestLogger } from "./test-logger";
 
@@ -28,18 +29,6 @@ function getMapSize(initialState: BattlefieldInit): [number, number] {
   const maxY = ys.reduce(max, 0);
 
   return [maxX, maxY];
-}
-
-function createPlayableUrl(initialState: BattlefieldInit, seed: string): string {
-  const lzString = require("lz-string");
-  const baseUrl = "http://localhost:8080?mod=tester";
-
-  const initStateUrlFragment =
-    "&initState=" + encodeURIComponent(lzString.compressToBase64(JSON.stringify(initialState)));
-
-  const seedUrlFragment = seed ? "&seed=" + seed : "";
-
-  return baseUrl + seedUrlFragment + initStateUrlFragment;
 }
 
 export function test(

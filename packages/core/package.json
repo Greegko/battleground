@@ -6,6 +6,7 @@
     "test": "concurrently -n core:test,core:build \"npm:test:watch\" \"npm:test:build\" --handle-input 1:rs",
     "test:build": "tsc -p tsconfig.test.json --watch --preserveWatchOutput",
     "test:watch": "ava --watch",
+    "create-tester-url": "ts-node -P ./tsconfig.test.json ./create-tester-url",
     "generate-schema": "ts-json-schema-generator --path ./src/interface/unit.ts --strict-tuples --type \"UnitConfig\" -o schemas/unit-config.schema.json",
     "postinstall": "node ./ava-fix-array-like-selector.js"
   },
