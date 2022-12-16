@@ -1,4 +1,4 @@
-import { Action, DmgEffect, DmgType, DotEffect, EffectType, UnitInit } from "../src";
+import { Action, DmgEffect, DmgType, DotEffect, EffectType, UnitInit } from "@battleground/core";
 
 export const dmgEffect = ({ dmgType = DmgType.Physical, power = 10 }: Partial<DmgEffect> = {}) => ({
   type: EffectType.Dmg,

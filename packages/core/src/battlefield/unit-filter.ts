@@ -19,7 +19,7 @@ export class UnitFilter {
     "in-distance": ({ unit, targetLocation }, { distance }) =>
       getVectorDistance(getUnitCentral(unit), targetLocation) <= unit.size / 2 + distance,
     alive: ({ unit }) => unit.hp > 0,
-    dead: ({ unit }) => unit.hp <= 0,
+    dead: ({ unit }) => unit.hp === 0,
     damaged: ({ unit }) => unit.hp < unit.maxHp,
   };
 

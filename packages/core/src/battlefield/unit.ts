@@ -78,7 +78,7 @@ export class UnitContext {
       effects: unit.effects || [],
     };
 
-    this.units.push(mergeRight(initUnitState, unit));
+    this.units.push(mergeRight(unit, initUnitState));
   }
 
   moveUnit(unit: Unit) {
@@ -158,7 +158,6 @@ export class UnitContext {
 
     if (distance <= action.distance) {
       unit.activeAction = { action, speed: action.speed, targetUnit };
-      delete unit.moveDirection;
     }
   }
 
@@ -178,6 +177,8 @@ export class UnitContext {
         return;
       }
     }
+
+    delete unit.moveDirection;
 
     if (unit.activeAction.speed > 0) return;
     if (unit.actionsCooldowns.get(unit.activeAction.action) > 0) return;
