@@ -12,7 +12,6 @@
     "build": "npm run build -w packages/runner",
     "start": "npm run serve -w packages/runner",
     "core:test": "npm run test -w packages/core",
-    "core:create-tester-url": "npm run create-tester-url -w packages/core",
     "core:generate-schema": "npm run generate-schema -w packages/core"
   },
   "workspaces": [
