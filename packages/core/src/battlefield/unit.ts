@@ -120,12 +120,12 @@ export class UnitContext {
     if (!unit.moveSpeed) return;
     if (unit.activeAction) return;
 
-    const closesUnits = unit.actions
+    const closestUnits = unit.actions
       .map(action => this.seekTarget(unit, units, action.seekTargetCondition))
       .filter(x => x);
 
-    const closestTarget = last(
-      sortBy(targetUnit => getVectorDistance(unit.location, targetUnit.location), closesUnits),
+    const closestTarget = head(
+      sortBy(targetUnit => getVectorDistance(unit.location, targetUnit.location), closestUnits),
     );
 
     if (!closestTarget) return;
@@ -135,6 +135,7 @@ export class UnitContext {
 
   lockActionWithTarget(unit: Unit, units: Unit[]) {
     if (unit.activeAction) return;
+    if (unit.actions.length === 0) return;
 
     const actions = unit.actions.map(
       action =>
@@ -142,7 +143,10 @@ export class UnitContext {
     );
 
     const [action, targetUnit] = head(
-      sortBy(([, targetUnit]) => (targetUnit ? getVectorDistance(unit.location, targetUnit.location) : 0), actions),
+      sortBy(
+        ([, targetUnit]) => (targetUnit ? getVectorDistance(unit.location, targetUnit.location) : Infinity),
+        actions,
+      ),
     );
 
     // No valid seek target
@@ -163,9 +167,8 @@ export class UnitContext {
 
   executeAction(unit: Unit) {
     if (!unit.activeAction) return;
-
     if (unit.activeAction.targetUnit) {
-      if (unit.activeAction.targetUnit.hp === 0) {
+      if (!UnitFilter.isUnitActionHasValidTarget(unit, unit.activeAction.targetUnit, unit.activeAction.action)) {
         delete unit.activeAction;
         return;
       }
