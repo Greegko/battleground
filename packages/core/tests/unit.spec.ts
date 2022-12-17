@@ -4,9 +4,11 @@ import {
   createDummyUnit,
   dmgEffect,
   dotEffect,
+  healAction,
   meleeAttackAction,
   priestUnit,
   rangeAttackAction,
+  reviveAction,
   skeletonUnit,
 } from "./config";
 import { test } from "./utils";
@@ -199,4 +201,45 @@ test("shoot projectile", {
   },
   turn: 2,
   expectedState: { projectiles: [{ projectileId: "test-projectile" }] },
+});
+
+test("choose target unit with action which is closer #1 part", {
+  initialState: {
+    units: [
+      createDummyUnit({ location: { x: 0, y: 0 }, team: 1 }),
+
+      createDummyUnit({ location: { x: 20, y: 20 }, team: 2, hp: 10, maxHp: 100 }),
+      createDummyUnit({ location: { x: 20, y: 60 }, team: 2, hp: 0, maxHp: 100 }),
+
+      priestUnit({
+        location: { x: 20, y: 100 },
+        team: 2,
+        actions: [healAction({ cooldown: 1, speed: 1 }), reviveAction({ speed: 1 })],
+      }),
+    ],
+  },
+  turn: 2,
+  expectedState: (state, t) => {
+    t.is(state.units[1].hp, 10);
+    t.is(state.units[2].hp, state.units[2].maxHp);
+  },
+});
+
+test("choose target unit with action which is closer #2 part", {
+  initialState: {
+    units: [
+      createDummyUnit({ location: { x: 0, y: 0 }, team: 1 }),
+
+      createDummyUnit({ location: { x: 20, y: 20 }, team: 2, hp: 10, maxHp: 100 }),
+      createDummyUnit({ location: { x: 20, y: 60 }, team: 2, hp: 0, maxHp: 100 }),
+
+      priestUnit({
+        location: { x: 20, y: 100 },
+        team: 2,
+        actions: [healAction({ cooldown: 1, speed: 1 }), reviveAction({ speed: 1 })],
+      }),
+    ],
+  },
+  turn: 12,
+  expectedState: (state, t) => t.is(state.units[1].hp, 100),
 });

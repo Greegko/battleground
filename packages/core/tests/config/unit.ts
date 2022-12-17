@@ -2,7 +2,7 @@ import { UnitInit } from "../../src";
 import { healAction, meleeAttackAction, rangeAttackAction, reviveAction } from "./action";
 
 export const createDummyUnit = (dummyUnitArgs: Partial<UnitInit> = {}) =>
-  skeletonUnit({ hp: 1000, maxHp: 1000, ...dummyUnitArgs, actions: [] });
+  skeletonUnit({ hp: 1000, maxHp: 1000, ...dummyUnitArgs, actions: [], moveSpeed: 0 });
 
 export const skeletonUnit = ({
   id = "skeleton",

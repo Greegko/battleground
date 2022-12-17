@@ -17,7 +17,7 @@ interface TestConfig {
   initialState: BattlefieldInit;
   turn?: number | boolean;
   runUntilFinish?: boolean;
-  expectedState: ExpectedState;
+  expectedState: ExpectedState | ExpectedState[];
   loggerConfig?: LoggerOptions;
   createPlayableLink?: boolean;
 }
