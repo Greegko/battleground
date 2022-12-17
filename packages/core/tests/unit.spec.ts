@@ -1,5 +1,14 @@
 import { DmgType } from "../src";
-import { armorEffect, dmgEffect, dotEffect, meleeAttack, rangeAttack, skeletonUnit } from "./config";
+import {
+  armorEffect,
+  createDummyUnit,
+  dmgEffect,
+  dotEffect,
+  meleeAttackAction,
+  priestUnit,
+  rangeAttackAction,
+  skeletonUnit,
+} from "./config";
 import { test } from "./utils";
 
 test("move", {
@@ -19,7 +28,7 @@ test("dmg", {
       skeletonUnit({ location: { x: 0, y: 0 }, hp: 10, team: 1 }),
       skeletonUnit({
         location: { x: 20, y: 0 },
-        actions: [meleeAttack({ hitEffect: [dmgEffect({ power: 10 })], speed: 1, distance: 20 })],
+        actions: [meleeAttackAction({ hitEffect: [dmgEffect({ power: 10 })], speed: 1, distance: 20 })],
         team: 2,
       }),
     ],
@@ -35,7 +44,7 @@ test("dmg stack attributes", {
       skeletonUnit({
         location: { x: 20, y: 0 },
         actions: [
-          meleeAttack({
+          meleeAttackAction({
             hitEffect: [dmgEffect({ power: 10 }), dmgEffect({ power: 10 })],
             speed: 1,
             distance: 20,
@@ -57,7 +66,7 @@ test("armor", {
       skeletonUnit({
         location: { x: 20, y: 0 },
         actions: [
-          meleeAttack({
+          meleeAttackAction({
             hitEffect: [dmgEffect({ power: 10 })],
             speed: 1,
             distance: 20,
@@ -84,7 +93,7 @@ test("armor stack attributes", {
       skeletonUnit({
         location: { x: 20, y: 0 },
         actions: [
-          meleeAttack({
+          meleeAttackAction({
             hitEffect: [dmgEffect({ power: 10 })],
             speed: 1,
             distance: 20,
@@ -114,7 +123,7 @@ test("different dmg type with armors", {
       skeletonUnit({
         location: { x: 20, y: 0 },
         actions: [
-          meleeAttack({
+          meleeAttackAction({
             hitEffect: [dmgEffect({ power: 10, dmgType: DmgType.Fire })],
             speed: 1,
             distance: 20,
@@ -136,12 +145,12 @@ test("dot dmg apply", {
         location: { x: 0, y: 0 },
         hp: 50,
         team: 1,
-        actions: [meleeAttack({ hitEffect: [], speed: 1, distance: 20 })],
+        actions: [meleeAttackAction({ hitEffect: [], speed: 1, distance: 20 })],
       }),
       skeletonUnit({
         location: { x: 20, y: 0 },
         actions: [
-          meleeAttack({
+          meleeAttackAction({
             hitEffect: [dotEffect({ interval: 1, period: 3, power: 10 })],
             speed: 1,
             distance: 20,
@@ -163,12 +172,12 @@ test("dmg range", {
         location: { x: 0, y: 0 },
         hp: 10,
         team: 1,
-        actions: [meleeAttack({ hitEffect: [dmgEffect({ power: 10 })] })],
+        actions: [meleeAttackAction({ hitEffect: [dmgEffect({ power: 10 })] })],
       }),
       skeletonUnit({
         hp: 10,
         location: { x: 20, y: 0 },
-        actions: [meleeAttack({ hitEffect: [dmgEffect({ power: [4, 6] })], speed: 1, distance: 20 })],
+        actions: [meleeAttackAction({ hitEffect: [dmgEffect({ power: [4, 6] })], speed: 1, distance: 20 })],
         team: 2,
       }),
     ],
@@ -183,7 +192,7 @@ test("shoot projectile", {
       skeletonUnit({ location: { x: 0, y: 0 }, hp: 10, team: 1 }),
       skeletonUnit({
         location: { x: 80, y: 0 },
-        actions: [rangeAttack({ speed: 1, distance: 80, projectileId: "test-projectile" })],
+        actions: [rangeAttackAction({ speed: 1, distance: 80, projectileId: "test-projectile" })],
         team: 2,
       }),
     ],

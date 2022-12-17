@@ -55,7 +55,7 @@
         "seekTargetCondition": ["dead", "same-team"],
         "distance": 100,
         "cooldown": 500,
-        "speed": 60,
+        "speed": 120,
         "hitEffect": [{ "type": "revive" }]
       }
     ],

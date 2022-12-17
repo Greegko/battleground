@@ -1,13 +1,14 @@
 import { Vector } from "../src";
-import { dmgEffect, meleeAttack, skeletonUnit } from "./config";
+import { dmgEffect, meleeAttackAction, skeletonUnit } from "./config";
 import { test } from "./utils";
 
 const randomTestUnit = ({ location, team }: { location: Vector; team: number }) =>
   skeletonUnit({
     location,
-    hp: 1000,
+    hp: 200,
+    maxHp: 200,
     team,
-    actions: [meleeAttack({ hitEffect: [dmgEffect({ power: [1, 100] })], cooldown: 1, speed: 1 })],
+    actions: [meleeAttackAction({ hitEffect: [dmgEffect({ power: [1, 100] })], cooldown: 1, speed: 1 })],
   });
 
 test("same output on provided seed", {
@@ -40,5 +41,5 @@ test("same output on provided seed", {
     ],
   },
   runUntilFinish: true,
-  expectedState: { turn: 68 },
+  expectedState: { turn: 28 },
 });
