@@ -1,4 +1,4 @@
-import { groupBy, head, last, mapObjIndexed, mergeRight, prop, sortBy, sum, values, without } from "ramda";
+import { clone, groupBy, head, mapObjIndexed, mergeRight, prop, sortBy, sum, values, without } from "ramda";
 
 import {
   ArmorEffect,
@@ -73,13 +73,15 @@ export class UnitContext {
   }
 
   addUnit(unit: UnitInit) {
+    const unitClone = clone(unit);
+
     const initUnitState: UnitState = {
-      actionsCooldowns: new Map(unit.actions.map(action => [action, 0])),
-      effects: unit.effects || [],
-      hp: unit.hp ?? unit.maxHp,
+      actionsCooldowns: new Map(unitClone.actions.map(action => [action, 0])),
+      effects: unitClone.effects || [],
+      hp: unitClone.hp ?? unitClone.maxHp,
     };
 
-    this.units.push(mergeRight(unit, initUnitState));
+    this.units.push(mergeRight(unitClone, initUnitState));
   }
 
   moveUnit(unit: Unit) {
