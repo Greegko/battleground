@@ -15,6 +15,7 @@ const urlParams =  new URLSearchParams(window.location.search);
 const selectedMod = urlParams.get("mod");
 const speed = urlParams.has('speed') ? parseInt(urlParams.get('speed')) : 'requestFrame';
 const seed = urlParams.get('seed');
+const tick = urlParams.get('tick');
 
 const mod = {
   castle_wars: new CastleWarsMod(),
@@ -46,6 +47,11 @@ export const Game = ({ children }: GameProperties) => {
       debug.hookGlobalKeys();
 
       loop.init();
+      
+      if(tick) {
+        loop.jumpToTick(parseInt(tick));
+      }
+
       loop.start();
 
       setLoop(loop);

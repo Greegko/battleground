@@ -11,8 +11,6 @@ export interface LoggerOptions {
 }
 
 export class TestLogger {
-  private turnPassed = 0;
-
   constructor(private battlefield: Battlefield, private config: LoggerOptions) {
     if (config?.logState?.init) {
       console.log("Init");
@@ -21,27 +19,28 @@ export class TestLogger {
   }
 
   tick() {
-    this.turnPassed++;
+    const state = this.battlefield.getState();
 
-    if (this.config?.logTurnIterations && this.config?.logTurnIterations % this.turnPassed) {
-      console.log("Turn", this.turnPassed);
+    if (this.config?.logTurnIterations && this.config?.logTurnIterations % state.tick) {
+      console.log("Turn", state.tick);
     }
 
-    if (this.config?.logState?.turns?.includes(this.turnPassed)) {
-      console.log("Turn", this.turnPassed);
-      console.log(this.battlefield.getState());
+    if (this.config?.logState?.turns?.includes(state.tick)) {
+      console.log("Turn", state.tick);
+      console.log(state);
     }
 
     if (this.battlefield.isFinished && this.config?.logState?.end) {
       console.log("End");
-      console.log(this.battlefield.getState());
+      console.log(state);
     }
   }
 
   testEnd() {
+    const state = this.battlefield.getState();
     if (this.config?.logState?.testEnd) {
-      console.log("Test End - Turn", this.turnPassed);
-      console.log(this.battlefield.getState());
+      console.log("Test End - Turn", state.tick);
+      console.log(state);
     }
   }
 }

@@ -52,10 +52,8 @@ export function test(
 
     const logger = new TestLogger(battlefield, loggerConfig);
 
-    let turnPassed = 0;
     for (let i = 0; i < turn; i++) {
       battlefield.tick();
-      turnPassed++;
       logger.tick();
 
       if (battlefield.isFinished) break;
@@ -64,7 +62,6 @@ export function test(
     if (runUntilFinish) {
       while (!battlefield.isFinished) {
         battlefield.tick();
-        turnPassed++;
         logger.tick();
       }
     }
@@ -74,9 +71,9 @@ export function test(
     const gameState = battlefield.getState();
     const testExpectedState = (expectedState: ExpectedState) => {
       if (typeof expectedState === "object") {
-        t.like({ turn: turnPassed, ...gameState }, expectedState);
+        t.like(gameState, expectedState);
       } else {
-        expectedState({ turn: turnPassed, ...gameState }, t);
+        expectedState(gameState, t);
       }
     };
 

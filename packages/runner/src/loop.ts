@@ -39,6 +39,12 @@ export class Loop {
     );
   }
 
+  jumpToTick(tick: number) {
+    for (let i = 0; i < tick; i++) {
+      this.battleField.tick();
+    }
+  }
+
   stop() {
     this.isRunning = false;
   }

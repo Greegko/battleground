@@ -1,13 +1,14 @@
 import { without } from "ramda";
 
 import * as PIXI from "pixi.js";
-import { Application, Container } from "pixi.js";
+import { Application, Container, Text } from "pixi.js";
 
 import { AssetManager, Config, Projectile, Unit } from "../interface";
 import { ProjectileAnimation } from "./projectile-animation";
 import { UnitAnimation } from "./unit-animation";
 
 export interface SceneState {
+  tick: number;
   units: Unit[];
   projectiles: Projectile[];
 }
@@ -18,6 +19,8 @@ export class BattlefieldRenderer {
 
   projectileAnimation: ProjectileAnimation;
   unitAnimation: UnitAnimation;
+
+  tickerTextNode = new Text("", { fill: "white", fontSize: 12 });
 
   constructor(config: Config, public assetManager: AssetManager) {
     this.application = new Application({
@@ -33,9 +36,10 @@ export class BattlefieldRenderer {
     this.unitAnimation = new UnitAnimation(this);
 
     this.application.stage.addChild(this.container);
+    this.container.addChild(this.tickerTextNode);
   }
 
-  private lastState: SceneState = { units: [], projectiles: [] };
+  private lastState: SceneState = { tick: 0, units: [], projectiles: [] };
 
   selectUnits(units: Unit[]): void {
     this.unitAnimation.clearAllUnitsSelection();
@@ -43,6 +47,7 @@ export class BattlefieldRenderer {
   }
 
   renderScene(data: SceneState) {
+    this.updateTickerText();
     this.application.ticker.update(0);
 
     data.units.forEach(unit => this.unitAnimation.drawUnitAnimation(unit));
@@ -52,9 +57,14 @@ export class BattlefieldRenderer {
     removedProjectiles.forEach(projectile => this.projectileAnimation.removeProjectile(projectile));
 
     this.lastState = {
+      tick: data.tick,
       units: [...data.units],
       projectiles: [...data.projectiles],
     };
+  }
+
+  updateTickerText() {
+    this.tickerTextNode.text = this.lastState.tick;
   }
 
   private registerPixiInspector() {

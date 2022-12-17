@@ -11,6 +11,7 @@ import { SpellsContext } from "./spells";
 import { UnitContext } from "./unit";
 
 export interface BattlefieldState {
+  tick: number;
   units: Unit[];
   projectiles: Projectile[];
 }
@@ -26,6 +27,8 @@ export interface UnitSelection {
 
 export class Battlefield {
   private context: Context;
+
+  private ticker: number = 0;
 
   constructor(config: Config, resourceManager: ResourceManager) {
     this.context = {} as Context;
@@ -47,6 +50,7 @@ export class Battlefield {
   }
 
   tick() {
+    this.ticker += 1;
     const controlledUnit = this.context.manuallyControlledUnit.controlledUnit;
 
     if (controlledUnit) {
@@ -91,6 +95,7 @@ export class Battlefield {
 
   getState(): BattlefieldState {
     return {
+      tick: this.ticker,
       units: this.context.unit.units,
       projectiles: this.context.map.projectiles,
     };

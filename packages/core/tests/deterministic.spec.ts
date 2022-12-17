@@ -41,5 +41,5 @@ test("same output on provided seed", {
     ],
   },
   runUntilFinish: true,
-  expectedState: { turn: 28 },
+  expectedState: { tick: 28 },
 });
