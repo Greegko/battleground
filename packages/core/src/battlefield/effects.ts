@@ -38,7 +38,6 @@ export class EffectsContext {
     const spawnedUnit = this.context.resourceManager.getUnitConfig(unitId);
     const skeletonState: UnitSetup = {
       location: { x: source.location.x + source.size / 2, y: source.location.y + source.size + 20 },
-      hp: spawnedUnit.maxHp,
       team: source.team,
     };
 

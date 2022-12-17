@@ -76,6 +76,7 @@ export class UnitContext {
     const initUnitState: UnitState = {
       actionsCooldowns: new Map(unit.actions.map(action => [action, 0])),
       effects: unit.effects || [],
+      hp: unit.hp ?? unit.maxHp,
     };
 
     this.units.push(mergeRight(unit, initUnitState));

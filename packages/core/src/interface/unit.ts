@@ -71,11 +71,12 @@ export interface UnitConfig {
 
 export interface UnitSetup extends Partial<UnitConfig> {
   location: Vector;
-  hp: number;
   team: number;
+  hp?: number;
 }
 
 export interface UnitState {
+  hp: number;
   effects: Effect[];
   actionsCooldowns: Map<Action, number>;
   activeAction?: ActionActive;
