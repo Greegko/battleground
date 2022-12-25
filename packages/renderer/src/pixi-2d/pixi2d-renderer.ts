@@ -11,15 +11,13 @@ import { ProjectileAnimation } from "./projectile-animation";
 import { UnitAnimation } from "./unit-animation";
 
 export class Pixi2DRenderer implements BattlefieldRenderer {
-  application: Application;
   container: Container = new Container();
+  assetManager: AssetManager;
 
-  public assetManager: AssetManager;
-
-  projectileAnimation: ProjectileAnimation;
-  unitAnimation: UnitAnimation;
-
-  tickerTextNode = new Text("", { fill: "white", fontSize: 12 });
+  private projectileAnimation: ProjectileAnimation;
+  private unitAnimation: UnitAnimation;
+  private application: Application;
+  private tickerTextNode = new Text("", { fill: "white", fontSize: 12 });
 
   init(config: BattlefieldRendererConfig & BattlefieldConfig, assetManager: AssetManager) {
     this.assetManager = assetManager;
