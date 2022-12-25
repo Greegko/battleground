@@ -38,7 +38,6 @@ export function test(
   ava.default(testName, t => {
     const config = {
       mapSize: getMapSize(initialState),
-      containerNode: null,
       speed: null,
       seed: seed || Math.random().toString(),
     } as BattlefieldConfig;
