@@ -1,10 +1,11 @@
-import { Battlefield, BattlefieldConfig, Player } from "@battleground/core";
+import { Battlefield, BattlefieldConfig } from "@battleground/core";
 import { Mod } from "@battleground/mods";
 import {
   AssetManager,
   BattlefieldRenderer,
   BattlefieldRendererConfig,
   Pixi2DRenderer,
+  Player,
   SpellSelection,
 } from "@battleground/renderer";
 

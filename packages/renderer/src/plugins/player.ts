@@ -1,7 +1,6 @@
 import { without } from "ramda";
 
-import { Vector } from "../utils/vector";
-import { addVector, isZeroVector, subVector } from "../utils/vector";
+import { Vector, addVector, isZeroVector, subVector } from "@battleground/core";
 
 function getVectorFromKeyCode(code: string): Vector {
   switch (code) {

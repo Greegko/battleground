@@ -93,6 +93,10 @@ export class Battlefield {
     this.context.manuallyControlledUnit.setMoveDirection(moveDirection);
   }
 
+  get spellsContext(): SpellsContext {
+    return this.context.spells;
+  }
+
   getState(): BattlefieldState {
     return {
       tick: this.ticker,
@@ -105,9 +109,5 @@ export class Battlefield {
     const actionableUnits = this.context.unit.units.filter(x => x.hp > 0);
 
     return actionableUnits.every((x, _index, array) => x.team === array[0].team);
-  }
-
-  get spellsContext(): SpellsContext {
-    return this.context.spells;
   }
 }
