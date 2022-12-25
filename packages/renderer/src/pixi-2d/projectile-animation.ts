@@ -1,9 +1,9 @@
 import { Sprite } from "pixi.js";
 
-import { Projectile } from "../interface";
-import { multVector, normVector, subVector } from "../utils/vector";
+import { Projectile, multVector, normVector, subVector } from "@battleground/core";
+
+import { BattlefieldRenderer } from "../interfaces/battlefield-renderer";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
-import { BattlefieldRenderer } from "./battlefield-renderer";
 
 export class ProjectileAnimation {
   constructor(private renderer: BattlefieldRenderer) {}

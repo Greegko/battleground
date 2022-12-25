@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Config } from "@battleground/core";
+import { BattlefieldConfig } from "@battleground/core";
 import { CastleWarsMod, TesterMod } from "@battleground/mods";
+import { BattlefieldRendererConfig } from "@battleground/renderer";
 
 import { LoopContext } from "./controls/core";
 import { Debug } from "./debug";
@@ -27,7 +28,7 @@ export const Game = ({ children }: GameProperties) => {
   const containerRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
-    const config: Config = {
+    const config: BattlefieldConfig & BattlefieldRendererConfig = {
       containerNode: containerRef.current,
       mapSize: [window.innerWidth, window.innerHeight],
       speed,

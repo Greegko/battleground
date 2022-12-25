@@ -2,7 +2,7 @@ import * as ava from "ava";
 import { max } from "ramda";
 import * as util from "util";
 
-import { Battlefield, BattlefieldInit, BattlefieldState, Config } from "../../src";
+import { Battlefield, BattlefieldConfig, BattlefieldInit, BattlefieldState } from "../../src";
 import { createPlayableUrl } from "./create-playable-url";
 import { PartialDeep } from "./partial-deep";
 import { LoggerOptions, TestLogger } from "./test-logger";
@@ -41,7 +41,7 @@ export function test(
       containerNode: null,
       speed: null,
       seed: seed || Math.random().toString(),
-    } as Config;
+    } as BattlefieldConfig;
     const battlefield = new Battlefield(config, null);
     battlefield.init(initialState);
 

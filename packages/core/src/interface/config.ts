@@ -1,6 +1,5 @@
-export type Config = {
+export type BattlefieldConfig = {
   mapSize: [number, number];
-  containerNode: HTMLDivElement;
   speed: number | "requestFrame";
   seed?: string;
 };

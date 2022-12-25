@@ -1,10 +1,8 @@
 import { Graphics } from "pixi.js";
 
-import { Battlefield } from "../battlefield";
-import { BattlefieldRenderer } from "../battlefield-renderer";
-import { SpellID } from "../battlefield/spells";
-import { Unit } from "../interface";
-import { Vector } from "../utils/vector";
+import { Battlefield, SpellID, Unit, Vector } from "@battleground/core";
+
+import { BattlefieldRenderer } from "../interfaces/battlefield-renderer";
 
 export class SpellSelection {
   constructor(private renderer: BattlefieldRenderer, private battlefield: Battlefield) {}

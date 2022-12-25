@@ -1,6 +1,8 @@
-import { AssetManager, BattlefieldInit, Config, Mod } from "@battleground/core";
+import { BattlefieldConfig, BattlefieldInit } from "@battleground/core";
+import { AssetManager } from "@battleground/renderer";
 
 import { HHAssetManager } from "../../assets/hero-hours/asset-manager";
+import { Mod } from "../../interface";
 import { ResourceManager } from "../castle-wars/resource-manager";
 import { testerConfig } from "./tester-config";
 
@@ -31,7 +33,7 @@ export class TesterMod implements Mod {
     }
   }
 
-  battlefieldInit(config: Config): BattlefieldInit {
+  battlefieldInit(config: BattlefieldConfig): BattlefieldInit {
     const queryParams = new URLSearchParams(window.location.search);
     const source = queryParams.get("initSource");
 

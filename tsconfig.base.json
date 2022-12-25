@@ -16,7 +16,9 @@
       "@battleground/core": ["./packages/core/src"],
       "@battleground/core/*": ["./packages/core/src/*"],
       "@battleground/mods": ["./packages/mods/src"],
-      "@battleground/mods/*": ["./packages/mods/src/*"]
+      "@battleground/mods/*": ["./packages/mods/src/*"],
+      "@battleground/renderer": ["./packages/renderer/src"],
+      "@battleground/renderer/*": ["./packages/renderer/src/*"]
     }
   }
 }

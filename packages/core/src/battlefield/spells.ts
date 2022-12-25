@@ -1,14 +1,8 @@
-import { DmgType, Effect, EffectType, SeekCondition, Unit } from "../interface";
+import { DmgType, EffectType, Unit } from "../interface";
+import { Spell, SpellID } from "../interface/spell";
 import { Vector } from "../utils/vector";
 import { Context } from "./context";
 import { UnitFilter } from "./unit-filter";
-
-export interface Spell {
-  seekConditions: SeekCondition[];
-  effects: Effect[];
-}
-
-export type SpellID = string;
 
 export class SpellsContext {
   constructor(private context: Context) {}

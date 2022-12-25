@@ -1,16 +1,17 @@
+import { Battlefield, BattlefieldConfig, Player } from "@battleground/core";
+import { Mod } from "@battleground/mods";
 import {
   AssetManager,
-  Battlefield,
   BattlefieldRenderer,
-  Config,
-  Mod,
-  Player,
+  BattlefieldRendererConfig,
+  Pixi2DRenderer,
   SpellSelection,
-} from "@battleground/core";
+} from "@battleground/renderer";
 
 export class Loop {
-  constructor(private config: Config, private mod: Mod) {
-    this.renderer = new BattlefieldRenderer(config, mod.assetManager);
+  constructor(private config: BattlefieldConfig & BattlefieldRendererConfig, private mod: Mod) {
+    this.renderer = new Pixi2DRenderer();
+    this.renderer.init(config, mod.assetManager);
     this.battleField = new Battlefield(config, mod.resourceManager);
     this.player = new Player();
     this.spellSelection = new SpellSelection(this.renderer, this.battleField);

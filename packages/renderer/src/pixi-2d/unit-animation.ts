@@ -3,12 +3,10 @@ import { GlowFilter } from "@pixi/filter-glow";
 import gsap from "gsap";
 import { Graphics, Text } from "pixi.js";
 
-import { Direction, Unit } from "../interface";
-import { merge } from "../utils";
-import { Vector } from "../utils/vector";
-import { subVector } from "../utils/vector";
+import { Direction, Unit, Vector, merge, subVector } from "@battleground/core";
+
+import { BattlefieldRenderer } from "../interfaces/battlefield-renderer";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
-import { BattlefieldRenderer } from "./battlefield-renderer";
 
 type AnimationState = "idle" | "move" | "attack" | "dead";
 

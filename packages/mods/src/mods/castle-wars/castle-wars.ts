@@ -1,6 +1,8 @@
-import { AssetManager, BattlefieldInit, Config, Mod, UnitInit, UnitSetup, Vector, merge } from "@battleground/core";
+import { BattlefieldConfig, BattlefieldInit, UnitInit, UnitSetup, Vector, merge } from "@battleground/core";
+import { AssetManager } from "@battleground/renderer";
 
 import { HHAssetManager } from "../../assets/hero-hours/asset-manager";
+import { Mod } from "../../interface";
 import { ResourceManager } from "./resource-manager";
 
 export class CastleWarsMod implements Mod {
@@ -11,7 +13,7 @@ export class CastleWarsMod implements Mod {
     return this.assetManager.init();
   }
 
-  battlefieldInit(config: Config): BattlefieldInit {
+  battlefieldInit(config: BattlefieldConfig): BattlefieldInit {
     const base1 = { x: config.mapSize[0] / 20, y: config.mapSize[1] / 2 - 50 };
     const base2 = { x: (config.mapSize[0] / 20) * 18, y: config.mapSize[1] / 2 - 50 };
 

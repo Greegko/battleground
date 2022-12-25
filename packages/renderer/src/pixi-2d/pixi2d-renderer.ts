@@ -3,26 +3,27 @@ import { without } from "ramda";
 import * as PIXI from "pixi.js";
 import { Application, Container, Text } from "pixi.js";
 
-import { AssetManager, Config, Projectile, Unit } from "../interface";
+import { BattlefieldConfig, Unit } from "@battleground/core";
+
+import { AssetManager, BattlefieldRendererConfig, SceneState } from "../interfaces";
+import { BattlefieldRenderer } from "../interfaces/battlefield-renderer";
 import { ProjectileAnimation } from "./projectile-animation";
 import { UnitAnimation } from "./unit-animation";
 
-export interface SceneState {
-  tick: number;
-  units: Unit[];
-  projectiles: Projectile[];
-}
-
-export class BattlefieldRenderer {
+export class Pixi2DRenderer implements BattlefieldRenderer {
   application: Application;
   container: Container = new Container();
+
+  public assetManager: AssetManager;
 
   projectileAnimation: ProjectileAnimation;
   unitAnimation: UnitAnimation;
 
   tickerTextNode = new Text("", { fill: "white", fontSize: 12 });
 
-  constructor(config: Config, public assetManager: AssetManager) {
+  init(config: BattlefieldRendererConfig & BattlefieldConfig, assetManager: AssetManager) {
+    this.assetManager = assetManager;
+
     this.application = new Application({
       width: config.mapSize[0],
       height: config.mapSize[1],

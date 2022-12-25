@@ -1,6 +1,6 @@
 import { Application, Assets, Sprite, Spritesheet } from "pixi.js";
 
-import { AssetManager, SpriteConfig } from "@battleground/core";
+import { AssetManager, SpriteConfig } from "@battleground/renderer";
 
 // @ts-ignore
 import sprite_json from "./assets.json";

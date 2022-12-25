@@ -1,6 +1,6 @@
 import { without } from "ramda";
 
-import { Config, Projectile, ResourceManager, Unit, UnitInit } from "../interface";
+import { BattlefieldConfig, Projectile, ResourceManager, Unit, UnitInit } from "../interface";
 import { Random } from "../utils";
 import { Vector } from "../utils/vector";
 import { Context } from "./context";
@@ -30,7 +30,7 @@ export class Battlefield {
 
   private ticker: number = 0;
 
-  constructor(config: Config, resourceManager: ResourceManager) {
+  constructor(config: BattlefieldConfig, resourceManager: ResourceManager) {
     this.context = {} as Context;
 
     Object.assign(this.context, {
