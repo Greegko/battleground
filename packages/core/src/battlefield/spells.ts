@@ -20,6 +20,10 @@ export class SpellsContext {
       seekConditions: ["enemy-team", "alive", ["in-distance", { distance: 100 }]],
       addEffects: [{ type: EffectType.Armor, dmgType: DmgType.Physical, power: -10 }],
     },
+    lightning: {
+      seekConditions: ["enemy-team", "alive", ["in-distance", { distance: 20 }], "closest-unit"],
+      effects: [{ type: EffectType.Dmg, dmgType: DmgType.Pure, power: 1000 }],
+    },
   };
 
   getTargetUnits(spellId: SpellID, targetLocation: Vector): Unit[] {

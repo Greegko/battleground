@@ -6,6 +6,7 @@ export type SeekCondition =
   | "dead"
   | "same-team"
   | "damaged"
+  | "closest-unit"
   | ["in-distance", { distance: number }];
 
 export enum DmgType {
