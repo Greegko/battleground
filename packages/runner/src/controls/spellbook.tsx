@@ -49,7 +49,7 @@ export const SpellBook = () => {
           <div className="spell" onClick={() => startSpellCasting("heal")}>
             <Asset id="icons/spells/hearth" />
           </div>
-          <div className="spell inactive">
+          <div className="spell" onClick={() => startSpellCasting("shieldBreak")}>
             <Asset id="icons/spells/shield_break" />
           </div>
           <div className="spell inactive">

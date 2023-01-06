@@ -16,6 +16,10 @@ export class SpellsContext {
       seekConditions: ["enemy-team", "alive", ["in-distance", { distance: 100 }]],
       effects: [{ type: EffectType.Dmg, dmgType: DmgType.Pure, power: 100 }],
     },
+    shieldBreak: {
+      seekConditions: ["enemy-team", "alive", ["in-distance", { distance: 100 }]],
+      addEffects: [{ type: EffectType.Armor, dmgType: DmgType.Physical, power: -10 }],
+    },
   };
 
   getTargetUnits(spellId: SpellID, targetLocation: Vector): Unit[] {
@@ -37,7 +41,13 @@ export class SpellsContext {
       ...spellContext,
     });
 
-    targets.forEach(targetUnit => this.context.effect.applyEffect(spell.effects, targetUnit));
+    if (spell.effects) {
+      targets.forEach(targetUnit => this.context.effect.applyEffect(spell.effects, targetUnit));
+    }
+
+    if (spell.addEffects) {
+      targets.forEach(targetUnit => (targetUnit.effects = [...targetUnit.effects, ...spell.addEffects]));
+    }
   }
 
   getSpellRange(spellId: SpellID): number {
