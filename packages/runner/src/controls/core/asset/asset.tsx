@@ -12,7 +12,7 @@ export const Asset = ({ id }: AssetProps) => {
   const [src, setSrc] = useState(undefined);
 
   useEffect(() => {
-    loop.assetManager.getAsset(id).then((base64) => setSrc(base64));
+    loop.assetManager.getAssetAsBase64(id).then((base64) => setSrc(base64));
   }, [id]);
 
   if(!src) return null;

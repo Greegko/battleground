@@ -36,7 +36,8 @@ export class HHAssetManager implements AssetManager {
     };
   }
 
-  getAsset(assetId: string): Promise<string> {
+
+  getAssetAsBase64(assetId: string): Promise<string> {
     const spellSheetTexture = this.spriteSheet.textures[assetId + ".png"];
 
     if (!spellSheetTexture) throw Error(`Texture doesn't exists for ${assetId}!`);
