@@ -110,7 +110,7 @@ export class UnitAnimation {
         this.createNumberTextAnimation(unit.location, Math.abs(oldState.hp - newState.hp), "green");
       }
 
-      this.createHealthBar(unit);
+      this.renderHealthBar(unit);
     }
 
     this.unitState.set(unit, merge(oldState, newState));
@@ -169,7 +169,7 @@ export class UnitAnimation {
 
     this.renderer.container.addChild(unitNode);
 
-    this.createHealthBar(unit);
+    this.renderHealthBar(unit);
 
     return unitNode;
   }
@@ -201,27 +201,26 @@ export class UnitAnimation {
     }
   }
 
-  private createHealthBar(unit: Unit) {
-    if (this.healthbarNodes.has(unit)) {
-      const prevNode = this.healthbarNodes.get(unit);
-      prevNode.destroy();
+  private renderHealthBar(unit: Unit) {
+    let healthbarNode = this.healthbarNodes.get(unit);
+
+    if (!healthbarNode) {
+      healthbarNode = new Graphics();
+      healthbarNode.pivot.set(-unit.size * 0.1, -unit.size - 6);
+      healthbarNode.position.copyFrom(unit.location);
+
+      this.healthbarNodes.set(unit, healthbarNode);
+      this.renderer.container.addChild(healthbarNode);
     }
 
     const percentage = unit.hp / unit.maxHp;
 
     const color = percentage > 0.6 ? 0x008000 : percentage > 0.3 ? 0xffff00 : 0xff0000;
 
-    const healthbarNode = new Graphics();
+    healthbarNode.clear();
     healthbarNode.beginFill(color);
     healthbarNode.drawRect(0, 0, unit.size * 0.8 * percentage, 5);
     healthbarNode.endFill();
-
-    healthbarNode.x = unit.location.x + unit.size * 0.1;
-    healthbarNode.y = unit.location.y + unit.size + 6;
-
-    this.healthbarNodes.set(unit, healthbarNode);
-
-    this.renderer.container.addChild(healthbarNode);
   }
 
   private moveUnit(unit: Unit) {
@@ -237,8 +236,7 @@ export class UnitAnimation {
 
     const healthbarNode = this.healthbarNodes.get(unit);
     if (healthbarNode) {
-      healthbarNode.x = unit.location.x + unit.size * 0.1;
-      healthbarNode.y = unit.location.y + unit.size + 6;
+      healthbarNode.position.copyFrom(unit.location);
     }
 
     const statusesContainerNode = this.statusesContainerNodes.get(unit);
