@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, Spritesheet } from "pixi.js";
+import { Application, Assets, Sprite, Spritesheet, Texture } from "pixi.js";
 
 import { AssetManager, SpriteConfig } from "@battleground/renderer";
 
@@ -36,6 +36,13 @@ export class HHAssetManager implements AssetManager {
     };
   }
 
+  getAsset(assetId: string): Texture {
+    const spellSheetTexture = this.spriteSheet.textures[assetId + ".png"];
+
+    if (!spellSheetTexture) throw Error(`Texture doesn't exists for ${assetId}!`);
+
+    return spellSheetTexture;
+  }
 
   getAssetAsBase64(assetId: string): Promise<string> {
     const spellSheetTexture = this.spriteSheet.textures[assetId + ".png"];

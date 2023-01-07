@@ -1,20 +1,25 @@
 import { GlowFilter } from "@pixi/filter-glow";
 
 import gsap from "gsap";
-import { Graphics, Text } from "pixi.js";
+import { Graphics, Sprite, Text } from "pixi.js";
 
-import { Direction, Unit, Vector, merge, subVector } from "@battleground/core";
+import { Direction, EffectType, Unit, Vector, merge, subVector } from "@battleground/core";
 
 import { BattlefieldRenderer } from "../interfaces/battlefield-renderer";
 import { AnimatedSpriteUnit } from "./AnimatedSpriteUnit";
 
 type AnimationState = "idle" | "move" | "attack" | "dead";
 
+type UnitStatus = "shield-break";
+
+const SHIELD_BREAK_ICON = "icons/spells/shield_break";
+
 interface UnitTransformedState {
   hp: number;
   location: Vector;
   facing: Direction.Left | Direction.Right | undefined;
   animation: AnimationState;
+  statuses: UnitStatus[];
 }
 
 interface UnitRenderState {
@@ -30,6 +35,7 @@ export class UnitAnimation {
 
   private unitNodes = new Map<Unit, AnimatedSpriteUnit>();
   private healthbarNodes = new Map<Unit, Graphics>();
+  private statusesContainerNodes = new Map<Unit, Sprite>();
 
   drawUnitAnimation(unit: Unit) {
     let node = this.unitNodes.get(unit);
@@ -43,6 +49,7 @@ export class UnitAnimation {
         hp: unit.hp,
         location: unit.location,
         selected: false,
+        statuses: [],
       });
     }
 
@@ -55,6 +62,10 @@ export class UnitAnimation {
 
     if (newState.location.x !== oldState.location.x || newState.location.y !== oldState.location.y) {
       this.moveUnit(unit);
+    }
+
+    if (oldState.statuses.toString() !== newState.statuses.toString()) {
+      this.renderStatuses(unit, newState.statuses);
     }
 
     if (newState.animation !== oldState.animation) {
@@ -75,9 +86,11 @@ export class UnitAnimation {
       }
 
       if (newState.animation === "dead") {
-        const healthbarNode = this.healthbarNodes.get(unit);
-        healthbarNode.destroy();
+        this.healthbarNodes.get(unit)?.destroy();
         this.healthbarNodes.delete(unit);
+
+        this.statusesContainerNodes.get(unit)?.destroy();
+        this.statusesContainerNodes.delete(unit);
 
         node.setState("die");
 
@@ -95,10 +108,6 @@ export class UnitAnimation {
 
       if (oldState.hp < newState.hp) {
         this.createNumberTextAnimation(unit.location, Math.abs(oldState.hp - newState.hp), "green");
-      }
-
-      if (oldState.animation === "dead" && newState.animation !== "dead") {
-        this.createHealthBar(unit);
       }
 
       this.createHealthBar(unit);
@@ -165,6 +174,33 @@ export class UnitAnimation {
     return unitNode;
   }
 
+  private renderStatuses(unit: Unit, statuses: UnitStatus[]) {
+    let container = this.statusesContainerNodes.get(unit);
+
+    if (statuses.length === 0) {
+      container?.destroy();
+      return;
+    }
+
+    if (!container) {
+      container = new Sprite();
+      container.scale.set(0.4);
+      container.pivot.set(-unit.size - unit.size / 2, unit.size);
+      container.position.copyFrom(unit.location);
+
+      this.renderer.container.addChild(container);
+      this.statusesContainerNodes.set(unit, container);
+    }
+
+    container.removeChildren();
+
+    for (let status of statuses) {
+      const texture = this.renderer.assetManager.getAsset(status);
+
+      container.addChild(new Sprite(texture));
+    }
+  }
+
   private createHealthBar(unit: Unit) {
     if (this.healthbarNodes.has(unit)) {
       const prevNode = this.healthbarNodes.get(unit);
@@ -190,7 +226,6 @@ export class UnitAnimation {
 
   private moveUnit(unit: Unit) {
     const unitNode = this.unitNodes.get(unit);
-    const healthbarNode = this.healthbarNodes.get(unit);
 
     const oldState = this.unitState.get(unit);
     const newState = this.transformUnitToState(unit);
@@ -200,8 +235,16 @@ export class UnitAnimation {
     unitNode.x += diff.x;
     unitNode.y += diff.y;
 
-    healthbarNode.x = unit.location.x + unit.size * 0.1;
-    healthbarNode.y = unit.location.y + unit.size + 6;
+    const healthbarNode = this.healthbarNodes.get(unit);
+    if (healthbarNode) {
+      healthbarNode.x = unit.location.x + unit.size * 0.1;
+      healthbarNode.y = unit.location.y + unit.size + 6;
+    }
+
+    const statusesContainerNode = this.statusesContainerNodes.get(unit);
+    if (statusesContainerNode) {
+      statusesContainerNode.position.copyFrom(unit.location);
+    }
   }
 
   private transformUnitToState(unit: Unit): UnitTransformedState {
@@ -232,11 +275,18 @@ export class UnitAnimation {
       return undefined;
     })();
 
+    const statuses = (() => {
+      const shieldBreakEffect = unit.effects.find(x => x.type === EffectType.Armor && (x as any).power < 0);
+
+      return [shieldBreakEffect && SHIELD_BREAK_ICON].filter(x => x) as UnitStatus[];
+    })();
+
     return {
       hp: unit.hp,
       location: unit.location,
       facing,
       animation,
+      statuses,
     };
   }
 
